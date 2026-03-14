@@ -1,0 +1,22 @@
+<div class="px-6 py-5 flex flex-col items-center text-center">
+  <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+       [ngClass]="data.isDanger ? 'bg-red-100 text-red-600' : 'bg-brand-100 text-brand-600'">
+    <mat-icon>{{ data.isDanger ? 'warning' : 'info' }}</mat-icon>
+  </div>
+  <h2 class="text-xl font-semibold mb-2" mat-dialog-title [ngClass]="data.isDanger ? 'text-red-600' : 'text-slate-800'">
+    {{ data.title }}
+  </h2>
+  
+  <mat-dialog-content class="mat-typography text-slate-600 mb-6">
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions class="w-full flex justify-center gap-3 pb-2">
+    <button mat-stroked-button color="basic" (click)="onCancel()" class="flex-1">
+      {{ data.cancelText || 'Cancel' }}
+    </button>
+    <button mat-flat-button [color]="data.isDanger ? 'warn' : 'primary'" (click)="onConfirm()" class="flex-1">
+      {{ data.confirmText || 'Confirm' }}
+    </button>
+  </mat-dialog-actions>
+</div>

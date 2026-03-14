@@ -1,0 +1,35 @@
+::ng-deep .login-field .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 8px;
+  background-color: transparent;
+}
+
+::ng-deep .login-field .mdc-notched-outline__leading,
+::ng-deep .login-field .mdc-notched-outline__notch,
+::ng-deep .login-field .mdc-notched-outline__trailing {
+  border-width: 1px !important;
+  border-color: #d1d5db !important; /* Tailwind gray-300 */
+}
+
+::ng-deep .login-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .login-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .login-field.mat-focused .mdc-notched-outline__trailing {
+  border-width: 2px !important;
+  border-color: var(--brand-primary) !important;
+}
+
+/* Error state mapping */
+::ng-deep .login-field.ng-invalid.ng-touched .mdc-notched-outline__leading,
+::ng-deep .login-field.ng-invalid.ng-touched .mdc-notched-outline__notch,
+::ng-deep .login-field.ng-invalid.ng-touched .mdc-notched-outline__trailing {
+  border-color: var(--brand-error) !important;
+}
+
+/* Customizing the MDC button to match template */
+::ng-deep .auth-btn.mdc-button {
+  --mdc-filled-button-container-color: var(--brand-primary);
+  border-radius: 8px;
+  transition: all 0.2s duration;
+}
+::ng-deep .auth-btn.mdc-button:hover {
+  opacity: 0.9;
+}

@@ -1,0 +1,84 @@
+<app-sidebar></app-sidebar>
+
+<main class="main-content min-h-screen pb-20 md:pb-0">
+  <!-- Top Bar -->
+  <header class="sticky top-0 bg-slate-50/80 backdrop-blur-md z-40 px-6 py-4 flex items-center justify-between gap-4">
+    <div class="relative flex-1 max-w-2xl">
+      <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+        <mat-icon class="search-icon w-5 h-5 text-[20px] flex items-center justify-center">search</mat-icon>
+      </span>
+      <input type="text" [formControl]="searchControl" placeholder="Search your notes..."
+             class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all sm:text-sm shadow-sm" />
+    </div>
+    
+    <button (click)="openNoteForm()" 
+            class="hidden md:flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-shadow hover:shadow-lg">
+      <mat-icon class="w-5 h-5 text-[20px] flex items-center justify-center">add</mat-icon>
+      New Note
+    </button>
+  </header>
+
+  <div class="px-6 py-4">
+    
+    <!-- Loading State -->
+    <div *ngIf="isLoading$ | async" class="py-20 flex flex-col items-center justify-center">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p class="text-slate-500 text-sm mt-4">Loading notes...</p>
+    </div>
+
+    <!-- Content -->
+    <ng-container *ngIf="!(isLoading$ | async)">
+    
+    <!-- Pinned Section -->
+    <ng-container *ngIf="pinnedNotes$ | async as pinnedNotes">
+      <section *ngIf="pinnedNotes.length > 0" class="mb-10 animate-fade-in">
+        <div class="flex items-center gap-2 mb-4">
+          <mat-icon class="w-4 h-4 text-slate-400 text-[18px] flex items-center justify-center">push_pin</mat-icon>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 m-0">Pinned</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <app-note-card *ngFor="let note of pinnedNotes" 
+                         [note]="note"
+                         (pinToggle)="togglePin($event)"
+                         (archiveToggle)="toggleArchive($event)"
+                         (edit)="openNoteForm($event)"
+                         (delete)="deleteNote($event)">
+          </app-note-card>
+        </div>
+      </section>
+    </ng-container>
+
+    <!-- Others Section -->
+    <ng-container *ngIf="otherNotes$ | async as otherNotes">
+      <section *ngIf="otherNotes.length > 0" class="animate-fade-in">
+        <div class="flex items-center gap-2 mb-4">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 m-0">Other Notes</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <app-note-card *ngFor="let note of otherNotes" 
+                         [note]="note"
+                         (pinToggle)="togglePin($event)"
+                         (archiveToggle)="toggleArchive($event)"
+                         (edit)="openNoteForm($event)"
+                         (delete)="deleteNote($event)">
+          </app-note-card>
+        </div>
+      </section>
+      
+      <!-- Empty State -->
+      <div *ngIf="(notes$ | async)?.length === 0" class="py-20 flex flex-col items-center justify-center text-center animate-fade-in">
+        <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+          <mat-icon class="text-slate-300 transform scale-[2]">note</mat-icon>
+        </div>
+        <h3 class="text-lg font-semibold text-slate-700 mb-1">No notes found</h3>
+        <p class="text-slate-500 text-sm max-w-sm">
+          {{ searchControl.value ? 'No notes match your search criteria. Try a different term.' : 'You haven\'t created any notes yet. Click the button above to start your first note!' }}
+        </p>
+      </div>
+    </ng-container>
+    
+    </ng-container>
+  </div>
+</main>

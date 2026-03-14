@@ -1,0 +1,84 @@
+<main class="min-h-screen flex flex-col items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="flex flex-col items-center mb-8">
+      <div class="flex items-center gap-2 text-2xl font-bold text-slate-800">
+        <span class="text-3xl">📝</span>
+        <span>notetakingapp</span>
+      </div>
+    </div>
+
+    <section class="bg-white rounded-2xl shadow-xl p-8 w-full">
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-slate-900">Create account</h1>
+        <p class="text-slate-500 mt-1">Start taking notes for free</p>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        
+        <div class="flex flex-col gap-1">
+          <label for="username" class="text-sm font-medium text-slate-700">Username</label>
+          <mat-form-field appearance="outline" class="w-full register-field">
+            <input matInput id="username" formControlName="username" placeholder="janesmith">
+          </mat-form-field>
+        </div>
+
+        <div class="flex flex-col gap-1 -mt-2">
+          <label for="email" class="text-sm font-medium text-slate-700">Email address</label>
+          <mat-form-field appearance="outline" class="w-full register-field">
+            <input matInput id="email" formControlName="email" type="email" placeholder="you@example.com">
+          </mat-form-field>
+        </div>
+
+        <div class="flex flex-col gap-1 -mt-2">
+          <label for="password" class="text-sm font-medium text-slate-700">Password</label>
+          <mat-form-field appearance="outline" class="w-full register-field">
+            <input matInput id="password" formControlName="password" [type]="hidePassword ? 'password' : 'text'" placeholder="••••••••">
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          
+          <!-- Password Strength Indicator -->
+          <div class="mt-1 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div class="strength-bar h-full transition-all duration-300" 
+                 [style.width]="strengthConfig.width" 
+                 [ngClass]="strengthConfig.color"></div>
+          </div>
+          <p class="text-[10px] uppercase font-bold tracking-wider mt-1" 
+             [ngClass]="strengthConfig.color.replace('bg-', 'text-')">
+            Strength: {{ strengthConfig.label }}
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-1 mt-1">
+          <label for="confirmPassword" class="text-sm font-medium text-slate-700">Confirm Password</label>
+          <mat-form-field appearance="outline" class="w-full register-field" 
+                          [class.mat-form-field-invalid]="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
+            <input matInput id="confirmPassword" formControlName="confirmPassword" [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="••••••••">
+            <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+              <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <p *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" 
+             class="text-red-500 text-xs -mt-3">
+            Passwords do not match.
+          </p>
+        </div>
+
+        <p *ngIf="registerError" class="text-sm text-red-500 mt-2">{{ registerError }}</p>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="registerForm.invalid || isLoading" 
+                class="w-full py-6 mt-4 text-base font-semibold rounded-lg shadow-md auth-btn bg-brand-primary hover:bg-brand-secondary transition-colors text-white">
+          {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+        </button>
+      </form>
+
+      <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+        <p class="text-sm text-slate-600">
+          Already have an account? 
+          <a routerLink="/login" class="text-brand-primary font-semibold hover:underline">Log in</a>
+        </p>
+      </div>
+    </section>
+  </div>
+</main>

@@ -1,0 +1,32 @@
+::ng-deep .register-field .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 8px;
+  background-color: transparent;
+}
+
+::ng-deep .register-field .mdc-notched-outline__leading,
+::ng-deep .register-field .mdc-notched-outline__notch,
+::ng-deep .register-field .mdc-notched-outline__trailing {
+  border-width: 1px !important;
+  border-color: #d1d5db !important;
+}
+
+::ng-deep .register-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .register-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .register-field.mat-focused .mdc-notched-outline__trailing {
+  border-width: 2px !important;
+  border-color: var(--brand-primary) !important;
+}
+
+::ng-deep .register-field.ng-invalid.ng-touched .mdc-notched-outline__leading,
+::ng-deep .register-field.ng-invalid.ng-touched .mdc-notched-outline__notch,
+::ng-deep .register-field.ng-invalid.ng-touched .mdc-notched-outline__trailing {
+  border-color: var(--brand-error, #f43f5e) !important;
+}
+
+.auth-btn {
+  background-color: var(--brand-primary) !important;
+  border-radius: 8px;
+}
+.auth-btn:hover:not([disabled]) {
+  background-color: var(--brand-secondary) !important;
+}

@@ -1,0 +1,41 @@
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 769px) {
+  .main-content {
+    margin-left: 260px; /* Using custom profile width from template */
+  }
+}
+
+/* Custom form field styling */
+::ng-deep .profile-field .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 8px;
+  background-color: transparent;
+}
+
+::ng-deep .profile-field .mdc-notched-outline__leading,
+::ng-deep .profile-field .mdc-notched-outline__notch,
+::ng-deep .profile-field .mdc-notched-outline__trailing {
+  border-width: 1px !important;
+  border-color: #cbd5e1 !important; /* slate-300 */
+}
+
+::ng-deep .profile-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .profile-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .profile-field.mat-focused .mdc-notched-outline__trailing {
+  border-width: 2px !important;
+  border-color: var(--brand-primary) !important;
+}
+
+/* Disabled input state */
+::ng-deep .profile-field.mat-form-field-disabled .mdc-text-field--outlined {
+  background-color: #f8fafc !important; /* slate-50 */
+}
+
+/* Save button rounding override */
+::ng-deep .save-btn.mdc-button {
+  border-radius: 8px;
+}

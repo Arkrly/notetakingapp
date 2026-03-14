@@ -1,0 +1,19 @@
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 16px !important;
+  box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+}
+
+mat-dialog-actions {
+  min-height: auto;
+  padding: 0;
+}
+
+mat-dialog-content {
+  margin: 0;
+  padding: 0 0 1.5rem 0;
+}
+
+[mat-dialog-title] {
+  margin: 0;
+  padding: 0;
+}

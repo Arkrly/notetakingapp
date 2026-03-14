@@ -1,0 +1,38 @@
+::ng-deep .cdk-overlay-pane:has(app-note-form) .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25) !important;
+  overflow: hidden;
+  background-color: transparent !important;
+}
+
+mat-dialog-content {
+  overflow-y: auto;
+}
+
+/* Custom animated transitions for modal background color */
+.transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Override MDC chip styles to match custom template */
+::ng-deep .tags-grid .mdc-evolution-chip {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 9999px !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+::ng-deep .tags-grid .mdc-evolution-chip__action--trailing:hover {
+  color: #ef4444 !important; /* red-500 */
+}
+
+input {
+  outline: none;
+}
+textarea {
+  outline: none;
+  min-height: 150px;
+}

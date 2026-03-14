@@ -1,0 +1,65 @@
+<main class="min-h-screen flex flex-col items-center justify-center p-4">
+  <header class="mb-8 text-center">
+    <div class="flex items-center justify-center gap-2 text-2xl font-bold text-slate-900">
+      <span class="text-3xl">📝</span>
+      <span>notetakingapp</span>
+    </div>
+  </header>
+
+  <section class="w-full max-w-md bg-brand-surface rounded-card card-shadow p-8">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-semibold text-slate-900 mb-2">Welcome back</h1>
+      <p class="text-slate-600">Sign in to your notes</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+      
+      <div class="flex flex-col gap-1">
+        <label for="username" class="text-sm font-medium text-slate-700">Username</label>
+        <mat-form-field appearance="outline" class="w-full login-field" [class.mat-form-field-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+          <input matInput id="username" formControlName="username" type="text" placeholder="Enter your username">
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">Username is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="password" class="text-sm font-medium text-slate-700">Password</label>
+        <mat-form-field appearance="outline" class="w-full login-field">
+          <input matInput id="password" formControlName="password" [type]="hidePassword ? 'password' : 'text'" placeholder="Enter your password">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <p *ngIf="loginError" class="text-sm text-brand-error flex items-center gap-1 -mt-2">
+        <mat-icon class="text-base" style="width:16px; height:16px; font-size:16px;">error_outline</mat-icon>
+        {{ loginError }}
+      </p>
+
+      <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading" 
+              class="w-full py-6 mt-2 text-base font-semibold rounded-lg shadow-sm auth-btn">
+        {{ isLoading ? 'Signing In...' : 'Sign In' }}
+      </button>
+
+      <div class="relative my-6">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-slate-200"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-brand-surface text-slate-500 uppercase tracking-wider">or</span>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a routerLink="/register" class="text-brand-primary font-semibold hover:underline">Create an account</a>
+      </div>
+    </form>
+  </section>
+
+  <footer class="mt-8 text-slate-500 text-sm flex items-center gap-1">
+    <span>Secure cloud notes</span>
+    <span>☁️</span>
+  </footer>
+</main>

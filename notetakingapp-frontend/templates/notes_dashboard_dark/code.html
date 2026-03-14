@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NotetakingApp - Dashboard</title>
+<!-- BEGIN: External Scripts -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#d1bdff',
+              600: '#b599ff',
+              700: '#9b76ff',
+            }
+          },
+          borderRadius: {
+            'none': '0',
+            'sm': '0.125rem',
+            DEFAULT: '8px',
+            'md': '0.375rem',
+            'lg': '0.5rem',
+            'xl': '0.75rem',
+            '2xl': '1rem',
+            '3xl': '1.5rem',
+            'full': '9999px',
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: External Scripts -->
+<!-- BEGIN: Custom Styling -->
+<style data-purpose="scrollbar-styling">
+    /* Thin purple scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d1bdff;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #b599ff;
+    }
+  </style>
+<style data-purpose="layout-tweaks">
+    .note-card {
+      transition: transform 0.2s ease, opacity 0.3s ease;
+    }
+    .note-card:hover {
+      transform: translateY(-4px);
+    }
+    .delete-animation {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    @media (max-width: 768px) {
+      .sidebar-desktop { display: none; }
+      .bottom-nav-mobile { display: flex; }
+      .main-content { margin-left: 0 !important; margin-bottom: 64px; }
+    }
+    @media (min-width: 769px) {
+      .sidebar-desktop { display: flex; width: 240px; }
+      .bottom-nav-mobile { display: none; }
+      .main-content { margin-left: 240px; }
+    }
+  </style>
+<!-- END: Custom Styling -->
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans">
+<!-- BEGIN: Sidebar Desktop -->
+<aside class="sidebar-desktop fixed left-0 top-0 h-screen bg-slate-950 border-r border-slate-800 flex-col z-50">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-10">
+<div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-slate-900">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"></path><path d="M15 3v6h6"></path><path d="M9 18h6"></path><path d="M9 14h6"></path></svg>
+</div>
+<span class="font-bold text-xl tracking-tight text-slate-100">NoteStack</span>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-brand-500 bg-brand-500/10 rounded-lg font-medium group" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          All Notes
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-slate-100 rounded-lg transition-colors group" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+          Pinned
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-slate-100 rounded-lg transition-colors group" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
+          Archived
+        </a>
+</nav>
+</div>
+<div class="mt-auto p-4 border-t border-slate-800">
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-800 cursor-pointer">
+<img alt="Profile" class="w-10 h-10 rounded-full border border-slate-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp0gp74OlHLCXFPK-0p71RBIqO-5WJVNaQqLMQdocytkCx5bGyg1eFM8f5scN4nXlRLjGodCg0oA6n73lWROafHAnNieMc8_uQ7Ktej6dvB0ySPgCf1lrRPs0tUKEVc4dQyTf4KTUIzXXCL9E69EsJlT7NU1okYMfVaGE6OxLKcIb9zFXtky3A4MH88_CA8eoPp30BAJyJUURCLnZmnapivMPtogP-awjhRmte_oWFjWyaUohCwe1J8GsCyuAYhEr-KLgjSDUcuS8t"/>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-slate-100 truncate">Alex Chen</p>
+<p class="text-xs text-slate-500 truncate">alex@example.com</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- END: Sidebar Desktop -->
+<!-- BEGIN: Bottom Nav Mobile -->
+<nav class="bottom-nav-mobile fixed bottom-0 left-0 right-0 h-16 bg-slate-950 border-t border-slate-800 z-50 px-6 items-center justify-between">
+<button class="flex flex-col items-center gap-1 text-brand-500">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+<span class="text-[10px] font-bold">All</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path></svg>
+<span class="text-[10px]">Pinned</span>
+</button>
+<button class="w-12 h-12 -mt-10 bg-brand-500 text-slate-900 rounded-full shadow-lg flex items-center justify-center">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path></svg>
+<span class="text-[10px]">Archive</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<img alt="Profile" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkmlqbfjIcln5ZIzt6qvxEWZiVL5Qcb0ehKU7_I_d6dJXSbUIWXCQNekPhx68FuXl72Bf3wN25vQ2pGKy1QYVt17VQlREGG7lST-Rdk-iRQ9HOsKClsyL90eg3W8g6OxhtmKFAUgD67-YD0dH9Zoh9VjrboTv9JjGs3NRBNZbwvqVdlxr0g-fcziDXA8ODz0D-xbhUxjlbE98AGzuG0OAPSQH4TFxfqF1ja0qOQtRNXRp1-aByIzX1BOnaJ7qlLyua4zXMmib02Ni4"/>
+<span class="text-[10px]">Profile</span>
+</button>
+</nav>
+<!-- END: Bottom Nav Mobile -->
+<!-- BEGIN: Main Content Area -->
+<main class="main-content min-h-screen">
+<!-- BEGIN: Top Bar -->
+<header class="sticky top-0 bg-slate-900/80 backdrop-blur-md z-40 px-6 py-4 flex items-center justify-between gap-4">
+<div class="relative flex-1 max-w-2xl">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</span>
+<input class="block w-full pl-10 pr-3 py-2 border border-slate-700 rounded-xl bg-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all sm:text-sm" id="search-input" placeholder="Search your notes..." type="text"/>
+</div>
+<button class="hidden md:flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-slate-900 px-4 py-2 rounded-xl font-medium transition-shadow hover:shadow-lg">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+        New Note
+      </button>
+</header>
+<!-- END: Top Bar -->
+<div class="px-6 pb-20">
+<!-- BEGIN: Pinned Section -->
+<section class="mb-10" id="pinned-section">
+<div class="flex items-center gap-2 mb-4">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+<h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Pinned</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pinned-grid">
+<!-- Note Card: Project Ideas -->
+<article class="note-card bg-yellow-900/40 p-6 rounded-2xl shadow-sm border border-yellow-700/30 flex flex-col gap-3 group relative" data-pinned="true" data-purpose="note-card">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-yellow-100 leading-tight">Project Ideas</h3>
+<button class="text-yellow-400 hover:text-brand-500" onclick="togglePin(this)">
+<svg class="w-5 h-5 fill-yellow-400" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+</button>
+</div>
+<p class="text-yellow-100/70 text-sm line-clamp-2">Brainstorming for the next big SaaS product. Focus on local-first database solutions and collaborative features.</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="px-2 py-0.5 bg-yellow-900/60 text-yellow-200 text-[10px] font-bold rounded uppercase">Work</span>
+<span class="px-2 py-0.5 bg-yellow-900/60 text-yellow-200 text-[10px] font-bold rounded uppercase">2024</span>
+</div>
+<div class="flex items-center gap-4 mt-4 pt-4 border-t border-yellow-700/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-yellow-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 4 7 7L7 22H3v-4z"></path><path d="m15 8 4 4"></path></svg></button>
+<button class="text-yellow-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg></button>
+<button class="text-yellow-400 hover:text-red-400 ml-auto" onclick="deleteNote(this)"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg></button>
+</div>
+</article>
+<!-- Note Card: Meeting Notes -->
+<article class="note-card bg-blue-900/40 p-6 rounded-2xl shadow-sm border border-blue-700/30 flex flex-col gap-3 group relative" data-pinned="true" data-purpose="note-card">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-blue-100 leading-tight">Meeting Notes</h3>
+<button class="text-blue-400 hover:text-brand-500" onclick="togglePin(this)">
+<svg class="w-5 h-5 fill-blue-400" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+</button>
+</div>
+<p class="text-blue-100/70 text-sm line-clamp-2">Discussed the Q3 roadmap with the engineering team. Key takeaways: Migrate to Tailwind v4 by end of year.</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="px-2 py-0.5 bg-blue-900/60 text-blue-200 text-[10px] font-bold rounded uppercase">Team</span>
+</div>
+<div class="flex items-center gap-4 mt-4 pt-4 border-t border-blue-700/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-blue-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 4 7 7L7 22H3v-4z"></path><path d="m15 8 4 4"></path></svg></button>
+<button class="text-blue-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg></button>
+<button class="text-blue-400 hover:text-red-400 ml-auto" onclick="deleteNote(this)"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg></button>
+</div>
+</article>
+</div>
+</section>
+<!-- END: Pinned Section -->
+<!-- BEGIN: Others Section -->
+<section id="others-section">
+<div class="flex items-center gap-2 mb-4">
+<h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Other Notes</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="others-grid">
+<!-- Note Card: Book Recommendations -->
+<article class="note-card bg-green-900/40 p-6 rounded-2xl shadow-sm border border-green-700/30 flex flex-col gap-3 group relative" data-pinned="false" data-purpose="note-card">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-green-100 leading-tight">Book Recommendations</h3>
+<button class="text-slate-500 hover:text-brand-500" onclick="togglePin(this)">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+</button>
+</div>
+<p class="text-green-100/70 text-sm line-clamp-2">"Atomic Habits" by James Clear, "The Design of Everyday Things" by Don Norman.</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="px-2 py-0.5 bg-green-900/60 text-green-200 text-[10px] font-bold rounded uppercase">Reading</span>
+</div>
+<div class="flex items-center gap-4 mt-4 pt-4 border-t border-green-700/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-green-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 4 7 7L7 22H3v-4z"></path><path d="m15 8 4 4"></path></svg></button>
+<button class="text-green-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg></button>
+<button class="text-green-400 hover:text-red-400 ml-auto" onclick="deleteNote(this)"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg></button>
+</div>
+</article>
+<!-- Note Card: Grocery List -->
+<article class="note-card bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-700 flex flex-col gap-3 group relative" data-pinned="false" data-purpose="note-card">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-slate-100 leading-tight">Grocery List</h3>
+<button class="text-slate-500 hover:text-brand-500" onclick="togglePin(this)">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+</button>
+</div>
+<p class="text-slate-100/70 text-sm line-clamp-2">Milk, Eggs, Bread, Avocados, Coffee beans, Almond milk.</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="px-2 py-0.5 bg-slate-700 text-slate-200 text-[10px] font-bold rounded uppercase">Daily</span>
+</div>
+<div class="flex items-center gap-4 mt-4 pt-4 border-t border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 4 7 7L7 22H3v-4z"></path><path d="m15 8 4 4"></path></svg></button>
+<button class="text-slate-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg></button>
+<button class="text-slate-400 hover:text-red-400 ml-auto" onclick="deleteNote(this)"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg></button>
+</div>
+</article>
+<!-- Note Card: UI Design Thoughts -->
+<article class="note-card bg-brand-900/30 p-6 rounded-2xl shadow-sm border border-brand-700/20 flex flex-col gap-3 group relative" data-pinned="false" data-purpose="note-card">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-brand-100 leading-tight">UI Design Thoughts</h3>
+<button class="text-slate-500 hover:text-brand-500" onclick="togglePin(this)">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+</button>
+</div>
+<p class="text-brand-100/70 text-sm line-clamp-2">Bento grids are still popular but maybe we should try more organic, overlapping layouts.</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="px-2 py-0.5 bg-brand-900/60 text-brand-200 text-[10px] font-bold rounded uppercase">Design</span>
+</div>
+<div class="flex items-center gap-4 mt-4 pt-4 border-t border-brand-700/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-brand-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 4 7 7L7 22H3v-4z"></path><path d="m15 8 4 4"></path></svg></button>
+<button class="text-brand-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg></button>
+<button class="text-brand-400 hover:text-red-400 ml-auto" onclick="deleteNote(this)"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg></button>
+</div>
+</article>
+<!-- Note Card: Workout Routine -->
+<article class="note-card bg-pink-900/40 p-6 rounded-2xl shadow-sm border border-pink-700/30 flex flex-col gap-3 group relative" data-pinned="false" data-purpose="note-card">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-pink-100 leading-tight">Workout Routine</h3>
+<button class="text-slate-500 hover:text-brand-500" onclick="togglePin(this)">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m9 2 6 6-6 6"></path><path d="M12 22v-5"></path><path d="M9 22h6"></path></svg>
+</button>
+</div>
+<p class="text-pink-100/70 text-sm line-clamp-2">Mon: Chest &amp; Triceps. Wed: Back &amp; Biceps. Fri: Legs &amp; Shoulders.</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="px-2 py-0.5 bg-pink-900/60 text-pink-200 text-[10px] font-bold rounded uppercase">Health</span>
+</div>
+<div class="flex items-center gap-4 mt-4 pt-4 border-t border-pink-700/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-pink-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 4 7 7L7 22H3v-4z"></path><path d="m15 8 4 4"></path></svg></button>
+<button class="text-pink-400 hover:text-brand-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="5" rx="1" width="20" x="2" y="3"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg></button>
+<button class="text-pink-400 hover:text-red-400 ml-auto" onclick="deleteNote(this)"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg></button>
+</div>
+</article>
+</div>
+</section>
+<!-- END: Others Section -->
+</div>
+</main>
+<!-- END: Main Content Area -->
+<!-- BEGIN: Logic Scripts -->
+<script data-purpose="interaction-handlers">
+    /**
+     * Real-time search filter
+     */
+    document.getElementById('search-input').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('.note-card');
+      
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const content = card.querySelector('p').textContent.toLowerCase();
+        if (title.includes(term) || content.includes(term)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+
+    /**
+     * Delete note with animation
+     */
+    function deleteNote(btn) {
+      const card = btn.closest('.note-card');
+      card.classList.add('delete-animation');
+      setTimeout(() => {
+        card.remove();
+        // Check if sections are empty
+        checkEmptySections();
+      }, 300);
+    }
+
+    /**
+     * Toggle Pin Status
+     */
+    function togglePin(btn) {
+      const card = btn.closest('.note-card');
+      const isPinned = card.getAttribute('data-pinned') === 'true';
+      const pinnedGrid = document.getElementById('pinned-grid');
+      const othersGrid = document.getElementById('others-grid');
+      const svg = btn.querySelector('svg');
+
+      if (isPinned) {
+        // Move to others
+        card.setAttribute('data-pinned', 'false');
+        svg.classList.remove('fill-slate-800', 'fill-yellow-400', 'fill-blue-400');
+        svg.classList.add('text-slate-500');
+        othersGrid.prepend(card);
+      } else {
+        // Move to pinned
+        card.setAttribute('data-pinned', 'true');
+        svg.classList.remove('text-slate-500');
+        
+        // Simplified pin color logic for demo - in real app would match card theme
+        if(card.classList.contains('bg-yellow-900/40')) svg.classList.add('fill-yellow-400');
+        else if(card.classList.contains('bg-blue-900/40')) svg.classList.add('fill-blue-400');
+        else svg.classList.add('fill-slate-400');
+        
+        pinnedGrid.prepend(card);
+      }
+      checkEmptySections();
+    }
+
+    /**
+     * Utility to hide empty section headers
+     */
+    function checkEmptySections() {
+      const pinnedGrid = document.getElementById('pinned-grid');
+      const pinnedSection = document.getElementById('pinned-section');
+      if (pinnedGrid.children.length === 0) {
+        pinnedSection.classList.add('hidden');
+      } else {
+        pinnedSection.classList.remove('hidden');
+      }
+    }
+  </script>
+<!-- END: Logic Scripts -->
+</body></html>

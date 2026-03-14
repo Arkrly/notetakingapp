@@ -1,0 +1,9 @@
+@media (max-width: 768px) {
+  .sidebar-desktop { display: none !important; }
+  .bottom-nav-mobile { display: flex !important; }
+}
+
+@media (min-width: 769px) {
+  .sidebar-desktop { display: flex !important; width: 240px; }
+  .bottom-nav-mobile { display: none !important; }
+}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register - NotetakingApp</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- BEGIN: Custom Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              background: '#F4EFF4',
+              primary: '#7C3AED', /* Violet 600 */
+              secondary: '#6D28D9', /* Violet 700 */
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Custom Configuration -->
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="layout-and-transitions">
+    body {
+      background-color: #F4EFF4;
+    }
+    .strength-bar {
+      transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<!-- BEGIN: Registration Container -->
+<main class="w-full max-w-md">
+<!-- BEGIN: Brand Header -->
+<div class="flex flex-col items-center mb-8" data-purpose="app-branding">
+<div class="flex items-center gap-2 text-2xl font-bold text-gray-800">
+<span class="text-3xl">📝</span>
+<span>notetakingapp</span>
+</div>
+</div>
+<!-- END: Brand Header -->
+<!-- BEGIN: Registration Card -->
+<section class="bg-white rounded-2xl shadow-xl p-8 w-full" data-purpose="register-card">
+<!-- Card Header -->
+<div class="mb-8">
+<h1 class="text-2xl font-bold text-gray-900">Create account</h1>
+<p class="text-gray-500 mt-1">Start taking notes for free</p>
+</div>
+<!-- Registration Form -->
+<form class="space-y-5" id="registerForm" onsubmit="return false;">
+<!-- Username Field -->
+<div class="space-y-1">
+<label class="block text-sm font-medium text-gray-700" for="username">Username</label>
+<input class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all" id="username" name="username" placeholder="janesmith" required="" type="text"/>
+</div>
+<!-- Email Field -->
+<div class="space-y-1">
+<label class="block text-sm font-medium text-gray-700" for="email">Email address</label>
+<input class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all" id="email" name="email" placeholder="you@example.com" required="" type="email"/>
+</div>
+<!-- Password Field -->
+<div class="space-y-1">
+<label class="block text-sm font-medium text-gray-700" for="password">Password</label>
+<input class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<!-- Password Strength Indicator -->
+<div class="mt-2 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+<div class="strength-bar h-full w-0 bg-gray-300" id="strengthMeter"></div>
+</div>
+<p class="text-[10px] uppercase font-bold tracking-wider text-gray-400 mt-1" id="strengthText">Strength: none</p>
+</div>
+<!-- Confirm Password Field -->
+<div class="space-y-1">
+<label class="block text-sm font-medium text-gray-700" for="confirmPassword">Confirm Password</label>
+<input class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required="" type="password"/>
+<!-- Error Message -->
+<p class="hidden text-red-500 text-xs mt-1" id="passwordMismatchError">
+            Passwords do not match.
+          </p>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-brand-primary hover:bg-brand-secondary text-white font-semibold py-3 rounded-lg transition-colors duration-200 shadow-md" type="submit">
+          Create Account
+        </button>
+</form>
+<!-- Footer Link -->
+<div class="mt-8 pt-6 border-t border-gray-100 text-center">
+<p class="text-sm text-gray-600">
+          Already have an account? 
+          <a class="text-brand-primary font-semibold hover:underline" href="login.html">Log in</a>
+</p>
+</div>
+</section>
+<!-- END: Registration Card -->
+</main>
+<!-- END: Registration Container -->
+<!-- BEGIN: Password Strength Logic -->
+<script data-purpose="password-logic">
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirmPassword');
+    const strengthMeter = document.getElementById('strengthMeter');
+    const strengthText = document.getElementById('strengthText');
+    const mismatchError = document.getElementById('passwordMismatchError');
+
+    // Function to update password strength UI
+    passwordInput.addEventListener('input', () => {
+      const val = passwordInput.value;
+      let strength = 0;
+      
+      if (val.length >= 6) strength++;
+      if (val.match(/[A-Z]/)) strength++;
+      if (val.match(/[0-9]/)) strength++;
+      if (val.match(/[^A-Za-z0-9]/)) strength++;
+
+      const configs = [
+        { width: '0%', color: 'bg-gray-300', label: 'None' },
+        { width: '25%', color: 'bg-red-500', label: 'Weak' },
+        { width: '50%', color: 'bg-yellow-500', label: 'Fair' },
+        { width: '75%', color: 'bg-blue-500', label: 'Good' },
+        { width: '100%', color: 'bg-green-500', label: 'Strong' }
+      ];
+
+      const config = configs[strength];
+      strengthMeter.style.width = config.width;
+      strengthMeter.className = `strength-bar h-full ${config.color}`;
+      strengthText.innerText = `Strength: ${config.label}`;
+      strengthText.className = `text-[10px] uppercase font-bold tracking-wider mt-1 ${config.color.replace('bg-', 'text-')}`;
+    });
+
+    // Function to check mismatch on blur
+    const checkMismatch = () => {
+      if (confirmInput.value && passwordInput.value !== confirmInput.value) {
+        mismatchError.classList.remove('hidden');
+        confirmInput.classList.add('border-red-500', 'ring-red-100');
+      } else {
+        mismatchError.classList.add('hidden');
+        confirmInput.classList.remove('border-red-500', 'ring-red-100');
+      }
+    };
+
+    confirmInput.addEventListener('blur', checkMismatch);
+    // Also check when typing in password if confirm was already touched
+    passwordInput.addEventListener('input', () => {
+      if(confirmInput.value) checkMismatch();
+    });
+  </script>
+<!-- END: Password Strength Logic -->
+</body></html>

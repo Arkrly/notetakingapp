@@ -1,0 +1,71 @@
+<!-- Desktop Sidebar -->
+<aside class="sidebar-desktop fixed left-0 top-0 h-screen bg-white border-r border-slate-200 flex-col z-50">
+  <div class="p-6">
+    <div class="flex items-center gap-2 mb-10">
+      <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white">
+        <mat-icon class="w-5 h-5 text-sm flex items-center justify-center">edit</mat-icon>
+      </div>
+      <span class="font-bold text-xl tracking-tight text-slate-800">NoteStack</span>
+    </div>
+    <nav class="space-y-1">
+      <a routerLink="/notes" routerLinkActive="text-brand-600 bg-brand-50" [routerLinkActiveOptions]="{exact: true}"
+         class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors group">
+        <mat-icon>book</mat-icon>
+        All Notes
+      </a>
+      <a routerLink="/notes/pinned" routerLinkActive="text-brand-600 bg-brand-50"
+         class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors group">
+        <mat-icon>push_pin</mat-icon>
+        Pinned
+      </a>
+      <a routerLink="/notes/archived" routerLinkActive="text-brand-600 bg-brand-50"
+         class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors group">
+        <mat-icon>archive</mat-icon>
+        Archived
+      </a>
+    </nav>
+  </div>
+  
+  <div class="mt-auto p-4 border-t border-slate-100" *ngIf="currentUser$ | async as user">
+    <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" routerLink="/profile">
+      <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white font-semibold">
+        {{ user.username.charAt(0).toUpperCase() }}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold text-slate-900 truncate">{{ user.username }}</p>
+        <p class="text-xs text-slate-500 truncate">{{ user.email }}</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav-mobile fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-50 px-6 flex items-center justify-between">
+  <a routerLink="/notes" routerLinkActive="text-brand-600" [routerLinkActiveOptions]="{exact: true}" 
+     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
+    <mat-icon>book</mat-icon>
+    <span class="text-[10px] font-bold">All</span>
+  </a>
+  <a routerLink="/notes/pinned" routerLinkActive="text-brand-600"
+     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
+    <mat-icon>push_pin</mat-icon>
+    <span class="text-[10px]">Pinned</span>
+  </a>
+  
+  <!-- Add Note FAB (handled via dashboard generally, but visually here) -->
+  <button class="w-12 h-12 -mt-10 bg-brand-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-600 transition-colors"
+          routerLink="/notes/new">
+    <mat-icon>add</mat-icon>
+  </button>
+  
+  <a routerLink="/notes/archived" routerLinkActive="text-brand-600"
+     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
+    <mat-icon>archive</mat-icon>
+    <span class="text-[10px]">Archive</span>
+  </a>
+  <a routerLink="/profile" routerLinkActive="text-brand-600"
+     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
+    <mat-icon>person</mat-icon>
+    <span class="text-[10px]">Profile</span>
+  </a>
+</nav>

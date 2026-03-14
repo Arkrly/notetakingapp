@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - NoteTakingApp</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- BEGIN: Custom Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#6750A4',
+              surface: '#FFFBFE',
+              background: '#F4EFF4',
+              error: '#B3261E'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          borderRadius: {
+            'card': '12px',
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Custom Configuration -->
+<style data-purpose="global-styles">
+    :root {
+      --brand-primary: #6750A4;
+      --brand-background: #F4EFF4;
+      --brand-surface: #FFFBFE;
+      --brand-error: #B3261E;
+      --spacing-base: 1rem;
+    }
+
+    body {
+      background-color: var(--brand-background);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Custom shadow for the card */
+    .card-shadow {
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<!-- BEGIN: MainHeader -->
+<header class="mb-8 text-center" data-purpose="app-branding">
+<div class="flex items-center justify-center gap-2 text-2xl font-bold text-gray-900">
+<span class="text-3xl">📝</span>
+<span>notetakingapp</span>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: LoginCard -->
+<main class="w-full max-w-md bg-brand-surface rounded-card card-shadow p-8" data-purpose="login-container">
+<div class="text-center mb-8">
+<h1 class="text-2xl font-semibold text-gray-900 mb-2">Welcome back</h1>
+<p class="text-gray-600">Sign in to your notes</p>
+</div>
+<form class="space-y-6" id="loginForm">
+<!-- Email Field Group -->
+<div data-purpose="input-group-email">
+<label class="block text-sm font-medium text-gray-700 mb-1" for="email">Email</label>
+<!-- The 'border-brand-error' and 'ring-brand-error' classes are applied to demonstrate the error state requested -->
+<input class="w-full px-4 py-3 rounded-lg border-brand-error focus:ring-brand-error focus:border-brand-error block w-full sm:text-sm border-2" id="email" name="email" placeholder="email@example.com" required="" type="email"/>
+<!-- Error Message -->
+<p class="mt-2 text-sm text-brand-error flex items-center gap-1" id="email-error">
+<span class="material-icons text-base">error_outline</span>
+          Invalid email or password
+        </p>
+</div>
+<!-- Password Field Group -->
+<div data-purpose="input-group-password">
+<label class="block text-sm font-medium text-gray-700 mb-1" for="password">Password</label>
+<div class="relative">
+<input class="w-full px-4 py-3 rounded-lg border-gray-300 focus:ring-brand-primary focus:border-brand-primary block w-full sm:text-sm border" id="password" name="password" placeholder="Enter your password" required="" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700" data-purpose="password-visibility-toggle" id="togglePassword" type="button">
+<span class="material-icons" id="toggleIcon">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Sign In Button -->
+<button class="w-full bg-brand-primary hover:opacity-90 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-sm" data-purpose="submit-button" type="submit">
+        Sign In
+      </button>
+<!-- Divider -->
+<div class="relative my-6" data-purpose="form-divider">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-gray-200"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-2 bg-brand-surface text-gray-500 uppercase tracking-wider">or</span>
+</div>
+</div>
+<!-- Sign Up Link -->
+<div class="text-center">
+<a class="text-brand-primary font-semibold hover:underline" href="#">Create an account</a>
+</div>
+</form>
+</main>
+<!-- END: LoginCard -->
+<!-- BEGIN: Footer -->
+<footer class="mt-8 text-gray-500 text-sm flex items-center gap-1" data-purpose="page-footer">
+<span>Secure cloud notes</span>
+<span>☁️</span>
+</footer>
+<!-- END: Footer -->
+<!-- BEGIN: JavaScript Logic -->
+<script data-purpose="password-toggle-logic">
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordInput = document.querySelector('#password');
+    const toggleIcon = document.querySelector('#toggleIcon');
+
+    togglePassword.addEventListener('click', function (e) {
+      // toggle the type attribute
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      
+      // toggle the eye icon
+      toggleIcon.textContent = type === 'password' ? 'visibility_off' : 'visibility';
+    });
+  </script>
+<script data-purpose="form-handling">
+    // Example form submission handling
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      console.log('Login attempt recorded');
+    });
+  </script>
+<!-- END: JavaScript Logic -->
+</body></html>

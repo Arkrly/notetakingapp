@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NoteTakingApp - Create Note</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-animations">
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+    .animate-slide-up { animation: slideUp 0.4s ease-out; }
+    
+    /* Custom scrollbar for textarea */
+    textarea::-webkit-scrollbar {
+      width: 6px;
+    }
+    textarea::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+  </style>
+<style data-purpose="note-colors">
+    /* Color Swatch Backgrounds */
+    .bg-note-white { background-color: #ffffff; }
+    .bg-note-yellow { background-color: #fef9c3; }
+    .bg-note-green { background-color: #dcfce7; }
+    .bg-note-blue { background-color: #dbeafe; }
+    .bg-note-pink { background-color: #fce7f3; }
+    .bg-note-purple { background-color: #f3e8ff; }
+
+    /* Selected state */
+    .swatch-selected {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+<!-- BEGIN: Blurred Dashboard Background -->
+<!-- This section simulates the dashboard behind the modal -->
+<div aria-hidden="true" class="fixed inset-0 overflow-hidden filter blur-md pointer-events-none">
+<nav class="h-16 bg-white border-b border-gray-200 flex items-center px-8">
+<div class="h-8 w-32 bg-gray-200 rounded"></div>
+</nav>
+<main class="p-8 grid grid-cols-3 gap-6">
+<div class="h-48 bg-white rounded-xl shadow-sm border border-gray-100"></div>
+<div class="h-48 bg-white rounded-xl shadow-sm border border-gray-100"></div>
+<div class="h-48 bg-white rounded-xl shadow-sm border border-gray-100"></div>
+</main>
+</div>
+<!-- END: Blurred Dashboard Background -->
+<!-- BEGIN: Modal Overlay -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" id="modalOverlay">
+<!-- BEGIN: Note Form Modal -->
+<div class="bg-note-yellow w-full max-w-[560px] rounded-2xl shadow-2xl overflow-hidden transition-colors duration-300 ease-in-out animate-slide-up" data-purpose="note-form-container" id="noteModal">
+<!-- Modal Header -->
+<div class="px-6 py-4 flex items-center justify-between border-b border-black/5">
+<h2 class="text-xl font-semibold text-gray-800">New Note</h2>
+<button class="p-2 hover:bg-black/5 rounded-full transition-colors" id="closeModal">
+<svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Form Content -->
+<form class="p-6 space-y-4" id="noteForm">
+<!-- Title Input -->
+<div>
+<input autofocus="" class="w-full text-2xl font-bold bg-transparent border-none focus:ring-0 placeholder-gray-400 p-0" placeholder="Title" type="text"/>
+</div>
+<!-- Content Area -->
+<div>
+<textarea class="w-full min-h-[200px] bg-transparent border-none focus:ring-0 placeholder-gray-400 p-0 resize-none text-lg leading-relaxed" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" placeholder="Start typing your note..."></textarea>
+</div>
+<!-- Color Picker -->
+<div class="py-2" data-purpose="color-picker-section">
+<p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Color</p>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-full border border-gray-200 bg-note-white hover:scale-110 transition-transform" data-color="white" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-gray-200 bg-note-yellow swatch-selected hover:scale-110 transition-transform" data-color="yellow" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-gray-200 bg-note-green hover:scale-110 transition-transform" data-color="green" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-gray-200 bg-note-blue hover:scale-110 transition-transform" data-color="blue" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-gray-200 bg-note-pink hover:scale-110 transition-transform" data-color="pink" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-gray-200 bg-note-purple hover:scale-110 transition-transform" data-color="purple" type="button"></button>
+</div>
+</div>
+<!-- Tag Section -->
+<div class="py-2" data-purpose="tags-section">
+<p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Tags</p>
+<div class="flex flex-wrap items-center gap-2" id="tagContainer">
+<!-- Existing Tags -->
+<span class="flex items-center gap-1 bg-black/5 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+              #work
+              <button class="hover:text-red-500" type="button">×</button>
+</span>
+<span class="flex items-center gap-1 bg-black/5 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+              #design
+              <button class="hover:text-red-500" type="button">×</button>
+</span>
+<!-- Tag Input Field -->
+<input class="bg-transparent border-none focus:ring-0 text-sm py-1 px-2 w-24 placeholder-gray-400" id="tagInput" placeholder="+ add new" type="text"/>
+</div>
+</div>
+</form>
+<!-- Modal Footer -->
+<div class="px-6 py-5 bg-black/5 flex items-center justify-end gap-3">
+<button class="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 font-medium hover:bg-white transition-colors" type="button">
+          Cancel
+        </button>
+<button class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-200 hover:bg-blue-700 transition-colors" form="noteForm" type="submit">
+          Save Note
+        </button>
+</div>
+</div>
+<!-- END: Note Form Modal -->
+</div>
+<!-- END: Modal Overlay -->
+<!-- BEGIN: Interaction Logic -->
+<script data-purpose="modal-functionality">
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('noteModal');
+      const colorButtons = document.querySelectorAll('[data-color]');
+      const tagInput = document.getElementById('tagInput');
+      const tagContainer = document.getElementById('tagContainer');
+
+      // Handle Color Swatch Selection
+      colorButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Update selected state UI
+          colorButtons.forEach(b => b.classList.remove('swatch-selected'));
+          btn.classList.add('swatch-selected');
+
+          // Update modal background color
+          const colorName = btn.getAttribute('data-color');
+          // Remove all bg-note-* classes
+          modal.className = modal.className.replace(/bg-note-\w+/, `bg-note-${colorName}`);
+        });
+      });
+
+      // Handle Tag Adding
+      tagInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const tagValue = tagInput.value.trim();
+          
+          if (tagValue) {
+            const cleanTag = tagValue.startsWith('#') ? tagValue : `#${tagValue}`;
+            
+            // Create chip element
+            const chip = document.createElement('span');
+            chip.className = 'flex items-center gap-1 bg-black/5 px-3 py-1 rounded-full text-sm font-medium text-gray-700 animate-fade-in';
+            chip.innerHTML = `
+              ${cleanTag}
+              <button type="button" class="hover:text-red-500" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            // Insert before input
+            tagContainer.insertBefore(chip, tagInput);
+            tagInput.value = '';
+          }
+        }
+      });
+
+      // Simple close simulation
+      document.getElementById('closeModal').addEventListener('click', () => {
+        document.getElementById('modalOverlay').classList.add('opacity-0');
+        setTimeout(() => alert('Modal closed simulation'), 300);
+      });
+    });
+  </script>
+<!-- END: Interaction Logic -->
+</body></html>

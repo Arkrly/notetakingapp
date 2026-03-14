@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NoteTakingApp - Create Note</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="custom-animations">
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+    .animate-slide-up { animation: slideUp(0.4s ease-out); }
+    
+    /* Custom scrollbar for textarea */
+    textarea::-webkit-scrollbar {
+      width: 6px;
+    }
+    textarea::-webkit-scrollbar-thumb {
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+<style data-purpose="note-colors">
+    /* Color Swatch Backgrounds - Adjusted for Dark Mode readability */
+    .bg-note-default { background-color: #1f2937; } /* Slate 800 */
+    .bg-note-yellow { background-color: #423b00; }
+    .bg-note-green { background-color: #064e3b; }
+    .bg-note-blue { background-color: #1e3a8a; }
+    .bg-note-pink { background-color: #701a75; }
+    .bg-note-purple { background-color: #4c1d95; }
+
+    /* Swatch appearance in picker */
+    .swatch-white { background-color: #f9fafb; }
+    .swatch-yellow { background-color: #fde047; }
+    .swatch-green { background-color: #4ade80; }
+    .swatch-blue { background-color: #60a5fa; }
+    .swatch-pink { background-color: #f472b6; }
+    .swatch-purple { background-color: #a78bfa; }
+
+    /* Selected state */
+    .swatch-selected {
+      outline: 2px solid #d1bdff;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 font-sans text-gray-100">
+<!-- BEGIN: Blurred Dashboard Background -->
+<div aria-hidden="true" class="fixed inset-0 overflow-hidden filter blur-md pointer-events-none opacity-20">
+<nav class="h-16 bg-gray-900 border-b border-gray-800 flex items-center px-8">
+<div class="h-8 w-32 bg-gray-800 rounded"></div>
+</nav>
+<main class="p-8 grid grid-cols-3 gap-6">
+<div class="h-48 bg-gray-900 rounded-lg shadow-sm border border-gray-800"></div>
+<div class="h-48 bg-gray-900 rounded-lg shadow-sm border border-gray-800"></div>
+<div class="h-48 bg-gray-900 rounded-lg shadow-sm border border-gray-800"></div>
+</main>
+</div>
+<!-- END: Blurred Dashboard Background -->
+<!-- BEGIN: Modal Overlay -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" id="modalOverlay">
+<!-- BEGIN: Note Form Modal -->
+<div class="bg-note-default w-full max-w-[560px] rounded-lg shadow-2xl border border-white/10 overflow-hidden transition-colors duration-300 ease-in-out animate-slide-up" data-purpose="note-form-container" id="noteModal">
+<!-- Modal Header -->
+<div class="px-6 py-4 flex items-center justify-between border-b border-white/5">
+<h2 class="text-xl font-semibold text-white">New Note</h2>
+<button class="p-2 hover:bg-white/10 rounded-full transition-colors" id="closeModal">
+<svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+<!-- Form Content -->
+<form class="p-6 space-y-4" id="noteForm">
+<!-- Title Input -->
+<div>
+<input autofocus="" class="w-full text-2xl font-bold bg-transparent border-none focus:ring-0 placeholder-white/30 p-0 text-white" placeholder="Title" type="text"/>
+</div>
+<!-- Content Area -->
+<div>
+<textarea class="w-full min-h-[200px] bg-transparent border-none focus:ring-0 placeholder-white/30 p-0 resize-none text-lg leading-relaxed text-gray-200" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" placeholder="Start typing your note..."></textarea>
+</div>
+<!-- Color Picker -->
+<div class="py-2" data-purpose="color-picker-section">
+<p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">Color</p>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-full border border-white/10 swatch-white swatch-selected hover:scale-110 transition-transform" data-color="default" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-white/10 swatch-yellow hover:scale-110 transition-transform" data-color="yellow" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-white/10 swatch-green hover:scale-110 transition-transform" data-color="green" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-white/10 swatch-blue hover:scale-110 transition-transform" data-color="blue" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-white/10 swatch-pink hover:scale-110 transition-transform" data-color="pink" type="button"></button>
+<button class="w-8 h-8 rounded-full border border-white/10 swatch-purple hover:scale-110 transition-transform" data-color="purple" type="button"></button>
+</div>
+</div>
+<!-- Tag Section -->
+<div class="py-2" data-purpose="tags-section">
+<p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">Tags</p>
+<div class="flex flex-wrap items-center gap-2" id="tagContainer">
+<!-- Existing Tags -->
+<span class="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-lg text-sm font-medium text-gray-200 border border-white/5">
+              #work
+              <button class="ml-1 hover:text-red-400 opacity-60 hover:opacity-100" type="button">×</button>
+</span>
+<span class="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-lg text-sm font-medium text-gray-200 border border-white/5">
+              #design
+              <button class="ml-1 hover:text-red-400 opacity-60 hover:opacity-100" type="button">×</button>
+</span>
+<!-- Tag Input Field -->
+<input class="bg-transparent border-none focus:ring-0 text-sm py-1 px-2 w-24 placeholder-white/30 text-white" id="tagInput" placeholder="+ add new" type="text"/>
+</div>
+</div>
+</form>
+<!-- Modal Footer -->
+<div class="px-6 py-5 bg-white/5 flex items-center justify-end gap-3">
+<button class="px-5 py-2.5 rounded-lg border border-white/10 text-gray-300 font-medium hover:bg-white/10 transition-colors" type="button">
+          Cancel
+        </button>
+<button class="px-5 py-2.5 rounded-lg bg-[#d1bdff] text-gray-950 font-semibold shadow-lg shadow-[#d1bdff]/20 hover:bg-[#c0a6ff] transition-colors" form="noteForm" type="submit">
+          Save Note
+        </button>
+</div>
+</div>
+<!-- END: Note Form Modal -->
+</div>
+<!-- END: Modal Overlay -->
+<!-- BEGIN: Interaction Logic -->
+<script data-purpose="modal-functionality">
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('noteModal');
+      const colorButtons = document.querySelectorAll('[data-color]');
+      const tagInput = document.getElementById('tagInput');
+      const tagContainer = document.getElementById('tagContainer');
+
+      // Handle Color Swatch Selection
+      colorButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Update selected state UI
+          colorButtons.forEach(b => b.classList.remove('swatch-selected'));
+          btn.classList.add('swatch-selected');
+
+          // Update modal background color
+          const colorName = btn.getAttribute('data-color');
+          // Remove all bg-note-* classes
+          modal.className = modal.className.replace(/bg-note-\w+/, `bg-note-${colorName}`);
+        });
+      });
+
+      // Handle Tag Adding
+      tagInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const tagValue = tagInput.value.trim();
+          
+          if (tagValue) {
+            const cleanTag = tagValue.startsWith('#') ? tagValue : `#${tagValue}`;
+            
+            // Create chip element
+            const chip = document.createElement('span');
+            chip.className = 'flex items-center gap-1 bg-white/10 px-3 py-1 rounded-lg text-sm font-medium text-gray-200 border border-white/5 animate-fade-in';
+            chip.innerHTML = `
+              ${cleanTag}
+              <button type="button" class="ml-1 hover:text-red-400 opacity-60 hover:opacity-100" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            // Insert before input
+            tagContainer.insertBefore(chip, tagInput);
+            tagInput.value = '';
+          }
+        }
+      });
+
+      // Simple close simulation
+      document.getElementById('closeModal').addEventListener('click', () => {
+        document.getElementById('modalOverlay').classList.add('opacity-0');
+        setTimeout(() => alert('Modal closed simulation'), 300);
+      });
+    });
+  </script>
+<!-- END: Interaction Logic -->
+</body></html>
