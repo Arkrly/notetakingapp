@@ -67,3 +67,5 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+notetakingapp/backend.log
+notetakingapp-frontend/frontend.log
