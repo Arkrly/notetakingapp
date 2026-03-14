@@ -130,6 +130,15 @@ The frontend proxies API requests to the backend. See `notetakingapp-frontend/pr
 - RxJS
 - TypeScript 5.9
 
+## Security
+
+A security scan was conducted on this repository using the ghost-scan-code skill. The scan identified:
+
+- 1 verified low-risk finding: JWT tokens stored in localStorage (accessible to JavaScript/XSS)
+- 3 rejected findings (all mitigated): JWT configuration, SQL injection potential, and authorization checks
+
+For detailed results, see [SECURITY_SCAN_RESULTS.md](./SECURITY_SCAN_RESULTS.md).
+
 ## License
 
 This project is for educational purposes.
