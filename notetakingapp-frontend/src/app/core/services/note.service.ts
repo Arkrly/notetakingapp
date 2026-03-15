@@ -46,11 +46,15 @@ export class NoteService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/notes`;
 
-  getNotes(page: number = 0, size: number = 10): Observable<ApiResponse<PagedResponse<Note>>> {
-    const params = new HttpParams()
+  private buildPaginationParams(page: number, size: number, sort: string = 'createdAt,desc'): HttpParams {
+    return new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
-      .set('sort', 'createdAt,desc');
+      .set('sort', sort);
+  }
+
+  getNotes(page: number = 0, size: number = 10): Observable<ApiResponse<PagedResponse<Note>>> {
+    const params = this.buildPaginationParams(page, size);
     
     return this.http.get<ApiResponse<PagedResponse<Note>>>(this.apiUrl, { params });
   }
@@ -80,28 +84,20 @@ export class NoteService {
   }
 
   searchNotes(query: string): Observable<ApiResponse<PagedResponse<Note>>> {
-    const params = new HttpParams()
-      .set('q', query)
-      .set('page', '0')
-      .set('size', '20');
+    const params = this.buildPaginationParams(0, 20);
+    const searchParams = params.set('q', query);
     
-    return this.http.get<ApiResponse<PagedResponse<Note>>>(`${this.apiUrl}/search`, { params });
+    return this.http.get<ApiResponse<PagedResponse<Note>>>(`${this.apiUrl}/search`, { params: searchParams });
   }
 
   getPinnedNotes(): Observable<ApiResponse<Note[]>> {
-    const params = new HttpParams()
-      .set('page', '0')
-      .set('size', '10')
-      .set('sort', 'createdAt,desc');
+    const params = this.buildPaginationParams(0, 10);
     
     return this.http.get<ApiResponse<Note[]>>(`${this.apiUrl}/pinned`, { params });
   }
 
   getArchivedNotes(): Observable<ApiResponse<Note[]>> {
-    const params = new HttpParams()
-      .set('page', '0')
-      .set('size', '20')
-      .set('sort', 'createdAt,desc');
+    const params = this.buildPaginationParams(0, 20);
     
     return this.http.get<ApiResponse<Note[]>>(`${this.apiUrl}/archived`, { params });
   }

@@ -36,7 +36,7 @@ export class RegisterComponent {
   private router = inject(Router);
 
   registerForm: FormGroup = this.fb.group({
-    username: ['', Validators.required],
+    fullName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', Validators.required]
@@ -46,45 +46,14 @@ export class RegisterComponent {
   hideConfirmPassword = true;
   isLoading = false;
   registerError = '';
-  
-  passwordStrength = 0;
-  strengthConfig = { width: '0%', color: 'bg-gray-300', label: 'None' };
-
-  constructor() {
-    this.registerForm.get('password')?.valueChanges.subscribe(val => {
-      this.calculateStrength(val);
-    });
-  }
-
-  calculateStrength(val: string) {
-    if (!val) {
-      this.strengthConfig = { width: '0%', color: 'bg-gray-300', label: 'None' };
-      return;
-    }
-    let strength = 0;
-    
-    if (val.length >= 6) strength++;
-    if (val.match(/[A-Z]/)) strength++;
-    if (val.match(/[0-9]/)) strength++;
-    if (val.match(/[^A-Za-z0-9]/)) strength++;
-
-    const configs = [
-      { width: '0%', color: 'bg-gray-300', label: 'None' },
-      { width: '25%', color: 'bg-red-500', label: 'Weak' },
-      { width: '50%', color: 'bg-yellow-500', label: 'Fair' },
-      { width: '75%', color: 'bg-blue-500', label: 'Good' },
-      { width: '100%', color: 'bg-green-500', label: 'Strong' }
-    ];
-    this.strengthConfig = configs[strength] || configs[0];
-  }
 
   onSubmit() {
     if (this.registerForm.valid) {
       this.isLoading = true;
       this.registerError = '';
-      const { username, email, password } = this.registerForm.value;
+      const { fullName, email, password } = this.registerForm.value;
       
-      this.authService.register(username, email, password).subscribe({
+      this.authService.register(fullName, email, password).subscribe({
         next: (res) => {
           this.isLoading = false;
           if (res.success) {

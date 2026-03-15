@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   private checkStoredAuth(): void {
-    const token = localStorage.getItem(this.tokenKey);
+    const token = this.getStorageItem(this.tokenKey);
     if (token && this.isLoggedIn()) {
       const userData = this.getCurrentUser();
       if (userData) {
@@ -71,9 +71,9 @@ export class AuthService {
     return this.http.post<ApiResponse<AuthResponse>>(`${environment.apiUrl}/auth/login`, request).pipe(
       tap(response => {
         if (response.success && response.data) {
-          localStorage.setItem(this.tokenKey, response.data.token);
-          localStorage.setItem(this.usernameKey, response.data.username);
-          localStorage.setItem(this.roleKey, response.data.role);
+          this.setStorageItem(this.tokenKey, response.data.token);
+          this.setStorageItem(this.usernameKey, response.data.username);
+          this.setStorageItem(this.roleKey, response.data.role);
           
           const user: User = {
             id: '',
@@ -92,9 +92,9 @@ export class AuthService {
     return this.http.post<ApiResponse<AuthResponse>>(`${environment.apiUrl}/auth/register`, request).pipe(
       tap(response => {
         if (response.success && response.data) {
-          localStorage.setItem(this.tokenKey, response.data.token);
-          localStorage.setItem(this.usernameKey, response.data.username);
-          localStorage.setItem(this.roleKey, response.data.role);
+          this.setStorageItem(this.tokenKey, response.data.token);
+          this.setStorageItem(this.usernameKey, response.data.username);
+          this.setStorageItem(this.roleKey, response.data.role);
           
           const user: User = {
             id: '',
@@ -110,16 +110,16 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.usernameKey);
-    localStorage.removeItem(this.roleKey);
+    this.removeStorageItem(this.tokenKey);
+    this.removeStorageItem(this.usernameKey);
+    this.removeStorageItem(this.roleKey);
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return this.getStorageItem(this.tokenKey);
   }
 
   isLoggedIn(): boolean {
@@ -141,8 +141,8 @@ export class AuthService {
   }
 
   getCurrentUser(): { username: string, role: string, email?: string } | null {
-    const username = localStorage.getItem(this.usernameKey);
-    const role = localStorage.getItem(this.roleKey);
+    const username = this.getStorageItem(this.usernameKey);
+    const role = this.getStorageItem(this.roleKey);
     
     if (username && role) {
       return { username, role };
@@ -178,6 +178,30 @@ export class AuthService {
       return JSON.parse(jsonPayload);
     } catch {
       return {};
+    }
+  }
+
+  private getStorageItem(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  private setStorageItem(key: string, value: string): void {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      return;
+    }
+  }
+
+  private removeStorageItem(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      return;
     }
   }
 }

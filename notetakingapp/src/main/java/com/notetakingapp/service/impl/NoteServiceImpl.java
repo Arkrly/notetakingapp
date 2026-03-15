@@ -61,10 +61,6 @@ public class NoteServiceImpl implements NoteService {
         Note note = noteMapper.toEntity(request);
         note.setUser(user);
 
-        if (request.getColor() == null) {
-            note.setColor("#FFFFFF");
-        }
-
         Note savedNote = noteRepository.save(note);
         log.info("Note created with id: {}", savedNote.getId());
         return noteMapper.toResponse(savedNote);
@@ -76,12 +72,7 @@ public class NoteServiceImpl implements NoteService {
         log.info("Updating note {} for user {}", noteId, userId);
         Note note = findNoteAndVerifyOwnership(noteId, userId);
 
-        note.setTitle(request.getTitle());
-        note.setContent(request.getContent());
-        note.setColor(request.getColor() != null ? request.getColor() : note.getColor());
-        note.setIsPinned(request.getIsPinned() != null ? request.getIsPinned() : note.getIsPinned());
-        note.setIsArchived(request.getIsArchived() != null ? request.getIsArchived() : note.getIsArchived());
-        note.setTags(request.getTags());
+        applyUpdate(note, request);
 
         Note updatedNote = noteRepository.save(note);
         return noteMapper.toResponse(updatedNote);
@@ -93,6 +84,22 @@ public class NoteServiceImpl implements NoteService {
         log.info("Patching note {} for user {}", noteId, userId);
         Note note = findNoteAndVerifyOwnership(noteId, userId);
 
+        applyPatch(note, request);
+
+        Note patchedNote = noteRepository.save(note);
+        return noteMapper.toResponse(patchedNote);
+    }
+
+    private void applyUpdate(Note note, UpdateNoteRequest request) {
+        note.setTitle(request.getTitle());
+        note.setContent(request.getContent());
+        note.setColor(request.getColor() != null ? request.getColor() : note.getColor());
+        note.setIsPinned(request.getIsPinned() != null ? request.getIsPinned() : note.getIsPinned());
+        note.setIsArchived(request.getIsArchived() != null ? request.getIsArchived() : note.getIsArchived());
+        note.setTags(request.getTags());
+    }
+
+    private void applyPatch(Note note, PatchNoteRequest request) {
         if (request.getIsPinned() != null) {
             note.setIsPinned(request.getIsPinned());
         }
@@ -105,9 +112,6 @@ public class NoteServiceImpl implements NoteService {
         if (request.getTags() != null) {
             note.setTags(request.getTags());
         }
-
-        Note patchedNote = noteRepository.save(note);
-        return noteMapper.toResponse(patchedNote);
     }
 
     @Override

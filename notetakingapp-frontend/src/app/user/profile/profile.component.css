@@ -6,36 +6,61 @@
 
 @media (min-width: 769px) {
   .main-content {
-    margin-left: 260px; /* Using custom profile width from template */
+    margin-left: 280px;
   }
 }
 
 /* Custom form field styling */
 ::ng-deep .profile-field .mdc-text-field--outlined {
-  --mdc-outlined-text-field-container-shape: 8px;
-  background-color: transparent;
+  --mdc-outlined-text-field-container-shape: 12px;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+::ng-deep .profile-field .mdc-text-field--outlined:hover {
+  background-color: #f1f5f9;
 }
 
 ::ng-deep .profile-field .mdc-notched-outline__leading,
 ::ng-deep .profile-field .mdc-notched-outline__notch,
 ::ng-deep .profile-field .mdc-notched-outline__trailing {
-  border-width: 1px !important;
-  border-color: #cbd5e1 !important; /* slate-300 */
+  border-width: 1.5px !important;
+  border-color: #e2e8f0 !important;
 }
 
 ::ng-deep .profile-field.mat-focused .mdc-notched-outline__leading,
 ::ng-deep .profile-field.mat-focused .mdc-notched-outline__notch,
 ::ng-deep .profile-field.mat-focused .mdc-notched-outline__trailing {
   border-width: 2px !important;
-  border-color: var(--brand-primary) !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 4px rgb(99 102 241 / 0.1);
+}
+
+::ng-deep .profile-field .mdc-text-field--outlined .mdc-floating-label {
+  color: #64748b;
+}
+
+::ng-deep .profile-field.mat-focused .mdc-text-field--outlined .mdc-floating-label {
+  color: #6366f1;
 }
 
 /* Disabled input state */
 ::ng-deep .profile-field.mat-form-field-disabled .mdc-text-field--outlined {
-  background-color: #f8fafc !important; /* slate-50 */
+  background-color: #f8fafc !important;
 }
 
-/* Save button rounding override */
+/* Save button styling */
 ::ng-deep .save-btn.mdc-button {
-  border-radius: 8px;
+  border-radius: 12px;
+  height: 48px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
+
+/* Password strength colors */
+.strength-bar.bg-red-500 { background-color: #ef4444; }
+.strength-bar.bg-orange-500 { background-color: #f97316; }
+.strength-bar.bg-yellow-500 { background-color: #eab308; }
+.strength-bar.bg-green-500 { background-color: #22c55e; }
+.strength-bar.bg-emerald-500 { background-color: #10b981; }

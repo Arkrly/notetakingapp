@@ -1,35 +1,812 @@
-::ng-deep .login-field .mdc-text-field--outlined {
-  --mdc-outlined-text-field-container-shape: 8px;
-  background-color: transparent;
+/* ================================
+   GLOBAL ANIMATIONS
+   ================================ */
+
+/* Page load fade in */
+.page-fade-in {
+  opacity: 0;
+  animation: pageFadeIn 400ms ease forwards;
 }
 
-::ng-deep .login-field .mdc-notched-outline__leading,
-::ng-deep .login-field .mdc-notched-outline__notch,
-::ng-deep .login-field .mdc-notched-outline__trailing {
-  border-width: 1px !important;
-  border-color: #d1d5db !important; /* Tailwind gray-300 */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-::ng-deep .login-field.mat-focused .mdc-notched-outline__leading,
-::ng-deep .login-field.mat-focused .mdc-notched-outline__notch,
-::ng-deep .login-field.mat-focused .mdc-notched-outline__trailing {
-  border-width: 2px !important;
-  border-color: var(--brand-primary) !important;
+/* Input focus glow with pulse */
+.input-glow-focus {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Error state mapping */
-::ng-deep .login-field.ng-invalid.ng-touched .mdc-notched-outline__leading,
-::ng-deep .login-field.ng-invalid.ng-touched .mdc-notched-outline__notch,
-::ng-deep .login-field.ng-invalid.ng-touched .mdc-notched-outline__trailing {
-  border-color: var(--brand-error) !important;
+.input-glow-focus:focus {
+  border-color: #0D9488 !important;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15), 0 0 20px rgba(13, 148, 136, 0.1);
+  animation: inputPulse 200ms ease;
 }
 
-/* Customizing the MDC button to match template */
-::ng-deep .auth-btn.mdc-button {
-  --mdc-filled-button-container-color: var(--brand-primary);
-  border-radius: 8px;
-  transition: all 0.2s duration;
+@keyframes inputPulse {
+  0% { box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.1); }
+  50% { box-shadow: 0 0 0 6px rgba(13, 148, 136, 0.2); }
+  100% { box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15), 0 0 20px rgba(13, 148, 136, 0.1); }
 }
-::ng-deep .auth-btn.mdc-button:hover {
-  opacity: 0.9;
+
+/* Button hover lift + brightness + scale */
+.btn-hover-lift {
+  transition: transform 150ms ease, filter 150ms ease, box-shadow 150ms ease;
+  cursor: pointer;
+}
+
+.btn-hover-lift:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+.btn-hover-lift:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Link hover underline slide in */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #0D9488;
+  transition: width 200ms ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* Forgot link shift right on hover */
+.forgot-link-anim {
+  transition: transform 150ms ease, color 150ms ease;
+}
+
+.forgot-link-anim:hover {
+  transform: translateX(3px);
+}
+
+/* Shimmer effect for CTA buttons */
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.shimmer-btn:hover::before {
+  left: 100%;
+}
+
+/* ================================
+   LOGIN PAGE SPECIFIC
+   ================================ */
+
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #F0FDFA;
+}
+
+/* LEFT COLUMN */
+.left-column {
+  width: 45%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0D9488 0%, #134E4A 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Left column slide in */
+.left-column-anim {
+  opacity: 0;
+  transform: translateX(-40px);
+  animation: slideInLeft 500ms ease-out 100ms forwards;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Decorative circles with drift animation */
+.decorative-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.circle-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #14B8A6 0%, transparent 70%);
+  top: -100px;
+  left: -100px;
+  animation: drift1 8s ease-in-out infinite;
+}
+
+.circle-2 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #F97316 0%, transparent 70%);
+  bottom: -50px;
+  right: -50px;
+  opacity: 0.3;
+  animation: drift2 10s ease-in-out infinite;
+}
+
+.circle-3 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #F97316 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+  animation: drift3 6s ease-in-out infinite;
+}
+
+@keyframes drift1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 20px); }
+}
+
+@keyframes drift2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, -30px); }
+}
+
+@keyframes drift3 {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(-45%, -55%); }
+}
+
+/* Curved line SVG animation */
+.curved-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.curved-line path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawLine 1.2s ease-out 300ms forwards;
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Left content */
+.left-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem;
+  max-width: 400px;
+}
+
+.main-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.main-heading .line {
+  display: block;
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroLineIn 500ms ease-out forwards;
+}
+
+.main-heading .line:nth-child(1) { animation-delay: 400ms; }
+.main-heading .line:nth-child(2) { animation-delay: 520ms; }
+.main-heading .line:nth-child(3) { animation-delay: 640ms; }
+
+@keyframes heroLineIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-heading .line.accent {
+  color: #F97316;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroLineIn 500ms ease-out 760ms forwards;
+}
+
+/* Carousel dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeIn 400ms ease-out 880ms forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+  padding: 0;
+}
+
+.carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.carousel-dot.active {
+  width: 32px;
+  border-radius: 5px;
+  background: #F97316;
+}
+
+/* RIGHT COLUMN */
+.right-column {
+  width: 55%;
+  min-height: 100vh;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Right column slide in */
+.right-column-anim {
+  opacity: 0;
+  transform: translateX(40px);
+  animation: slideInRight 500ms ease-out 150ms forwards;
+}
+
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.form-panel {
+  width: 100%;
+  max-width: 440px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fieldFadeIn 400ms ease-out 300ms forwards;
+}
+
+@keyframes fieldFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #134E4A;
+  margin-bottom: 0.5rem;
+}
+
+.form-subtext {
+  color: #64748B;
+  font-size: 0.95rem;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.input-group:nth-child(1) { animation: fieldFadeIn 400ms ease-out 380ms forwards; }
+.input-group:nth-child(2) { animation: fieldFadeIn 400ms ease-out 460ms forwards; }
+.input-group:nth-child(3) { animation: fieldFadeIn 400ms ease-out 540ms forwards; }
+
+.input-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-link {
+  font-size: 0.875rem;
+  color: #0D9488;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot-link:hover {
+  color: #14B8A6;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #94A3B8;
+  pointer-events: none;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  color: #0F172A;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.input-wrapper input::placeholder {
+  color: #94A3B8;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-color: #0D9488;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+.input-wrapper input.error {
+  border-color: #ef4444;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password svg {
+  width: 20px;
+  height: 20px;
+  color: #94A3B8;
+  transition: color 0.2s;
+}
+
+.toggle-password:hover svg {
+  color: #0D9488;
+}
+
+/* Checkbox with checkmark animation */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fieldFadeIn 400ms ease-out 620ms forwards;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #64748B;
+  user-select: none;
+}
+
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 4px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.checkbox-label:hover .checkmark {
+  border-color: #0D9488;
+}
+
+.checkbox-label input:checked ~ .checkmark {
+  background: #0D9488;
+  border-color: #0D9488;
+}
+
+.checkmark::after {
+  content: '';
+  display: none;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  margin-bottom: 2px;
+  transition: transform 150ms ease;
+}
+
+.checkbox-label input:checked ~ .checkmark::after {
+  display: block;
+  transform: rotate(45deg) scale(1);
+}
+
+.checkbox-text {
+  transition: color 0.2s;
+}
+
+/* Submit button */
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+  border: none;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fieldFadeIn 400ms ease-out 700ms forwards;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -5px rgba(249, 115, 22, 0.4);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #94A3B8;
+  font-size: 0.8rem;
+  opacity: 0;
+  animation: fadeIn 400ms ease-out 800ms forwards;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 0;
+  height: 1px;
+  background: #E2E8F0;
+  animation: expandLine 400ms ease-out 850ms forwards;
+}
+
+.divider::after {
+  animation-delay: 900ms;
+}
+
+@keyframes expandLine {
+  to {
+    flex: 1;
+  }
+}
+
+/* OAuth buttons */
+.oauth-buttons {
+  display: flex;
+  gap: 1rem;
+  opacity: 0;
+  animation: fadeIn 400ms ease-out 1000ms forwards;
+}
+
+.oauth-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 12px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  color: #0F172A;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oauth-btn:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+.oauth-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Fine print */
+.fine-print {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748B;
+  opacity: 0;
+  animation: fadeIn 400ms ease-out 1100ms forwards;
+}
+
+.fine-print a {
+  color: #0D9488;
+  text-decoration: none;
+}
+
+.fine-print a:hover {
+  text-decoration: underline;
+}
+
+/* Sign up link */
+.signup-link {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #64748B;
+  opacity: 0;
+  animation: fadeIn 400ms ease-out 1150ms forwards;
+}
+
+.signup-link a {
+  color: #F97316;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .left-column {
+    width: 100%;
+    min-height: 40vh;
+    padding: 3rem 1rem;
+  }
+
+  .right-column {
+    width: 100%;
+    min-height: 60vh;
+  }
+
+  .main-heading {
+    font-size: 2.25rem;
+  }
+
+  .form-heading {
+    font-size: 1.75rem;
+  }
+}
+
+/* ================================
+   PREFER REDUCED MOTION
+   ================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .page-fade-in,
+  .left-column-anim,
+  .right-column-anim,
+  .curved-line path,
+  .main-heading .line,
+  .subtitle,
+  .carousel-dots,
+  .form-header,
+  .input-group,
+  .checkbox-row,
+  .submit-btn,
+  .divider,
+  .oauth-buttons,
+  .fine-print,
+  .signup-link,
+  .circle-1,
+  .circle-2,
+  .circle-3,
+  .shimmer-btn::before {
+    animation-fill-mode: forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .page-fade-in,
+  .left-column-anim,
+  .right-column-anim,
+  .curved-line path,
+  .main-heading .line,
+  .subtitle,
+  .carousel-dots,
+  .form-header,
+  .input-group,
+  .checkbox-row,
+  .submit-btn,
+  .divider,
+  .oauth-buttons,
+  .fine-print,
+  .signup-link {
+    opacity: 1;
+    transform: none;
+  }
+
+  .circle-1,
+  .circle-2,
+  .circle-3 {
+    transform: none;
+    animation: none;
+  }
+
+  .curved-line path {
+    stroke-dashoffset: 0;
+  }
+
+  .input-glow-focus:focus {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  }
+
+  .btn-hover-lift:hover:not(:disabled) {
+    transform: none;
+    filter: none;
+  }
+
+  .link-underline::after {
+    width: 100%;
+  }
+
+  .forgot-link-anim:hover {
+    transform: none;
+  }
+
+  .shimmer-btn::before {
+    display: none;
+  }
+
+  .carousel-dot.active {
+    width: 32px;
+    border-radius: 5px;
+  }
+
+  .checkmark::after {
+    transform: rotate(45deg) scale(1);
+  }
+
+  .divider::before,
+  .divider::after {
+    flex: 1;
+  }
 }

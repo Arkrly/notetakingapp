@@ -1,71 +1,130 @@
 <!-- Desktop Sidebar -->
-<aside class="sidebar-desktop fixed left-0 top-0 h-screen bg-white border-r border-slate-200 flex-col z-50">
-  <div class="p-6">
-    <div class="flex items-center gap-2 mb-10">
-      <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white">
-        <mat-icon class="w-5 h-5 text-sm flex items-center justify-center">edit</mat-icon>
+<aside class="sidebar-desktop fixed left-0 top-0 h-screen bg-white/80 backdrop-blur-xl border-r border-slate-200/50 flex-col z-50 shadow-xl shadow-slate-200/20">
+  <div class="p-6 h-full flex flex-col">
+    <!-- Logo -->
+    <div class="flex items-center gap-3 mb-8">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 transform transition-transform hover:scale-105 duration-300">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
       </div>
       <span class="font-bold text-xl tracking-tight text-slate-800">NoteStack</span>
     </div>
-    <nav class="space-y-1">
-      <a routerLink="/notes" routerLinkActive="text-brand-600 bg-brand-50" [routerLinkActiveOptions]="{exact: true}"
-         class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors group">
-        <mat-icon>book</mat-icon>
-        All Notes
+    
+    <!-- Navigation -->
+    <nav class="space-y-1.5 flex-1">
+      <a routerLink="/notes" routerLinkActive="text-indigo-600 bg-indigo-50 border-r-2 border-indigo-600" [routerLinkActiveOptions]="{exact: true}"
+         class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-xl font-medium transition-all duration-200 group">
+        <span class="p-1.5 rounded-lg bg-slate-100 group-hover:bg-indigo-100 transition-colors">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+        </span>
+        <span class="flex-1">All Notes</span>
+        <span class="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </span>
       </a>
-      <a routerLink="/notes/pinned" routerLinkActive="text-brand-600 bg-brand-50"
-         class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors group">
-        <mat-icon>push_pin</mat-icon>
-        Pinned
+      
+      <a routerLink="/notes/pinned" routerLinkActive="text-indigo-600 bg-indigo-50 border-r-2 border-indigo-600"
+         class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-xl font-medium transition-all duration-200 group">
+        <span class="p-1.5 rounded-lg bg-slate-100 group-hover:bg-rose-100 transition-colors">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 17v5"></path>
+            <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4.76z"></path>
+          </svg>
+        </span>
+        <span class="flex-1">Pinned</span>
       </a>
-      <a routerLink="/notes/archived" routerLinkActive="text-brand-600 bg-brand-50"
-         class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg font-medium transition-colors group">
-        <mat-icon>archive</mat-icon>
-        Archived
+      
+      <a routerLink="/notes/archived" routerLinkActive="text-indigo-600 bg-indigo-50 border-r-2 border-indigo-600"
+         class="nav-item flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-xl font-medium transition-all duration-200 group">
+        <span class="p-1.5 rounded-lg bg-slate-100 group-hover:bg-amber-100 transition-colors">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 8v13H3V8"></path>
+            <path d="M1 3h22v5H1z"></path>
+            <path d="M10 12h4"></path>
+          </svg>
+        </span>
+        <span class="flex-1">Archived</span>
       </a>
     </nav>
-  </div>
-  
-  <div class="mt-auto p-4 border-t border-slate-100" *ngIf="currentUser$ | async as user">
-    <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer" routerLink="/profile">
-      <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white font-semibold">
-        {{ user.username.charAt(0).toUpperCase() }}
-      </div>
-      <div class="flex-1 min-w-0">
-        <p class="text-sm font-semibold text-slate-900 truncate">{{ user.username }}</p>
-        <p class="text-xs text-slate-500 truncate">{{ user.email }}</p>
+   
+    <!-- User Section -->
+    <div class="pt-4 border-t border-slate-100" *ngIf="currentUser$ | async as user">
+      <div class="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 cursor-pointer transition-all duration-200 group" routerLink="/profile">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-500/20 group-hover:shadow-lg group-hover:shadow-indigo-500/30 transition-all">
+          {{ user.username.charAt(0).toUpperCase() }}
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-slate-900 truncate">{{ user.username }}</p>
+          <p class="text-xs text-slate-500 truncate">{{ user.email }}</p>
+        </div>
+        <mat-icon class="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">settings</mat-icon>
       </div>
     </div>
   </div>
 </aside>
 
 <!-- Mobile Bottom Nav -->
-<nav class="bottom-nav-mobile fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 z-50 px-6 flex items-center justify-between">
-  <a routerLink="/notes" routerLinkActive="text-brand-600" [routerLinkActiveOptions]="{exact: true}" 
-     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
-    <mat-icon>book</mat-icon>
-    <span class="text-[10px] font-bold">All</span>
-  </a>
-  <a routerLink="/notes/pinned" routerLinkActive="text-brand-600"
-     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
-    <mat-icon>push_pin</mat-icon>
-    <span class="text-[10px]">Pinned</span>
+<nav class="bottom-nav-mobile fixed bottom-0 left-0 right-0 h-20 bg-white/90 backdrop-blur-xl border-t border-slate-200/50 z-50 px-2 flex items-center justify-around shadow-lg shadow-slate-200/30">
+  <a routerLink="/notes" routerLinkActive="text-indigo-600" [routerLinkActiveOptions]="{exact: true}" 
+     class="flex flex-col items-center gap-1.5 py-2 px-3 text-slate-500 hover:text-indigo-600 transition-colors rounded-xl">
+    <div class="p-1.5 rounded-lg bg-slate-100" routerLinkActive="bg-indigo-100">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+    </div>
+    <span class="text-[10px] font-semibold">Notes</span>
   </a>
   
-  <!-- Add Note FAB (handled via dashboard generally, but visually here) -->
-  <button class="w-12 h-12 -mt-10 bg-brand-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-600 transition-colors"
+  <a routerLink="/notes/pinned" routerLinkActive="text-indigo-600"
+     class="flex flex-col items-center gap-1.5 py-2 px-3 text-slate-500 hover:text-indigo-600 transition-colors rounded-xl">
+    <div class="p-1.5 rounded-lg bg-slate-100" routerLinkActive="bg-indigo-100">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 17v5"></path>
+        <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4.76z"></path>
+      </svg>
+    </div>
+    <span class="text-[10px] font-semibold">Pinned</span>
+  </a>
+  
+  <!-- Add Note FAB -->
+  <button class="w-14 h-14 -mt-8 bg-gradient-to-br from-indigo-500 to-violet-600 text-white rounded-2xl shadow-lg shadow-indigo-500/30 flex items-center justify-center hover:shadow-xl hover:shadow-indigo-500/40 hover:scale-105 transition-all duration-200"
           routerLink="/notes/new">
-    <mat-icon>add</mat-icon>
+    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
   </button>
   
-  <a routerLink="/notes/archived" routerLinkActive="text-brand-600"
-     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
-    <mat-icon>archive</mat-icon>
-    <span class="text-[10px]">Archive</span>
+  <a routerLink="/notes/archived" routerLinkActive="text-indigo-600"
+     class="flex flex-col items-center gap-1.5 py-2 px-3 text-slate-500 hover:text-indigo-600 transition-colors rounded-xl">
+    <div class="p-1.5 rounded-lg bg-slate-100" routerLinkActive="bg-indigo-100">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 8v13H3V8"></path>
+        <path d="M1 3h22v5H1z"></path>
+        <path d="M10 12h4"></path>
+      </svg>
+    </div>
+    <span class="text-[10px] font-semibold">Archive</span>
   </a>
-  <a routerLink="/profile" routerLinkActive="text-brand-600"
-     class="flex flex-col items-center gap-1 text-slate-500 hover:text-brand-600 transition-colors">
-    <mat-icon>person</mat-icon>
-    <span class="text-[10px]">Profile</span>
+  
+  <a routerLink="/profile" routerLinkActive="text-indigo-600"
+     class="flex flex-col items-center gap-1.5 py-2 px-3 text-slate-500 hover:text-indigo-600 transition-colors rounded-xl">
+    <div class="p-1.5 rounded-lg bg-slate-100" routerLinkActive="bg-indigo-100">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </div>
+    <span class="text-[10px] font-semibold">Profile</span>
   </a>
 </nav>

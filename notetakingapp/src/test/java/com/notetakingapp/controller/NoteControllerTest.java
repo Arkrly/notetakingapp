@@ -46,18 +46,27 @@ class NoteControllerTest {
         noteRepository.deleteAll();
         userRepository.deleteAll();
 
-        RegisterRequest request = new RegisterRequest("noteuser", "notes@test.com", "Password123!");
+        RegisterRequest request = RegisterRequest.builder()
+                .username("noteuser")
+                .email("notes@test.com")
+                .password("Password123!")
+                .build();
         MvcResult result = mockMvc.perform(post("/api/v1/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andReturn();
 
-        userToken = JsonPath.read(result.getResponse().getContentAsString(), "$.data.accessToken");
+        userToken = JsonPath.read(result.getResponse().getContentAsString(), "$.data.token");
     }
 
     @Test
     void testCreateNoteAndGetNotes() throws Exception {
-        CreateNoteRequest request = new CreateNoteRequest("My First Note", "Hello World", "#FFFFFF", "test");
+        CreateNoteRequest request = CreateNoteRequest.builder()
+                .title("My First Note")
+                .content("Hello World")
+                .color("#FFFFFF")
+                .tags("test")
+                .build();
 
         mockMvc.perform(post("/api/v1/notes")
                 .header("Authorization", "Bearer " + userToken)
@@ -77,7 +86,12 @@ class NoteControllerTest {
 
     @Test
     void testUnauthorizedAccess() throws Exception {
-        CreateNoteRequest request = new CreateNoteRequest("My First Note", "Hello World", "#FFFFFF", "test");
+        CreateNoteRequest request = CreateNoteRequest.builder()
+                .title("My First Note")
+                .content("Hello World")
+                .color("#FFFFFF")
+                .tags("test")
+                .build();
 
         mockMvc.perform(post("/api/v1/notes")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +101,12 @@ class NoteControllerTest {
 
     @Test
     void testUpdateNote() throws Exception {
-        CreateNoteRequest createReq = new CreateNoteRequest("Title 1", "Content 1", "#000000", "");
+        CreateNoteRequest createReq = CreateNoteRequest.builder()
+                .title("Title 1")
+                .content("Content 1")
+                .color("#000000")
+                .tags("")
+                .build();
         MvcResult createResult = mockMvc.perform(post("/api/v1/notes")
                 .header("Authorization", "Bearer " + userToken)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -96,8 +115,14 @@ class NoteControllerTest {
 
         String noteId = JsonPath.read(createResult.getResponse().getContentAsString(), "$.data.id");
 
-        UpdateNoteRequest updateReq = new UpdateNoteRequest("Updated Title", "Updated Content", "#FFFFFF", true, false,
-                "urgent");
+        UpdateNoteRequest updateReq = UpdateNoteRequest.builder()
+                .title("Updated Title")
+                .content("Updated Content")
+                .color("#FFFFFF")
+                .isPinned(true)
+                .isArchived(false)
+                .tags("urgent")
+                .build();
         mockMvc.perform(put("/api/v1/notes/" + noteId)
                 .header("Authorization", "Bearer " + userToken)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -109,7 +134,12 @@ class NoteControllerTest {
 
     @Test
     void testDeleteNote() throws Exception {
-        CreateNoteRequest createReq = new CreateNoteRequest("To be deleted", "Delete me", "#000000", "");
+        CreateNoteRequest createReq = CreateNoteRequest.builder()
+                .title("To be deleted")
+                .content("Delete me")
+                .color("#000000")
+                .tags("")
+                .build();
         MvcResult createResult = mockMvc.perform(post("/api/v1/notes")
                 .header("Authorization", "Bearer " + userToken)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -49,8 +49,8 @@
 <section class="bg-white rounded-2xl shadow-xl p-8 w-full" data-purpose="register-card">
 <!-- Card Header -->
 <div class="mb-8">
-<h1 class="text-2xl font-bold text-gray-900">Create account</h1>
-<p class="text-gray-500 mt-1">Start taking notes for free</p>
+<h1 class="text-2xl font-bold text-gray-900">Create Your Account</h1>
+<p class="text-gray-500 mt-1">Start capturing and organizing your ideas</p>
 </div>
 <!-- Registration Form -->
 <form class="space-y-5" id="registerForm" onsubmit="return false;">
@@ -91,7 +91,7 @@
 <!-- Footer Link -->
 <div class="mt-8 pt-6 border-t border-gray-100 text-center">
 <p class="text-sm text-gray-600">
-          Already have an account? 
+          Already have an account?
           <a class="text-brand-primary font-semibold hover:underline" href="login.html">Log in</a>
 </p>
 </div>
@@ -111,7 +111,7 @@
     passwordInput.addEventListener('input', () => {
       const val = passwordInput.value;
       let strength = 0;
-      
+
       if (val.length >= 6) strength++;
       if (val.match(/[A-Z]/)) strength++;
       if (val.match(/[0-9]/)) strength++;

@@ -1,21 +1,34 @@
 <div class="px-6 py-5 flex flex-col items-center text-center">
-  <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-       [ngClass]="data.isDanger ? 'bg-red-100 text-red-600' : 'bg-brand-100 text-brand-600'">
-    <mat-icon>{{ data.isDanger ? 'warning' : 'info' }}</mat-icon>
+  <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-lg"
+       [ngClass]="data.isDanger ? 'bg-gradient-to-br from-red-400 to-red-600 text-white' : 'bg-gradient-to-br from-indigo-500 to-violet-600 text-white'">
+    <svg *ngIf="data.isDanger" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+      <line x1="12" y1="9" x2="12" y2="13"></line>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+    <svg *ngIf="!data.isDanger" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
   </div>
-  <h2 class="text-xl font-semibold mb-2" mat-dialog-title [ngClass]="data.isDanger ? 'text-red-600' : 'text-slate-800'">
+  
+  <h2 class="text-xl font-bold text-slate-900 mb-2" mat-dialog-title>
     {{ data.title }}
   </h2>
   
-  <mat-dialog-content class="mat-typography text-slate-600 mb-6">
-    <p>{{ data.message }}</p>
+  <mat-dialog-content class="mat-typography text-slate-500 mb-6 max-w-sm">
+    <p class="leading-relaxed">{{ data.message }}</p>
   </mat-dialog-content>
   
   <mat-dialog-actions class="w-full flex justify-center gap-3 pb-2">
-    <button mat-stroked-button color="basic" (click)="onCancel()" class="flex-1">
+    <button mat-stroked-button (click)="onCancel()" 
+            class="flex-1 py-2.5 rounded-xl font-medium border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all">
       {{ data.cancelText || 'Cancel' }}
     </button>
-    <button mat-flat-button [color]="data.isDanger ? 'warn' : 'primary'" (click)="onConfirm()" class="flex-1">
+    <button mat-flat-button (click)="onConfirm()" 
+            [class]="data.isDanger ? 'flex-1 py-2.5 rounded-xl font-medium bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg shadow-red-500/25' : 'flex-1 py-2.5 rounded-xl font-medium'"
+            style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);">
       {{ data.confirmText || 'Confirm' }}
     </button>
   </mat-dialog-actions>

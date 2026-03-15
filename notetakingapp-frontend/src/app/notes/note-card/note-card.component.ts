@@ -24,28 +24,29 @@ export class NoteCardComponent {
   }
 
   get borderClass(): string {
-    // Custom borders to match template
     const borderMap: Record<string, string> = {
-      'white': 'border-slate-200',
-      'yellow': 'border-yellow-200/50',
-      'green': 'border-green-200/50',
-      'blue': 'border-blue-200/50',
-      'pink': 'border-pink-200/50',
-      'purple': 'border-purple-200/50'
+      'white': 'border-slate-200/80',
+      'yellow': 'border-yellow-300/60',
+      'green': 'border-green-300/60',
+      'blue': 'border-blue-300/60',
+      'pink': 'border-pink-300/60',
+      'purple': 'border-purple-300/60',
+      'orange': 'border-orange-300/60'
     };
-    return borderMap[this.note.color] || 'border-slate-200';
+    return borderMap[this.note.color] || 'border-slate-200/80';
   }
 
   get tagBgClass(): string {
     const tagBgMap: Record<string, string> = {
-      'white': 'bg-slate-100',
-      'yellow': 'bg-yellow-200/50',
-      'green': 'bg-green-200/50',
-      'blue': 'bg-blue-200/50',
-      'pink': 'bg-pink-200/50',
-      'purple': 'bg-purple-200/50'
+      'white': 'bg-slate-200/60 text-slate-700',
+      'yellow': 'bg-yellow-300/50 text-yellow-800',
+      'green': 'bg-green-300/50 text-green-800',
+      'blue': 'bg-blue-300/50 text-blue-800',
+      'pink': 'bg-pink-300/50 text-pink-800',
+      'purple': 'bg-purple-300/50 text-purple-800',
+      'orange': 'bg-orange-300/50 text-orange-800'
     };
-    return tagBgMap[this.note.color] || 'bg-slate-100';
+    return tagBgMap[this.note.color] || 'bg-slate-200/60 text-slate-700';
   }
 
   onPinClick(event: Event) {

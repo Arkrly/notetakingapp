@@ -7,8 +7,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, startWith, switchMap, tap, catchError } from 'rxjs/operators';
 
-import { NoteService } from '../../core/services/note.service';
+import { NoteService, PagedResponse } from '../../core/services/note.service';
 import { Note } from '../../core/models/note.model';
+import { ApiResponse } from '../../core/models/api-response.model';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { NoteCardComponent } from '../note-card/note-card.component';
 import { NoteFormComponent } from '../note-form/note-form.component';
@@ -59,10 +60,10 @@ export class NotesListComponent implements OnInit {
       }),
       switchMap(([_, term]: [void, string]) => 
         this.noteService.getNotes(0, 50).pipe(
-          catchError(() => of({ success: false, data: null } as any))
+          catchError(() => of({ success: false, data: null } as unknown as ApiResponse<PagedResponse<Note>>))
         )
       ),
-      map((response: any) => {
+      map((response: ApiResponse<PagedResponse<Note>>) => {
         this.isLoading$.next(false);
         if (!response.success || !response.data) {
           this.isEmpty$.next(true);
@@ -76,7 +77,7 @@ export class NotesListComponent implements OnInit {
         if (!term) return notes.filter((n: Note) => !n.isArchived);
         return notes.filter((n: Note) => !n.isArchived && (
           n.title.toLowerCase().includes(term) || 
-          n.content.toLowerCase().includes(term) ||
+          (n.content && n.content.toLowerCase().includes(term)) ||
           (n.tags && n.tags.toLowerCase().includes(term))
         ));
       })

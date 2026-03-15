@@ -42,13 +42,17 @@ class UserControllerTest {
     void setUp() throws Exception {
         userRepository.deleteAll();
 
-        RegisterRequest request = new RegisterRequest("user123", "user123@test.com", "Password123!");
+        RegisterRequest request = RegisterRequest.builder()
+                .username("user123")
+                .email("user123@test.com")
+                .password("Password123!")
+                .build();
         MvcResult result = mockMvc.perform(post("/api/v1/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andReturn();
 
-        userToken = JsonPath.read(result.getResponse().getContentAsString(), "$.data.accessToken");
+        userToken = JsonPath.read(result.getResponse().getContentAsString(), "$.data.token");
     }
 
     @Test
@@ -62,9 +66,10 @@ class UserControllerTest {
 
     @Test
     void testUpdateUser() throws Exception {
-        UpdateUserRequest updateReq = new UpdateUserRequest();
-        updateReq.setUsername("newusername");
-        updateReq.setEmail("newemail@test.com");
+        UpdateUserRequest updateReq = UpdateUserRequest.builder()
+                .username("newusername")
+                .email("newemail@test.com")
+                .build();
 
         mockMvc.perform(put("/api/v1/users/me")
                 .header("Authorization", "Bearer " + userToken)

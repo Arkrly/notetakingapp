@@ -1,6 +1,24 @@
+::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 24px;
+}
+
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
-  border-radius: 16px !important;
-  box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+  border-radius: 24px !important;
+  box-shadow: 
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 
+    0 8px 10px -6px rgb(0 0 0 / 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.5) !important;
+  overflow: hidden;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
 }
 
 mat-dialog-actions {
@@ -16,4 +34,13 @@ mat-dialog-content {
 [mat-dialog-title] {
   margin: 0;
   padding: 0;
+}
+
+/* Button styling overrides */
+::ng-deep .mat-mdc-dialog-actions .mat-mdc-button,
+::ng-deep .mat-mdc-dialog-actions .mat-mdc-unelevated-button {
+  border-radius: 12px !important;
+  height: 44px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }

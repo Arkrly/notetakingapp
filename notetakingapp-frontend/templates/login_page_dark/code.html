@@ -70,7 +70,7 @@
 <main class="w-full max-w-md bg-brand-surface rounded-card card-shadow p-8" data-purpose="login-container">
 <div class="text-center mb-8">
 <h1 class="text-2xl font-semibold text-gray-100 mb-2">Welcome back</h1>
-<p class="text-gray-400">Sign in to your notes</p>
+<p class="text-gray-400">Sign in to access and organize all your notes</p>
 </div>
 <form class="space-y-6" id="loginForm">
 <!-- Email Field Group -->
@@ -130,7 +130,7 @@
       // toggle the type attribute
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
       passwordInput.setAttribute('type', type);
-      
+
       // toggle the eye icon
       toggleIcon.textContent = type === 'password' ? 'visibility_off' : 'visibility';
     });
