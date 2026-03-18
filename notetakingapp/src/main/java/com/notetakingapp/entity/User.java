@@ -41,6 +41,14 @@ public class User implements UserDetails {
     @Builder.Default
     private Boolean isActive = true;
 
+    @Column(name = "is_account_non_locked")
+    @Builder.Default
+    private Boolean isAccountNonLocked = true;
+
+    @Column(name = "is_account_non_expired")
+    @Builder.Default
+    private Boolean isAccountNonExpired = true;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -77,12 +85,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isAccountNonExpired != null ? isAccountNonExpired : true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isAccountNonLocked != null ? isAccountNonLocked : true;
     }
 
     @Override

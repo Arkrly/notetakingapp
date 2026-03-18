@@ -105,7 +105,11 @@ public class NoteController {
             @RequestParam("q") String query,
             @AuthenticationPrincipal User user,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<NoteResponse> notes = noteService.searchNotes(user.getId(), query, pageable);
+        if (query == null || query.trim().isEmpty() || query.length() > 200) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.error("Search query must be between 1 and 200 characters"));
+        }
+        Page<NoteResponse> notes = noteService.searchNotes(user.getId(), query.trim(), pageable);
         return ResponseEntity.ok(ApiResponse.success(notes, "Search results retrieved"));
     }
 
