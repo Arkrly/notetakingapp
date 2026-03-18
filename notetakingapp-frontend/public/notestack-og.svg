@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#F8F7F4"/>
+
+  <!-- Subtle dot grid -->
+  <defs>
+    <pattern id="dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1.2" fill="#1E1D1A" opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- Outer border -->
+  <rect x="24" y="24" width="1152" height="582" rx="16" fill="none" stroke="#1E1D1A" stroke-width="1" opacity="0.1"/>
+
+  <!-- === LEFT: Brand block === -->
+  <!-- Icon mark (scaled up ~2.2x from logo) -->
+  <!-- Back page -->
+  <rect x="194" y="187" width="176" height="216" rx="12" fill="#D9D6CE" stroke="#B8B4AB" stroke-width="1.5"/>
+  <!-- Mid page -->
+  <rect x="174" y="167" width="176" height="216" rx="12" fill="#ECEAE4" stroke="#C4C0B7" stroke-width="1.5"/>
+  <!-- Front page -->
+  <rect x="148" y="140" width="176" height="216" rx="12" fill="#FFFFFF" stroke="#1E1D1A" stroke-width="2.2"/>
+
+  <!-- Text lines on front page -->
+  <rect x="172" y="186" width="104" height="7" rx="3.5" fill="#1E1D1A" opacity="0.75"/>
+  <rect x="172" y="208" width="128" height="6" rx="3" fill="#1E1D1A" opacity="0.22"/>
+  <rect x="172" y="227" width="116" height="6" rx="3" fill="#1E1D1A" opacity="0.22"/>
+  <rect x="172" y="246" width="88" height="6" rx="3" fill="#1E1D1A" opacity="0.16"/>
+  <rect x="172" y="265" width="100" height="6" rx="3" fill="#1E1D1A" opacity="0.12"/>
+
+  <!-- Dot accent front page -->
+  <circle cx="162" cy="153" r="5" fill="#1E1D1A" opacity="0.5"/>
+
+  <!-- App name -->
+  <text x="148" y="418" font-family="'Georgia', 'Times New Roman', serif" font-size="54" font-weight="700" letter-spacing="1" fill="#1E1D1A">NoteStack</text>
+
+  <!-- Tagline -->
+  <text x="150" y="462" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="20" font-weight="400" letter-spacing="0.4" fill="#1E1D1A" opacity="0.45">Capture. Organize. Stack.</text>
+
+  <!-- Thin divider line -->
+  <line x1="148" y1="490" x2="380" y2="490" stroke="#1E1D1A" stroke-width="1" opacity="0.12"/>
+
+  <!-- Sub-label -->
+  <text x="150" y="520" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="14" letter-spacing="3" fill="#1E1D1A" opacity="0.3">COLLEGE PROJECT · CSE</text>
+
+  <!-- === RIGHT: Decorative stacked notes (large, faded) === -->
+  <!-- Note cluster 1 — large, behind -->
+  <rect x="720" y="80" width="280" height="340" rx="14" fill="none" stroke="#1E1D1A" stroke-width="1.5" opacity="0.07"/>
+  <rect x="744" y="108" width="232" height="8" rx="4" fill="#1E1D1A" opacity="0.06"/>
+  <rect x="744" y="128" width="196" height="6" rx="3" fill="#1E1D1A" opacity="0.05"/>
+  <rect x="744" y="146" width="212" height="6" rx="3" fill="#1E1D1A" opacity="0.04"/>
+  <rect x="744" y="164" width="160" height="6" rx="3" fill="#1E1D1A" opacity="0.04"/>
+
+  <!-- Note cluster 2 — offset, medium -->
+  <rect x="760" y="130" width="260" height="310" rx="14" fill="none" stroke="#1E1D1A" stroke-width="1.5" opacity="0.09"/>
+  <rect x="784" y="160" width="200" height="8" rx="4" fill="#1E1D1A" opacity="0.07"/>
+  <rect x="784" y="180" width="180" height="6" rx="3" fill="#1E1D1A" opacity="0.05"/>
+  <rect x="784" y="198" width="160" height="6" rx="3" fill="#1E1D1A" opacity="0.04"/>
+
+  <!-- Note cluster 3 — front, most defined -->
+  <rect x="800" y="180" width="260" height="300" rx="14" fill="#FFFFFF" stroke="#1E1D1A" stroke-width="1.8" opacity="0.55"/>
+  <rect x="826" y="214" width="130" height="8" rx="4" fill="#1E1D1A" opacity="0.6"/>
+  <rect x="826" y="238" width="184" height="6" rx="3" fill="#1E1D1A" opacity="0.18"/>
+  <rect x="826" y="257" width="156" height="6" rx="3" fill="#1E1D1A" opacity="0.14"/>
+  <rect x="826" y="276" width="172" height="6" rx="3" fill="#1E1D1A" opacity="0.12"/>
+  <rect x="826" y="295" width="120" height="6" rx="3" fill="#1E1D1A" opacity="0.1"/>
+  <rect x="826" y="314" width="148" height="6" rx="3" fill="#1E1D1A" opacity="0.08"/>
+  <rect x="826" y="333" width="96" height="6" rx="3" fill="#1E1D1A" opacity="0.07"/>
+
+  <!-- Small dot on front note -->
+  <circle cx="814" cy="193" r="4" fill="#1E1D1A" opacity="0.35"/>
+
+  <!-- Floating mini note (top right area) -->
+  <rect x="990" y="90" width="130" height="100" rx="8" fill="#FFFFFF" stroke="#1E1D1A" stroke-width="1.2" opacity="0.3"/>
+  <rect x="1006" y="112" width="72" height="5" rx="2.5" fill="#1E1D1A" opacity="0.25"/>
+  <rect x="1006" y="125" width="90" height="4" rx="2" fill="#1E1D1A" opacity="0.13"/>
+  <rect x="1006" y="137" width="80" height="4" rx="2" fill="#1E1D1A" opacity="0.1"/>
+
+  <!-- Floating mini note (bottom right) -->
+  <rect x="970" y="440" width="150" height="110" rx="8" fill="#FFFFFF" stroke="#1E1D1A" stroke-width="1.2" opacity="0.2"/>
+  <rect x="988" y="464" width="86" height="5" rx="2.5" fill="#1E1D1A" opacity="0.18"/>
+  <rect x="988" y="478" width="106" height="4" rx="2" fill="#1E1D1A" opacity="0.1"/>
+  <rect x="988" y="490" width="72" height="4" rx="2" fill="#1E1D1A" opacity="0.08"/>
+</svg>

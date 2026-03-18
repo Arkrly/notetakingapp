@@ -1,0 +1,2 @@
+ALTER TABLE users ADD COLUMN is_account_non_locked BOOLEAN DEFAULT TRUE;
+ALTER TABLE users ADD COLUMN is_account_non_expired BOOLEAN DEFAULT TRUE;

@@ -1,4 +1,12 @@
-# NotetakingappFrontend
+# NoteStack Frontend
+
+<div align="center">
+
+<img src="./public/notestack-logo.svg" alt="NoteStack Logo" width="64" />
+
+**Capture. Organize. Stack.**
+
+</div>
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
 

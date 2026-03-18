@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -33,11 +33,12 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
 export class NotesListComponent implements OnInit {
   private noteService = inject(NoteService);
   private dialog = inject(MatDialog);
+  private cdr = inject(ChangeDetectorRef);
 
   searchControl = new FormControl('');
-  
+
   private refresh$ = new BehaviorSubject<void>(undefined);
-  
+
   notes$!: Observable<Note[]>;
   pinnedNotes$!: Observable<Note[]>;
   otherNotes$!: Observable<Note[]>;
@@ -58,25 +59,30 @@ export class NotesListComponent implements OnInit {
         this.isLoading$.next(true);
         this.isEmpty$.next(false);
       }),
-      switchMap(([_, term]: [void, string]) => 
+      switchMap(([_, term]: [void, string]) =>
         this.noteService.getNotes(0, 50).pipe(
           catchError(() => of({ success: false, data: null } as unknown as ApiResponse<PagedResponse<Note>>))
         )
       ),
       map((response: ApiResponse<PagedResponse<Note>>) => {
-        this.isLoading$.next(false);
-        if (!response.success || !response.data) {
-          this.isEmpty$.next(true);
-          return [];
-        }
-        const notes = response.data.content || [];
-        this.isEmpty$.next(notes.length === 0);
-        
+        setTimeout(() => {
+          this.isLoading$.next(false);
+          if (!response.success || !response.data) {
+            this.isEmpty$.next(true);
+            this.cdr.detectChanges();
+            return;
+          }
+          const notes = response.data.content || [];
+          this.isEmpty$.next(notes.length === 0);
+          this.cdr.detectChanges();
+        }, 0);
+
+        const notes = (response.success && response.data?.content) || [];
         const term = this.searchControl.value?.toLowerCase() || '';
-        
+
         if (!term) return notes.filter((n: Note) => !n.isArchived);
         return notes.filter((n: Note) => !n.isArchived && (
-          n.title.toLowerCase().includes(term) || 
+          n.title.toLowerCase().includes(term) ||
           (n.content && n.content.toLowerCase().includes(term)) ||
           (n.tags && n.tags.toLowerCase().includes(term))
         ));

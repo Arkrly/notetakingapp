@@ -38,7 +38,7 @@ export class RegisterComponent {
   registerForm: FormGroup = this.fb.group({
     fullName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', Validators.required]
   }, { validators: passwordMatchValidator });
 
@@ -62,10 +62,21 @@ export class RegisterComponent {
             this.registerError = res.message || 'Registration failed';
           }
         },
-        error: (err) => {
-          this.isLoading = false;
-          this.registerError = 'Could not create account at this time.';
+error: (err) => {
+        this.isLoading = false;
+        if (err.status === 409) {
+          const errorBody = err.error;
+          if (errorBody?.message?.toLowerCase().includes('username')) {
+            this.registerError = 'This username is already taken. Please choose another one.';
+          } else if (errorBody?.message?.toLowerCase().includes('email')) {
+            this.registerError = 'This email is already registered. Please use another email or login.';
+          } else {
+            this.registerError = 'An account with these details already exists.';
+          }
+        } else {
+          this.registerError = 'Could not create account at this time. Please try again.';
         }
+      }
       });
     }
   }

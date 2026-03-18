@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { User } from '../models/user.model';
@@ -87,7 +87,7 @@ export class AuthService {
     );
   }
 
-  register(username: string, email: string, password: string): Observable<ApiResponse<AuthResponse>> {
+register(username: string, email: string, password: string): Observable<ApiResponse<AuthResponse>> {
     const request: RegisterRequest = { username, email, password };
     return this.http.post<ApiResponse<AuthResponse>>(`${environment.apiUrl}/auth/register`, request).pipe(
       tap(response => {
@@ -95,7 +95,7 @@ export class AuthService {
           this.setStorageItem(this.tokenKey, response.data.token);
           this.setStorageItem(this.usernameKey, response.data.username);
           this.setStorageItem(this.roleKey, response.data.role);
-          
+
           const user: User = {
             id: '',
             username: response.data.username,
@@ -104,8 +104,7 @@ export class AuthService {
           this.currentUserSubject.next(user);
           this.isAuthenticatedSubject.next(true);
         }
-      }),
-      switchMap(() => this.login(username, password))
+      })
     );
   }
 

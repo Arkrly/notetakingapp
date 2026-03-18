@@ -1,8 +1,10 @@
-# Note Taker
+# NoteStack
 
 <div align="center">
 
-<img src="./notetakingapp-frontend/public/favicon.ico" alt="" width="64" />
+<img src="./notetakingapp-frontend/public/notestack-logo.svg" alt="NoteStack Logo" width="80" />
+
+**Capture. Organize. Stack.**
 
 A full-stack note-taking application with JWT authentication.
 
@@ -17,7 +19,7 @@ A full-stack note-taking application with JWT authentication.
 
 ## Overview
 
-Note Taker is a cloud-based REST API for note-taking with JWT authentication, built with Spring Boot on the backend and Angular on the frontend.
+NoteStack is a cloud-based note-taking application with JWT authentication, built with Spring Boot on the backend and Angular on the frontend. Capture your ideas, organize them effortlessly, and access them anywhere.
 
 ## Quick Start
 
@@ -49,3 +51,5 @@ npm run dev
 - Swagger/OpenAPI documentation
 - Angular Material UI
 - PostgreSQL database with Flyway migrations
+- Responsive design
+- Secure user registration & login
