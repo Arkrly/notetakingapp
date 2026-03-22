@@ -111,6 +111,12 @@
 			<version>${springdoc.version}</version>
 		</dependency>
 
+		<!-- ===== JACKSON HIBERNATE6 MODULE — PageImpl serialization ===== -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate6</artifactId>
+		</dependency>
+
 
 		<!-- ===== TESTING ===== -->
 		<dependency>
