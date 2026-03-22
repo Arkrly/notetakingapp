@@ -9,10 +9,10 @@ Requirements for milestone v1.1. Each maps to roadmap phases.
 
 ### Frontend Tests
 
-- [ ] **TEST-01**: User can run Angular frontend tests with Vitest browser runner
-- [ ] **TEST-02**: User can run component-level tests for NotesListComponent
-- [ ] **TEST-03**: User can run component-level tests for AuthService
-- [ ] **TEST-04**: All frontend tests pass in CI/local environments
+- [x] **TEST-01**: User can run Angular frontend tests with Vitest browser runner
+- [x] **TEST-02**: User can run component-level tests for NotesListComponent
+- [x] **TEST-03**: User can run component-level tests for AuthService
+- [x] **TEST-04**: All frontend tests pass in CI/local environments
 
 ### Backend Warnings
 
@@ -40,11 +40,11 @@ Requirements for milestone v1.1. Each maps to roadmap phases.
 Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
-|-------------|-------|--------|
-| TEST-01 | Phase 1 | Pending |
-| TEST-02 | Phase 1 | Pending |
-| TEST-03 | Phase 1 | Pending |
-| TEST-04 | Phase 1 | Pending |
+|------------|-------|--------|
+| TEST-01 | Phase 1 | Complete |
+| TEST-02 | Phase 1 | Complete |
+| TEST-03 | Phase 1 | Complete |
+| TEST-04 | Phase 1 | Complete |
 | BACK-01 | Phase 2 | Pending |
 | BACK-02 | Phase 2 | Pending |
 | BACK-03 | Phase 2 | Pending |

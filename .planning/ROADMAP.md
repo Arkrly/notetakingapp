@@ -7,7 +7,7 @@
 
 ## Phase Summary
 
-- [ ] **Phase 1: Frontend Test Infrastructure** — Install Vitest browser runner, configure test bed, create component tests
+- [x] **Phase 1: Frontend Test Infrastructure** — Install Vitest browser runner, configure test bed, create component tests
 - [ ] **Phase 2: Backend Configuration & Warnings** — Fix JPA warnings, H2Dialect, PageImpl serialization, environment config
 
 ## Phase Details
@@ -59,5 +59,5 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 1. Frontend Test Infrastructure | v1.1 | 0/1 | Planned | - |
+| 1. Frontend Test Infrastructure | v1.1 | 1/1 | Complete | 2026-03-22 |
 | 2. Backend Configuration & Warnings | v1.1 | 0/TBD | Not started | - |
