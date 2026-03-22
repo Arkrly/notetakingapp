@@ -1,16 +1,13 @@
 import { defineConfig } from 'vitest/config';
-import { browserProviders } from '@vitest/browser';
+import { playwright } from '@vitest/browser-playwright';
 
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'browser',
     browser: {
-      provider: 'playwright',
+      enabled: true,
+      provider: playwright,
       headless: true,
-      channel: 'chromium',
     },
-    include: ['src/**/*.spec.ts'],
-    reporters: ['verbose'],
   },
 });
