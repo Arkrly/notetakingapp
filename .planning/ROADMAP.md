@@ -27,7 +27,10 @@
 4. User can run component-level tests for AuthService
 5. All frontend tests pass in CI/local environments
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 01-PLAN.md — Configure Vitest browser runner and create component tests
 
 ---
 
@@ -56,5 +59,5 @@
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 1. Frontend Test Infrastructure | v1.1 | 0/TBD | Not started | - |
+| 1. Frontend Test Infrastructure | v1.1 | 0/1 | Planned | - |
 | 2. Backend Configuration & Warnings | v1.1 | 0/TBD | Not started | - |
