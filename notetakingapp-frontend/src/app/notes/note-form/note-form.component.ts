@@ -37,6 +37,15 @@ export class NoteFormComponent {
 
   colors: NoteColor[] = ['white', 'yellow', 'green', 'blue', 'pink', 'purple'];
 
+  private colorMap: Record<NoteColor, string> = {
+    white: '#ffffff',
+    yellow: '#fef9c3',
+    green: '#dcfce7',
+    blue: '#dbeafe',
+    pink: '#fce7f3',
+    purple: '#f3e8ff'
+  };
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: NoteFormData) {
     const note = data?.note;
     if (note) {
@@ -52,6 +61,10 @@ export class NoteFormComponent {
 
   get bgClass(): string {
     return `bg-note-${this.selectedColor}`;
+  }
+
+  get bgStyle(): string {
+    return this.colorMap[this.selectedColor];
   }
 
   selectColor(color: NoteColor) {
@@ -79,7 +92,7 @@ export class NoteFormComponent {
     if (this.noteForm.valid) {
       this.dialogRef.close({
         ...this.noteForm.value,
-        color: this.selectedColor,
+        color: this.colorMap[this.selectedColor],
         tags: this.tags.join(',')
       });
     }

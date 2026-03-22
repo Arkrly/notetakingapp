@@ -1,68 +1,76 @@
-<div [ngClass]="bgClass" class="w-full relative transition-colors duration-300 ease-in-out">
+<div [style.background-color]="bgStyle" class="note-form-container">
   
-  <div class="px-6 py-4 flex items-center justify-between border-b border-black/5">
-    <h2 class="text-xl font-semibold text-slate-800 m-0" mat-dialog-title>
-      {{ data.note ? 'Edit Note' : 'New Note' }}
-    </h2>
-    <button mat-icon-button (click)="onCancel()" class="text-slate-500 hover:bg-black/5">
-      <mat-icon>close</mat-icon>
+  <div class="form-header">
+    <h2>{{ data.note ? 'Edit Note' : 'New Note' }}</h2>
+    <button class="form-close-btn" (click)="onCancel()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
     </button>
   </div>
 
-  <mat-dialog-content class="p-0 m-0 w-full" style="max-height: 70vh;">
-    <form [formGroup]="noteForm" id="noteForm" class="p-6 space-y-4 flex flex-col">
+  <mat-dialog-content class="m-0">
+    <form [formGroup]="noteForm" id="noteForm" class="note-body" (ngSubmit)="onSubmit()">
       <div>
-        <input type="text" formControlName="title" placeholder="Title" autofocus
-               class="w-full text-2xl font-bold bg-transparent border-none focus:ring-0 placeholder-slate-400 p-0 outline-none">
+        <input 
+          type="text" 
+          formControlName="title" 
+          placeholder="Title" 
+          class="note-title-input"
+        />
       </div>
       
       <div>
-        <textarea formControlName="content" placeholder="Start typing your note..." 
-                  class="w-full min-h-[200px] bg-transparent border-none focus:ring-0 placeholder-slate-400 p-0 resize-none text-lg leading-relaxed outline-none"
-                  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+        <textarea 
+          formControlName="content" 
+          placeholder="Start typing your note..." 
+          class="note-content-input"
+        ></textarea>
       </div>
 
-      <div class="py-2">
-        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Color</p>
-        <div class="flex items-center gap-3">
-          <button *ngFor="let color of colors" type="button"
-                  (click)="selectColor(color)"
-                  [ngClass]="'bg-note-' + color"
-                  class="w-8 h-8 rounded-full border border-slate-200 hover:scale-110 transition-transform"
-                  [class.swatch-selected]="selectedColor === color">
-          </button>
+      <div class="color-section">
+        <p class="section-label">Color</p>
+        <div class="color-swatches">
+          <button 
+            *ngFor="let color of colors" 
+            type="button"
+            (click)="selectColor(color)"
+            class="swatch swatch-{{ color }}"
+            [class.swatch-selected]="selectedColor === color"
+            [attr.aria-label]="'Set note color to ' + color"
+          ></button>
         </div>
       </div>
 
-      <div class="py-2">
-        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Tags</p>
+      <div class="tags-section">
+        <p class="section-label">Tags</p>
         <mat-chip-grid #chipGrid aria-label="Enter tags" class="tags-grid">
-          <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)" 
-                        class="bg-black/5 text-slate-700 custom-chip">
+          <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)" class="custom-chip">
             #{{ tag }}
             <button matChipRemove aria-label="Remove tag">
-              <mat-icon class="text-sm">cancel</mat-icon>
+              <mat-icon class="remove-icon">cancel</mat-icon>
             </button>
           </mat-chip-row>
-          <input placeholder="+ add new"
-                 [matChipInputFor]="chipGrid"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 (matChipInputTokenEnd)="addTag($event)"
-                 class="bg-transparent border-none focus:ring-0 text-sm py-1 px-2 w-24 placeholder-slate-400 outline-none"/>
+          <input 
+            placeholder="+ add tag"
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addTag($event)"
+            class="tag-input"
+          />
         </mat-chip-grid>
       </div>
     </form>
   </mat-dialog-content>
 
-  <mat-dialog-actions class="px-6 py-5 bg-black/5 flex items-center justify-end gap-3 m-0">
-    <button type="button" (click)="onCancel()"
-            class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-medium hover:bg-white transition-colors bg-transparent">
+  <div class="form-footer">
+    <button type="button" (click)="onCancel()" class="btn-cancel">
       Cancel
     </button>
-    <button type="submit" form="noteForm" [disabled]="noteForm.invalid"
-            class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-200 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+    <button type="submit" form="noteForm" [disabled]="noteForm.invalid" class="btn-save">
       Save Note
     </button>
-  </mat-dialog-actions>
+  </div>
   
 </div>

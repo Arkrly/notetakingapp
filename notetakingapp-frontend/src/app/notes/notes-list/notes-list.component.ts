@@ -1,11 +1,11 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, startWith, switchMap, tap, catchError } from 'rxjs/operators';
+import { map, startWith, switchMap, catchError, tap, distinctUntilChanged } from 'rxjs/operators';
 
 import { NoteService, PagedResponse } from '../../core/services/note.service';
 import { Note } from '../../core/models/note.model';
@@ -14,6 +14,8 @@ import { SidebarComponent } from '../../shared/components/sidebar/sidebar.compon
 import { NoteCardComponent } from '../note-card/note-card.component';
 import { NoteFormComponent } from '../note-form/note-form.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+
+const NOTES_CACHE_KEY = 'notes_cache';
 
 @Component({
   selector: 'app-notes-list',
@@ -33,59 +35,98 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
 export class NotesListComponent implements OnInit {
   private noteService = inject(NoteService);
   private dialog = inject(MatDialog);
-  private cdr = inject(ChangeDetectorRef);
 
   searchControl = new FormControl('');
 
   private refresh$ = new BehaviorSubject<void>(undefined);
+  private cache$ = new BehaviorSubject<Note[]>(this.loadFromCache());
 
   notes$!: Observable<Note[]>;
   pinnedNotes$!: Observable<Note[]>;
   otherNotes$!: Observable<Note[]>;
-  isLoading$ = new BehaviorSubject<boolean>(false);
-  isEmpty$ = new BehaviorSubject<boolean>(false);
+  isLoading$ = new BehaviorSubject<boolean>(!this.hasCachedNotes());
+  isEmpty$ = new BehaviorSubject<boolean>(this.isCacheEmpty());
+
+  private loadFromCache(): Note[] {
+    try {
+      const raw = localStorage.getItem(NOTES_CACHE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private saveToCache(notes: Note[]): void {
+    try {
+      localStorage.setItem(NOTES_CACHE_KEY, JSON.stringify(notes));
+    } catch {
+      // Storage quota exceeded — ignore
+    }
+  }
+
+  private hasCachedNotes(): boolean {
+    return localStorage.getItem(NOTES_CACHE_KEY) !== null;
+  }
+
+  private isCacheEmpty(): boolean {
+    const cached = this.loadFromCache();
+    return cached.filter((n: Note) => !n.isArchived).length === 0;
+  }
+
+  private fetchFromApi(): Observable<Note[]> {
+    return this.noteService.getNotes(0, 50).pipe(
+      catchError(() => of({ success: false, data: null } as unknown as ApiResponse<PagedResponse<Note>>)),
+      tap((response: ApiResponse<PagedResponse<Note>>) => {
+        if (response.success && response.data?.content) {
+          this.saveToCache(response.data.content);
+          this.cache$.next(response.data.content);
+        }
+        this.isLoading$.next(false);
+        this.isEmpty$.next(
+          !response.success || !response.data ||
+          (response.data.content || []).filter((n: Note) => !n.isArchived).length === 0
+        );
+      }),
+      map((response: ApiResponse<PagedResponse<Note>>) => {
+        return (response.success && response.data?.content) || [];
+      })
+    );
+  }
 
   ngOnInit() {
     const searchTerm$ = this.searchControl.valueChanges.pipe(
       startWith(''),
-      map(term => (term || '').toLowerCase())
+      map(term => (term || '').toLowerCase()),
+      distinctUntilChanged()
     );
 
     this.notes$ = combineLatest([
-      this.refresh$,
+      this.cache$,
+      this.refresh$.pipe(startWith(undefined as void)),
       searchTerm$
     ]).pipe(
       tap(() => {
-        this.isLoading$.next(true);
-        this.isEmpty$.next(false);
+        if (this.cache$.value.length === 0) {
+          this.isLoading$.next(true);
+        }
       }),
-      switchMap(([_, term]: [void, string]) =>
-        this.noteService.getNotes(0, 50).pipe(
-          catchError(() => of({ success: false, data: null } as unknown as ApiResponse<PagedResponse<Note>>))
-        )
-      ),
-      map((response: ApiResponse<PagedResponse<Note>>) => {
-        setTimeout(() => {
-          this.isLoading$.next(false);
-          if (!response.success || !response.data) {
-            this.isEmpty$.next(true);
-            this.cdr.detectChanges();
-            return;
-          }
-          const notes = response.data.content || [];
-          this.isEmpty$.next(notes.length === 0);
-          this.cdr.detectChanges();
-        }, 0);
-
-        const notes = (response.success && response.data?.content) || [];
+      switchMap(([cached, _, term]: [Note[], void, string]) => {
+        if (cached.length === 0) {
+          return this.fetchFromApi().pipe(
+            map(notes => this.filterNotes(notes, term))
+          );
+        }
+        if (this.hasCachedNotes() && this.cache$.value === cached) {
+          this.fetchFromApi().subscribe();
+        }
+        return of(this.filterNotes(cached, term)).pipe(
+          tap(() => this.isLoading$.next(false))
+        );
+      }),
+      tap(() => {
         const term = this.searchControl.value?.toLowerCase() || '';
-
-        if (!term) return notes.filter((n: Note) => !n.isArchived);
-        return notes.filter((n: Note) => !n.isArchived && (
-          n.title.toLowerCase().includes(term) ||
-          (n.content && n.content.toLowerCase().includes(term)) ||
-          (n.tags && n.tags.toLowerCase().includes(term))
-        ));
+        const filtered = this.filterNotes(this.cache$.value, term);
+        this.isEmpty$.next(filtered.length === 0);
       })
     );
 
@@ -98,8 +139,30 @@ export class NotesListComponent implements OnInit {
     );
   }
 
+  private filterNotes(notes: Note[], term: string): Note[] {
+    const active = notes.filter((n: Note) => !n.isArchived);
+    if (!term) return active;
+    return active.filter((n: Note) =>
+      n.title.toLowerCase().includes(term) ||
+      (n.content && n.content.toLowerCase().includes(term)) ||
+      (n.tags && n.tags.toLowerCase().includes(term))
+    );
+  }
+
   refresh() {
-    this.refresh$.next();
+    this.isLoading$.next(true);
+    this.noteService.getNotes(0, 50).subscribe({
+      next: (response) => {
+        if (response.success && response.data?.content) {
+          this.saveToCache(response.data.content);
+          this.cache$.next(response.data.content);
+        }
+        this.isLoading$.next(false);
+      },
+      error: () => {
+        this.isLoading$.next(false);
+      }
+    });
   }
 
   openNoteForm(note?: Note) {
@@ -107,7 +170,7 @@ export class NotesListComponent implements OnInit {
       data: { note },
       panelClass: 'note-form-dialog-container',
       width: '100%',
-      maxWidth: '560px'
+      maxWidth: '640px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
