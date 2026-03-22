@@ -16,16 +16,16 @@ Requirements for milestone v1.1. Each maps to roadmap phases.
 
 ### Backend Warnings
 
-- [ ] **BACK-01**: User can run backend without spring.jpa.open-in-view warning
-- [ ] **BACK-02**: User can run tests without H2Dialect deprecation warning
-- [ ] **BACK-03**: User can use paginated endpoints without PageImpl serialization warnings
+- [x] **BACK-01**: User can run backend without spring.jpa.open-in-view warning
+- [x] **BACK-02**: User can run tests without H2Dialect deprecation warning
+- [x] **BACK-03**: User can use paginated endpoints without PageImpl serialization warnings
 
 ### Configuration
 
-- [ ] **CFG-01**: SQL logging is disabled in production environment
-- [ ] **CFG-02**: User can configure database settings via environment variables
-- [ ] **CFG-03**: User can configure JWT settings via environment variables
-- [ ] **CFG-04**: Test profile uses isolated configuration without warnings
+- [x] **CFG-01**: SQL logging is disabled in production environment
+- [x] **CFG-02**: User can configure database settings via environment variables
+- [x] **CFG-03**: User can configure JWT settings via environment variables
+- [x] **CFG-04**: Test profile uses isolated configuration without warnings
 
 ## Out of Scope
 
@@ -45,13 +45,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TEST-02 | Phase 1 | Complete |
 | TEST-03 | Phase 1 | Complete |
 | TEST-04 | Phase 1 | Complete |
-| BACK-01 | Phase 2 | Pending |
-| BACK-02 | Phase 2 | Pending |
-| BACK-03 | Phase 2 | Pending |
-| CFG-01 | Phase 2 | Pending |
-| CFG-02 | Phase 2 | Pending |
-| CFG-03 | Phase 2 | Pending |
-| CFG-04 | Phase 2 | Pending |
+| BACK-01 | Phase 2 | Complete |
+| BACK-02 | Phase 2 | Complete |
+| BACK-03 | Phase 2 | Complete |
+| CFG-01 | Phase 2 | Complete |
+| CFG-02 | Phase 2 | Complete |
+| CFG-03 | Phase 2 | Complete |
+| CFG-04 | Phase 2 | Complete |
 
 **Coverage:**
 - v1 requirements: 11 total

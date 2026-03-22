@@ -3,12 +3,12 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phases 1-4 (shipped 2026-03-22)
-- 🚧 **v1.1 Build & Test Fixes** — Phases 1-2 (in progress)
+- ✅ **v1.1 Build & Test Fixes** — Phases 1-2 (complete)
 
 ## Phase Summary
 
 - [x] **Phase 1: Frontend Test Infrastructure** — Install Vitest browser runner, configure test bed, create component tests
-- [ ] **Phase 2: Backend Configuration & Warnings** — Fix JPA warnings, H2Dialect, PageImpl serialization, environment config
+- [x] **Phase 2: Backend Configuration & Warnings** — Fix JPA warnings, H2Dialect, PageImpl serialization, environment config
 
 ## Phase Details
 
@@ -51,7 +51,10 @@ Plans:
 6. User can configure JWT settings via environment variables
 7. Test profile runs with isolated configuration and no warnings
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [x] 02-01-PLAN.md — Fix JPA warnings, H2Dialect, PageImpl serialization, conditional SQL logging
 
 ---
 
@@ -60,4 +63,4 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1. Frontend Test Infrastructure | v1.1 | 1/1 | Complete | 2026-03-22 |
-| 2. Backend Configuration & Warnings | v1.1 | 0/TBD | Not started | - |
+| 2. Backend Configuration & Warnings | v1.1 | 1/1 | Complete | 2026-03-22 |
