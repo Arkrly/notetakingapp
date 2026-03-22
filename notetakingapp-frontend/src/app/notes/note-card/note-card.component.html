@@ -43,9 +43,9 @@
 
   <p class="text-sm text-slate-600 line-clamp-3 leading-relaxed">{{ note.content }}</p>
 
-  <div class="flex flex-wrap gap-1.5 mt-3" *ngIf="note.tags.length">
+  <div class="flex flex-wrap gap-1.5 mt-3" *ngIf="tagList.length">
     <span
-      *ngFor="let tag of note.tags"
+      *ngFor="let tag of tagList"
       class="px-2.5 py-1 text-[11px] font-semibold rounded-md whitespace-nowrap"
       [ngClass]="tagBgClass"
     >

@@ -49,6 +49,10 @@ export class NoteCardComponent {
     return tagBgMap[this.note.color] || 'bg-slate-200/60 text-slate-700';
   }
 
+  get tagList(): string[] {
+    return this.note.tags ? this.note.tags.split(',').map(t => t.trim()).filter(t => t) : [];
+  }
+
   onPinClick(event: Event) {
     event.stopPropagation();
     this.pinToggle.emit(this.note);
