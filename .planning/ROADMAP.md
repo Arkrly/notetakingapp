@@ -32,7 +32,9 @@
   4. Expired JWT tokens are rejected with appropriate error
   5. All note and tag endpoints verify ownership before returning data
 
-**Plans**: TBD
+**Plans**: 2 plans
+- [ ] 03-01-PLAN.md — Fix bulk operations IDOR vulnerability
+- [ ] 03-02-PLAN.md — JWT validation tests
 
 ---
 
