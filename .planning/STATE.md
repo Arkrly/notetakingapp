@@ -16,10 +16,10 @@ progress:
 
 ## Current Position
 
-Phase: 04-backend-data-layer-fixes
+Phase: 05-frontend-core-stability
 Plan: —
-Status: Context gathered (skipped - already well-structured)
-Last activity: 2026-04-02 — Phase 4 context: Data layer already solid, no changes needed
+Status: Context gathered
+Last activity: 2026-04-02 — Phase 5 context: OnPush change detection, RxJS subscription cleanup, HttpOnly deferred
 
 ## Project Reference
 
@@ -61,6 +61,7 @@ See: .planning/PROJECT.md (updated 2026-04-02)
 
 | Date | Phase | Summary |
 |------|-------|---------|
+| 2026-04-02 | 05-frontend-core-stability | Context gathered: OnPush strategy to be added, verify RxJS cleanup, HttpOnly deferred to later |
 | 2026-04-02 | 04-backend-data-layer-fixes | Context gathered: Data layer already solid - DTOs, tags as String, exception handler all good |
 | 2026-04-02 | 03-security-authentication-audit | Context gathered: JWT 'none' algorithm verified, bulk ops need service-layer ownership check, exception handling already in place |
 | 2026-04-02 | — | Milestone v1.2 initialized: Full codebase bug audit |
