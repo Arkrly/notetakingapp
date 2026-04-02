@@ -65,12 +65,14 @@
 **Requirements**: FRONT-01, FRONT-02, FRONT-03, FRONT-04
 
 **Success Criteria** (what must be TRUE):
-  1. All RxJS subscriptions use takeUntilDestroyed() or async pipe
-  2. All components use OnPush change detection strategy
-  3. HTTP interceptor handles 401 with proper logout flow (redirect to login, clear token)
-  4. No ExpressionChangedAfterItHasBeenCheckedError in development mode
+1. All RxJS subscriptions use takeUntilDestroyed() or async pipe
+2. All components use OnPush change detection strategy
+3. HTTP interceptor handles 401 with proper logout flow (redirect to login, clear token)
+4. No ExpressionChangedAfterItHasBeenCheckedError in development mode
 
-**Plans**: TBD
+**Plans**: 2 plans
+- [ ] 05-01-PLAN.md — Add OnPush strategy and RxJS cleanup
+- [ ] 05-02-PLAN.md — Verify 401 handling and check for CD errors
 
 ---
 
