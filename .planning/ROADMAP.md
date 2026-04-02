@@ -1,66 +1,93 @@
-# Roadmap: NoteStack — v1.1 Build & Test Fixes
+# Roadmap: NoteStack
 
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phases 1-4 (shipped 2026-03-22)
-- ✅ **v1.1 Build & Test Fixes** — Phases 1-2 (complete)
+- ✅ **v1.1 Build & Test Fixes** — Phases 1-2 (shipped 2026-04-02)
+- 🔄 **v1.2 Bug Fixes** — Phases 3-6 (in progress)
 
-## Phase Summary
+## Phases
 
-- [x] **Phase 1: Frontend Test Infrastructure** — Install Vitest browser runner, configure test bed, create component tests
-- [x] **Phase 2: Backend Configuration & Warnings** — Fix JPA warnings, H2Dialect, PageImpl serialization, environment config
+- [ ] **Phase 3: Security & Authentication Audit** - Fix IDOR vulnerabilities and JWT validation
+- [ ] **Phase 4: Backend Data Layer Fixes** - DTOs, fetch joins, exception handling
+- [ ] **Phase 5: Frontend Core Stability** - RxJS cleanup, OnPush, 401 handling
+- [ ] **Phase 6: Feature-Specific Bug Fixes** - Tag normalization, pin/archive preservation
+
+---
 
 ## Phase Details
 
-### Phase 1: Frontend Test Infrastructure
+### Phase 3: Security & Authentication Audit
 
-**Goal**: Frontend tests execute successfully with proper test runner configuration
+**Goal**: Users cannot access other users' data; JWT tokens are properly validated
 
-**Depends on**: Nothing (first phase of this milestone)
+**Depends on**: Nothing (Foundation phase for v1.2)
 
-**Requirements**: TEST-01, TEST-02, TEST-03, TEST-04
+**Requirements**: SEC-01, SEC-02, SEC-03, SEC-04, SEC-05
 
 **Success Criteria** (what must be TRUE):
-1. User can install Vitest browser runner package without errors
-2. User can run Angular tests and see tests execute in browser mode
-3. User can run component-level tests for NotesListComponent
-4. User can run component-level tests for AuthService
-5. All frontend tests pass in CI/local environments
+  1. User cannot access other users' notes by manipulating note IDs in API requests
+  2. User cannot access other users' tags by manipulating tag IDs in API requests
+  3. JWT tokens with "none" algorithm are rejected by the backend
+  4. Expired JWT tokens are rejected with appropriate error
+  5. All note and tag endpoints verify ownership before returning data
 
-**Plans**: 1 plan
-
-Plans:
-- [ ] 01-PLAN.md — Configure Vitest browser runner and create component tests
+**Plans**: TBD
 
 ---
 
-### Phase 2: Backend Configuration & Warnings
+### Phase 4: Backend Data Layer Fixes
 
-**Goal**: Backend runs without warnings and has proper environment configuration
+**Goal**: REST endpoints return DTOs; no lazy loading or serialization errors
 
-**Depends on**: Phase 1
+**Depends on**: Phase 3
 
-**Requirements**: BACK-01, BACK-02, BACK-03, CFG-01, CFG-02, CFG-03, CFG-04
+**Requirements**: DATA-01, DATA-02, DATA-03, DATA-04
 
 **Success Criteria** (what must be TRUE):
-1. User runs backend without spring.jpa.open-in-view warning in logs
-2. User runs tests without H2Dialect deprecation warning
-3. User accesses paginated endpoints without PageImpl serialization warnings
-4. User sees no SQL queries logged in production environment
-5. User can configure database settings via environment variables
-6. User can configure JWT settings via environment variables
-7. Test profile runs with isolated configuration and no warnings
+  1. All REST endpoints return DTOs, never JPA entities
+  2. Note→Tags relationship uses fetch join to prevent N+1 queries
+  3. Global exception handler returns consistent error format for all errors
+  4. No LazyInitializationException errors in production logs
 
-**Plans**: 1 plan
-
-Plans:
-- [x] 02-01-PLAN.md — Fix JPA warnings, H2Dialect, PageImpl serialization, conditional SQL logging
+**Plans**: TBD
 
 ---
 
-## Progress
+### Phase 5: Frontend Core Stability
 
-| Phase | Milestone | Plans Complete | Status | Completed |
-|-------|-----------|----------------|--------|-----------|
-| 1. Frontend Test Infrastructure | v1.1 | 1/1 | Complete | 2026-03-22 |
-| 2. Backend Configuration & Warnings | v1.1 | 1/1 | Complete | 2026-03-22 |
+**Goal**: Frontend components properly manage subscriptions and handle auth errors
+
+**Depends on**: Phase 4
+
+**Requirements**: FRONT-01, FRONT-02, FRONT-03, FRONT-04
+
+**Success Criteria** (what must be TRUE):
+  1. All RxJS subscriptions use takeUntilDestroyed() or async pipe
+  2. All components use OnPush change detection strategy
+  3. HTTP interceptor handles 401 with proper logout flow (redirect to login, clear token)
+  4. No ExpressionChangedAfterItHasBeenCheckedError in development mode
+
+**Plans**: TBD
+
+---
+
+### Phase 6: Feature-Specific Bug Fixes
+
+**Goal**: Tag and note metadata operations work correctly
+
+**Depends on**: Phase 5
+
+**Requirements**: FEAT-01, FEAT-02, FEAT-03, FEAT-04
+
+**Success Criteria** (what must be TRUE):
+  1. Tags are normalized to lowercase on save, preventing duplicate tags of different cases
+  2. Pin status is preserved when note is updated (not reset to false)
+  3. Archive status is preserved when note is updated (not reset to false)
+  4. Archived notes are properly filtered out in main queries (show only non-archived by default)
+
+**Plans**: TBD
+
+---
+
+*See archived roadmaps in `.planning/milestones/` for phase details.*
