@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.2
-milestone_name: Bug Fixes
-status: in_progress
-last_updated: "2026-04-02"
-last_activity: "2026-04-02 — Milestone v1.2 started"
+milestone: v1.0
+milestone_name: milestone
+status: completed
+last_updated: "2026-04-02T07:41:59.792Z"
+last_activity: "2026-04-02 — Phase 6 context: Pin/archive already preserved, only tags need lowercase"
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
 ---
 
 # STATE.md

@@ -9,8 +9,8 @@
 
 - [ ] **SEC-01**: User cannot access other users' notes via ID manipulation (IDOR fix)
 - [ ] **SEC-02**: User cannot access other users' tags via ID manipulation
-- [ ] **SEC-03**: JWT tokens with "none" algorithm are rejected
-- [ ] **SEC-04**: JWT token expiration is validated on backend
+- [x] **SEC-03**: JWT tokens with "none" algorithm are rejected
+- [x] **SEC-04**: JWT token expiration is validated on backend
 - [ ] **SEC-05**: All note/tag endpoints verify ownership before returning data
 
 ### Data Layer
@@ -48,8 +48,8 @@
 |-------------|-------|--------|
 | SEC-01 | Phase 3 | Pending |
 | SEC-02 | Phase 3 | Pending |
-| SEC-03 | Phase 3 | Pending |
-| SEC-04 | Phase 3 | Pending |
+| SEC-03 | Phase 3 | Complete |
+| SEC-04 | Phase 3 | Complete |
 | SEC-05 | Phase 3 | Pending |
 | DATA-01 | Phase 4 | Pending |
 | DATA-02 | Phase 4 | Pending |
