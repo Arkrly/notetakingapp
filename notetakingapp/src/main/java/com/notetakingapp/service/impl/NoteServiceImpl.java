@@ -126,6 +126,13 @@ public class NoteServiceImpl implements NoteService {
     @Transactional
     public void bulkDeleteNotes(List<UUID> noteIds, UUID userId) {
         log.info("Bulk deleting {} notes for user {}", noteIds.size(), userId);
+
+        // Verify all requested IDs belong to user
+        long ownedCount = noteRepository.countByIdInAndUserId(noteIds, userId);
+        if (ownedCount != noteIds.size()) {
+            throw new UnauthorizedException("Access denied: Some notes don't belong to you");
+        }
+
         noteRepository.deleteAllByIdInAndUserId(noteIds, userId);
     }
 
