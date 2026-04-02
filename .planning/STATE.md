@@ -16,10 +16,10 @@ progress:
 
 ## Current Position
 
-Phase: 05-frontend-core-stability
+Phase: 06-feature-specific-bug-fixes
 Plan: —
-Status: Context gathered
-Last activity: 2026-04-02 — Phase 5 context: OnPush change detection, RxJS subscription cleanup, HttpOnly deferred
+Status: Context gathered (mostly done - only tag normalization needed)
+Last activity: 2026-04-02 — Phase 6 context: Pin/archive already preserved, only tags need lowercase
 
 ## Project Reference
 
@@ -61,6 +61,7 @@ See: .planning/PROJECT.md (updated 2026-04-02)
 
 | Date | Phase | Summary |
 |------|-------|---------|
+| 2026-04-02 | 06-feature-specific-bug-fixes | Context gathered: Most already fixed - only tag normalization needed |
 | 2026-04-02 | 05-frontend-core-stability | Context gathered: OnPush strategy to be added, verify RxJS cleanup, HttpOnly deferred to later |
 | 2026-04-02 | 04-backend-data-layer-fixes | Context gathered: Data layer already solid - DTOs, tags as String, exception handler all good |
 | 2026-04-02 | 03-security-authentication-audit | Context gathered: JWT 'none' algorithm verified, bulk ops need service-layer ownership check, exception handling already in place |
