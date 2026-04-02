@@ -34,4 +34,6 @@ public interface NoteRepository extends JpaRepository<Note, UUID> {
     boolean existsByIdAndUserId(UUID id, UUID userId);
 
     void deleteAllByIdInAndUserId(List<UUID> ids, UUID userId);
+
+    long countByIdInAndUserId(List<UUID> ids, UUID userId);
 }
