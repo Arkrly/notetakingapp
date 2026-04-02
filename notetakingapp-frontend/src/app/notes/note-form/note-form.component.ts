@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
@@ -16,15 +16,16 @@ export interface NoteFormData {
   selector: 'app-note-form',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    MatDialogModule, 
-    MatButtonModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
     MatIconModule,
     MatChipsModule
   ],
   templateUrl: './note-form.component.html',
-  styleUrls: ['./note-form.component.css']
+  styleUrls: ['./note-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteFormComponent {
   private fb = inject(FormBuilder);

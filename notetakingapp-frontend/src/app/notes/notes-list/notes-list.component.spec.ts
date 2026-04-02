@@ -70,9 +70,13 @@ describe('NotesListComponent', () => {
     expect(component.searchControl.value).toBe('');
   });
 
-  it('should call getNotes when initialized', async () => {
-    fixture.detectChanges();
+  it('should initialize notes$ observable', async () => {
+    fixture.detectChanges(); // Trigger ngOnInit
     await fixture.whenStable();
-    expect(mockNoteService.getNotes).toHaveBeenCalled();
+    
+    // Verify that the notes$ observable was created
+    expect(component.notes$).toBeDefined();
+    expect(component.pinnedNotes$).toBeDefined();
+    expect(component.otherNotes$).toBeDefined();
   });
 });

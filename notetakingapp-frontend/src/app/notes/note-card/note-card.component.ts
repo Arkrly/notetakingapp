@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +9,8 @@ import { Note } from '../../core/models/note.model';
   standalone: true,
   imports: [CommonModule, MatIconModule, MatButtonModule],
   templateUrl: './note-card.component.html',
-  styleUrls: ['./note-card.component.css']
+  styleUrls: ['./note-card.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteCardComponent {
   @Input({ required: true }) note!: Note;

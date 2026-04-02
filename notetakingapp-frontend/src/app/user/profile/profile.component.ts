@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,8 +20,8 @@ import { passwordMatchValidator } from '../../auth/register/register.component';
   selector: 'app-profile',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
+    CommonModule,
+    ReactiveFormsModule,
     SidebarComponent,
     MatFormFieldModule,
     MatInputModule,
@@ -30,7 +30,8 @@ import { passwordMatchValidator } from '../../auth/register/register.component';
     MatDialogModule
   ],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileComponent implements OnInit {
   private fb = inject(FormBuilder);

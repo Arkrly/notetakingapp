@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -30,7 +30,8 @@ const NOTES_CACHE_KEY = 'notes_cache';
     NoteCardComponent
   ],
   templateUrl: './notes-list.component.html',
-  styleUrls: ['./notes-list.component.css']
+  styleUrls: ['./notes-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotesListComponent implements OnInit {
   private noteService = inject(NoteService);
