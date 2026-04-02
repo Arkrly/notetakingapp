@@ -77,14 +77,16 @@ export class NotesListComponent implements OnInit {
     return this.noteService.getNotes(0, 50).pipe(
       catchError(() => of({ success: false, data: null } as unknown as ApiResponse<PagedResponse<Note>>)),
       tap((response: ApiResponse<PagedResponse<Note>>) => {
-        if (response.success && response.data?.content) {
-          this.saveToCache(response.data.content);
-          this.cache$.next(response.data.content);
+        const notes = (response.success && response.data?.content) || [];
+        this.saveToCache(notes);
+        this.hasFetched = true;
+        // Only update cache$ if the content actually changed to avoid re-triggering combineLatest
+        if (JSON.stringify(notes) !== JSON.stringify(this.cache$.value)) {
+          this.cache$.next(notes);
         }
         this.isLoading$.next(false);
         this.isEmpty$.next(
-          !response.success || !response.data ||
-          (response.data.content || []).filter((n: Note) => !n.isArchived).length === 0
+          notes.filter((n: Note) => !n.isArchived).length === 0
         );
       }),
       map((response: ApiResponse<PagedResponse<Note>>) => {
@@ -92,6 +94,8 @@ export class NotesListComponent implements OnInit {
       })
     );
   }
+
+  private hasFetched = false;
 
   ngOnInit() {
     const searchTerm$ = this.searchControl.valueChanges.pipe(
@@ -105,18 +109,19 @@ export class NotesListComponent implements OnInit {
       this.refresh$.pipe(startWith(undefined as void)),
       searchTerm$
     ]).pipe(
-      tap(() => {
-        if (this.cache$.value.length === 0) {
-          this.isLoading$.next(true);
-        }
-      }),
       switchMap(([cached, _, term]: [Note[], void, string]) => {
-        if (cached.length === 0) {
+        if (cached.length === 0 && !this.hasFetched) {
           return this.fetchFromApi().pipe(
             map(notes => this.filterNotes(notes, term))
           );
         }
-        if (this.hasCachedNotes() && this.cache$.value === cached) {
+        if (cached.length === 0 && this.hasFetched) {
+          // Already fetched, no notes exist — stop loading
+          this.isLoading$.next(false);
+          return of([] as Note[]);
+        }
+        if (this.hasCachedNotes() && this.cache$.value === cached && !this.hasFetched) {
+          this.hasFetched = true;
           this.fetchFromApi().subscribe();
         }
         return of(this.filterNotes(cached, term)).pipe(
@@ -150,6 +155,7 @@ export class NotesListComponent implements OnInit {
   }
 
   refresh() {
+    this.hasFetched = false;
     this.isLoading$.next(true);
     this.noteService.getNotes(0, 50).subscribe({
       next: (response) => {

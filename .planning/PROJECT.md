@@ -12,13 +12,21 @@ Users can capture and organize their notes with a clean, responsive interface.
 
 ### Validated
 
-(None yet — shipping to validate)
+- ✓ Frontend tests run successfully with Vitest browser runner — v1.1
+- ✓ Backend warnings resolved (open-in-view, H2Dialect, PageImpl serialization) — v1.1
+- ✓ SQL logging configured appropriately for environment — v1.1
 
 ### Active
 
-- [ ] Frontend tests run successfully with proper test runner configuration
-- [ ] Backend warnings resolved (open-in-view, H2Dialect, PageImpl serialization)
-- [ ] SQL logging configured appropriately for environment
+## Current Milestone: v1.2 Bug Fixes
+
+**Goal:** Find and fix bugs across frontend and backend
+
+**Target features:**
+- Full codebase audit for bugs
+- Fix all identified bugs
+
+---
 
 ### Out of Scope
 
@@ -50,4 +58,4 @@ Users can capture and organize their notes with a clean, responsive interface.
 | Vitest for frontend tests | Modern, fast test runner compatible with Angular 21 | — Pending |
 
 ---
-*Last updated: 2026-03-22 after milestone v1.1 started*
+*Last updated: 2026-04-02 after v1.1 milestone completed*

@@ -1,25 +1,38 @@
+---
+gsd_state_version: 1.0
+milestone: v1.2
+milestone_name: Bug Fixes
+status: in_progress
+last_updated: "2026-04-02"
+last_activity: "2026-04-02 — Milestone v1.2 started"
+progress:
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+---
+
 # STATE.md
 
 ## Current Position
 
-Phase: 02-backend-configuration
-Plan: 01 (completed)
-Status: Plan execution complete
-Last activity: 2026-03-22 — Phase 2 plan 1 executed: Spring Boot config warnings fixed, SQL logging conditional
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-02 — Milestone v1.2 started
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-22)
+See: .planning/PROJECT.md (updated 2026-04-02)
 
 **Core value:** Users can capture and organize their notes with a clean, responsive interface.
-**Current focus:** v1.1 Build & Test Fixes — Phase 2: Backend Configuration & Warnings (plan 1 of 1 complete)
+**Current focus:** v1.2 Bug Fixes — Defining scope
 
 ## Current Milestone
 
-**v1.1 Build & Test Fixes**
-- Goal: Resolve build and test issues to ensure clean test runs
-- Phase 1: Frontend Test Infrastructure (complete - plan 1 of 1)
-- Phase 2: Backend Configuration & Warnings (complete - plan 1 of 1)
+**v1.2 Bug Fixes**
+- Goal: Find and fix bugs across frontend and backend
+- Full codebase audit for bugs
 
 ## Accumulated Context
 
@@ -35,6 +48,7 @@ See: .planning/PROJECT.md (updated 2026-03-22)
 
 | Date | Phase | Summary |
 |------|-------|---------|
+| 2026-04-02 | — | Milestone v1.2 initialized: Full codebase bug audit |
 | 2026-03-22 | — | Milestone v1.1 initialized: Find and fix build/test issues |
 | 2026-03-22 | — | Roadmap created: 2 phases defined |
 | 2026-03-22 | 01-frontend-test-infrastructure | Plan 1 complete: Vitest configured, 21 AuthService tests passing |
