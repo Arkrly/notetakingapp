@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -67,7 +68,9 @@ export class ProfileComponent implements OnInit {
       }
     });
 
-    this.passwordForm.get('newPassword')?.valueChanges.subscribe(val => {
+    this.passwordForm.get('newPassword')?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(val => {
       this.calculateStrength(val);
     });
   }
