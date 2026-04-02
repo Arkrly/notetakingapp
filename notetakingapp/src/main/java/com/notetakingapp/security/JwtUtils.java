@@ -97,6 +97,18 @@ public class JwtUtils {
         return extractExpiration(token).before(new Date());
     }
 
+    /**
+     * Extracts all claims from a JWT token.
+     *
+     * SECURITY: The jjwt library's parseSignedClaims() with .verifyWith(signingKey)
+     * requires a valid signature. Tokens with "none" algorithm (unsigned tokens) will
+     * fail with a SignatureException or MissingSignatureException. This provides
+     * implicit protection against algorithm confusion attacks (SEC-03).
+     *
+     * @param token the JWT token to parse
+     * @return the claims payload
+     * @throws JwtException if token is invalid, unsigned, or signature verification fails
+     */
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(signingKey)
