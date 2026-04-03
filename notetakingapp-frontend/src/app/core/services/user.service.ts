@@ -30,6 +30,9 @@ export class UserService {
   }
 
   changePassword(currentPassword: string, newPassword: string): Observable<ApiResponse<void>> {
+    if (!newPassword || newPassword.length < 8) {
+      throw new Error('Password must be at least 8 characters');
+    }
     const request: ChangePasswordRequest = { currentPassword, newPassword };
     return this.http.patch<ApiResponse<void>>(`${this.apiUrl}/me/password`, request);
   }

@@ -36,7 +36,7 @@ export class NoteFormComponent {
   selectedColor: NoteColor = 'white';
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
-  colors: NoteColor[] = ['white', 'yellow', 'green', 'blue', 'pink', 'purple'];
+  colors: NoteColor[] = ['white', 'yellow', 'green', 'blue', 'pink', 'purple', 'orange'];
 
   private colorMap: Record<NoteColor, string> = {
     white: '#ffffff',
@@ -44,7 +44,8 @@ export class NoteFormComponent {
     green: '#dcfce7',
     blue: '#dbeafe',
     pink: '#fce7f3',
-    purple: '#f3e8ff'
+    purple: '#f3e8ff',
+    orange: '#ffedd5'
   };
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: NoteFormData) {
@@ -93,7 +94,7 @@ export class NoteFormComponent {
     if (this.noteForm.valid) {
       this.dialogRef.close({
         ...this.noteForm.value,
-        color: this.colorMap[this.selectedColor],
+        color: this.selectedColor,
         tags: this.tags.join(',')
       });
     }

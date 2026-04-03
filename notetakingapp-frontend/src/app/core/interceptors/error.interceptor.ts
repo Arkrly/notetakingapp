@@ -18,9 +18,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       } else {
         switch (error.status) {
           case 401:
-            authService.logout();
-            toastr.error('Session expired. Please login again.', 'Error');
-            return throwError(() => new Error('Session expired'));
+            // Don't auto-logout for auth endpoint 401s (e.g., failed login)
+            if (!req.url.includes('/auth/')) {
+              authService.logout();
+              toastr.error('Session expired. Please login again.', 'Error');
+              return throwError(() => new Error('Session expired'));
+            }
+            // For auth endpoints, let the component handle the error
+            return throwError(() => error);
           case 403:
             toastr.error("You don't have permission to do this.", 'Error');
             return throwError(() => new Error('Forbidden'));

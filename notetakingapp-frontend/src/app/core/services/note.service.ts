@@ -80,7 +80,7 @@ export class NoteService {
   }
 
   bulkDelete(ids: string[]): Observable<ApiResponse<void>> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/bulk`, { body: { ids } });
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/bulk`, { body: ids });
   }
 
   searchNotes(query: string): Observable<ApiResponse<PagedResponse<Note>>> {

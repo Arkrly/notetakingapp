@@ -123,7 +123,7 @@ export class NotesListComponent implements OnInit {
         }
         if (this.hasCachedNotes() && this.cache$.value === cached && !this.hasFetched) {
           this.hasFetched = true;
-          this.fetchFromApi().subscribe();
+          return this.fetchFromApi();
         }
         return of(this.filterNotes(cached, term)).pipe(
           tap(() => this.isLoading$.next(false))

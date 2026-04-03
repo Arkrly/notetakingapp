@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -36,6 +36,7 @@ import { passwordMatchValidator } from '../../auth/register/register.component';
 })
 export class ProfileComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private destroyRef = inject(DestroyRef);
   private authService = inject(AuthService);
   private userService = inject(UserService);
   private router = inject(Router);
@@ -69,7 +70,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.passwordForm.get('newPassword')?.valueChanges.pipe(
-      takeUntilDestroyed()
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe(val => {
       this.calculateStrength(val);
     });
