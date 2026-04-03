@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 status: completed
 last_updated: "2026-04-02T10:45:50.813Z"
-last_activity: "2026-04-02 — Phase 6 context: Pin/archive already preserved, only tags need lowercase"
+last_activity: "2026-04-03 - Completed quick task 1: analyze the audit directory and fix whatever is wrong"
 progress:
   total_phases: 4
   completed_phases: 1
@@ -93,3 +93,9 @@ See: .planning/PROJECT.md (updated 2026-04-02)
 | FEAT-02 | Phase 6 | Pending |
 | FEAT-03 | Phase 6 | Pending |
 | FEAT-04 | Phase 6 | Pending |
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | analyze the audit directory and fix whatever is wrong | 2026-04-03 | f643591 | [1-analyze-the-audit-directory-and-fix-what](./quick/1-analyze-the-audit-directory-and-fix-what/) |
