@@ -2,6 +2,7 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,9 +19,10 @@ import { Router, RouterModule } from '@angular/router';
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required]],
     remember: [false]
   });
@@ -37,10 +39,17 @@ export class LoginComponent {
       this.isLoading = true;
       this.loginError = '';
       
-      setTimeout(() => {
-        this.isLoading = false;
-        this.router.navigate(['/notes']);
-      }, 1000);
+      const credentials = this.loginForm.value;
+      this.authService.login(credentials.username, credentials.password).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.router.navigate(['/notes']);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.loginError = err.error?.message || 'Invalid credentials';
+        }
+      });
     }
   }
 

@@ -71,14 +71,14 @@
             <input
               type="text"
               id="username"
-              formControlName="fullName"
+              formControlName="username"
               placeholder="Choose a username"
               class="input-glow-focus"
-              [class.error]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+              [class.error]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
             >
           </div>
-          <span class="field-hint" *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid">
-            Username must be 3+ characters, letters/numbers/underscores only
+          <span class="field-hint" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
+            Username can only contain letters, numbers, and underscores
           </span>
         </div>
 

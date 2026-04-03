@@ -46,21 +46,21 @@
       </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <!-- Email input -->
+        <!-- Username input -->
         <div class="input-group">
-          <label for="email">Email address</label>
+          <label for="username">Username</label>
           <div class="input-wrapper">
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="M22 6L12 13 2 6"/>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
             </svg>
             <input
-              type="email"
-              id="email"
-              formControlName="email"
-              placeholder="Enter your email"
+              type="text"
+              id="username"
+              formControlName="username"
+              placeholder="Enter your username"
               class="input-glow-focus"
-              [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+              [class.error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
             >
           </div>
         </div>

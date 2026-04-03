@@ -37,7 +37,7 @@ export class RegisterComponent {
   private router = inject(Router);
 
   registerForm: FormGroup = this.fb.group({
-    fullName: ['', Validators.required],
+    username: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_]{3,50}$/)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', Validators.required]
@@ -52,9 +52,9 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.isLoading = true;
       this.registerError = '';
-      const { fullName, email, password } = this.registerForm.value;
+      const { username, email, password } = this.registerForm.value;
       
-      this.authService.register(fullName, email, password).subscribe({
+      this.authService.register(username, email, password).subscribe({
         next: (res) => {
           this.isLoading = false;
           if (res.success) {
