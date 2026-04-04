@@ -24,14 +24,14 @@ tech-stack:
 
 key-files:
   created:
-    - notetakingapp-frontend/vitest.config.ts
-    - notetakingapp-frontend/src/app/core/services/auth.service.spec.ts
-    - notetakingapp-frontend/src/app/notes/notes-list/notes-list.component.spec.ts
+    - frontend/vitest.config.ts
+    - frontend/src/app/core/services/auth.service.spec.ts
+    - frontend/src/app/notes/notes-list/notes-list.component.spec.ts
   modified:
-    - notetakingapp-frontend/angular.json
-    - notetakingapp-frontend/package.json
-    - notetakingapp-frontend/src/app/notes/note-card/note-card.component.ts
-    - notetakingapp-frontend/src/app/notes/note-card/note-card.component.html
+    - frontend/angular.json
+    - frontend/package.json
+    - frontend/src/app/notes/note-card/note-card.component.ts
+    - frontend/src/app/notes/note-card/note-card.component.html
 
 key-decisions:
   - "Used @vitest/browser-playwright for Angular's Vitest browser provider"
@@ -69,13 +69,13 @@ completed: 2026-03-22
 - NoteCardComponent updated with tagList getter for proper tag rendering
 
 ## Files Created/Modified
-- `notetakingapp-frontend/vitest.config.ts` - Vitest browser configuration with Playwright provider
-- `notetakingapp-frontend/src/app/core/services/auth.service.spec.ts` - AuthService unit tests
-- `notetakingapp-frontend/src/app/notes/notes-list/notes-list.component.spec.ts` - NotesListComponent tests
-- `notetakingapp-frontend/src/app/notes/note-card/note-card.component.ts` - Added tagList getter
-- `notetakingapp-frontend/src/app/notes/note-card/note-card.component.html` - Updated to use tagList
-- `notetakingapp-frontend/angular.json` - Updated test builder for Vitest
-- `notetakingapp-frontend/package.json` - Added test:vitest scripts
+- `frontend/vitest.config.ts` - Vitest browser configuration with Playwright provider
+- `frontend/src/app/core/services/auth.service.spec.ts` - AuthService unit tests
+- `frontend/src/app/notes/notes-list/notes-list.component.spec.ts` - NotesListComponent tests
+- `frontend/src/app/notes/note-card/note-card.component.ts` - Added tagList getter
+- `frontend/src/app/notes/note-card/note-card.component.html` - Updated to use tagList
+- `frontend/angular.json` - Updated test builder for Vitest
+- `frontend/package.json` - Added test:vitest scripts
 
 ## Decisions Made
 - Used @vitest/browser-playwright for Angular's Vitest browser provider integration

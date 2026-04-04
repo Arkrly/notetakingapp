@@ -18,7 +18,7 @@ created: 2026-04-02
 | Property | Value |
 |----------|-------|
 | **Framework** | Vitest (Angular + Playwright browser) |
-| **Config file** | `notetakingapp-frontend/vitest.config.ts` |
+| **Config file** | `frontend/vitest.config.ts` |
 | **Quick run command** | `npm test` |
 | **Full suite command** | `npm test -- --run` |
 | **Estimated runtime** | ~15 seconds |
@@ -49,7 +49,7 @@ created: 2026-04-02
 
 ## Wave 0 Requirements
 
-- [x] `notetakingapp-frontend/vitest.config.ts` — existing test config
+- [x] `frontend/vitest.config.ts` — existing test config
 - [x] `auth.service.spec.ts` — existing auth tests
 - [x] `notes-list.component.spec.ts` — existing component tests
 

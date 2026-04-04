@@ -1,12 +1,12 @@
 {
-  "name": "note-taker",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "backend": "cd notetakingapp && mvn spring-boot:run",
-    "frontend": "cd notetakingapp-frontend && npm start"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
-  }
+	"name": "note-taker",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+"backend": "export JAVA_HOME=\"$HOME/.sdkman/candidates/java/current\" && export PATH=\"$JAVA_HOME/bin:$PATH\" && cd backend && mvn spring-boot:run",
+  "frontend": "cd frontend && npm start"
+	},
+	"devDependencies": {
+		"concurrently": "^9.1.2"
+	}
 }

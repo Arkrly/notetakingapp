@@ -10,13 +10,13 @@ truths:
 - "Global exception handler returns consistent error format for all errors"
 - "No LazyInitializationException errors in production logs"
 artifacts:
-- path: "notetakingapp/src/main/java/com/notetakingapp/dto/response/NoteResponse.java"
+- path: "backend/src/main/java/com/backend/dto/response/NoteResponse.java"
   provides: "DTO for note responses"
   status: verified
-- path: "notetakingapp/src/main/java/com/notetakingapp/entity/Note.java"
+- path: "backend/src/main/java/com/backend/entity/Note.java"
   provides: "Note entity with tags as String field"
   status: verified
-- path: "notetakingapp/src/main/java/com/notetakingapp/exception/GlobalExceptionHandler.java"
+- path: "backend/src/main/java/com/backend/exception/GlobalExceptionHandler.java"
   provides: "Global exception handling"
   status: verified
 gaps: []

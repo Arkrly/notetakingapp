@@ -1,5 +1,14 @@
 # Milestones
 
+## v1.1 Build & Test Fixes (Shipped: 2026-04-02)
+
+**Phases completed:** 2 phases, 1 plans, 0 tasks
+
+**Key accomplishments:**
+- (none recorded)
+
+---
+
 ## v1.0 — Initial Implementation
 
 **Status:** Complete

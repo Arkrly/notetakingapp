@@ -5,9 +5,9 @@
 ## Directory Layout
 
 ```
-notetakingapp/                           # Backend (Java/Spring Boot)
+backend/                           # Backend (Java/Spring Boot)
 ├── src/
-│   ├── main/java/com/notetakingapp/
+│   ├── main/java/com/backend/
 │   │   ├── config/                     # Configuration classes
 │   │   ├── controller/                 # REST controllers
 │   │   ├── dto/                        # Data Transfer Objects
@@ -25,7 +25,7 @@ notetakingapp/                           # Backend (Java/Spring Boot)
 ├── pom.xml                              # Maven build config
 └── docker-compose.yaml                  # Local dev services
 
-notetakingapp-frontend/                  # Frontend (Angular 19+)
+frontend/                  # Frontend (Angular 19+)
 ├── src/
 │   ├── app/
 │   │   ├── auth/                       # Auth feature (login/register)
@@ -63,47 +63,47 @@ notetakingapp-frontend/                  # Frontend (Angular 19+)
 
 ## Directory Purposes
 
-### Backend (notetakingapp/)
+### Backend (backend/)
 
-**`src/main/java/com/notetakingapp/controller/`:**
+**`src/main/java/com/backend/controller/`:**
 - Purpose: REST API endpoints
 - Contains: `AuthController.java`, `NoteController.java`, `UserController.java`
 - Key files: Each controller handles one resource domain
 
-**`src/main/java/com/notetakingapp/service/`:**
+**`src/main/java/com/backend/service/`:**
 - Purpose: Business logic layer
 - Contains: Interface definitions + `impl/` subdirectory with implementations
 - Key files: `NoteService.java`, `AuthService.java`, `UserService.java`
 
-**`src/main/java/com/notetakingapp/repository/`:**
+**`src/main/java/com/backend/repository/`:**
 - Purpose: Data access layer
 - Contains: Spring Data JPA repositories (`NoteRepository.java`, `UserRepository.java`)
 
-**`src/main/java/com/notetakingapp/entity/`:**
+**`src/main/java/com/backend/entity/`:**
 - Purpose: Database domain models
 - Contains: `Note.java`, `User.java`
 
-**`src/main/java/com/notetakingapp/dto/`:**
+**`src/main/java/com/backend/dto/`:**
 - Purpose: API contract objects
 - Contains: `request/` (CreateNoteRequest, LoginRequest, etc.) and `response/` (ApiResponse, NoteResponse, etc.)
 
-**`src/main/java/com/notetakingapp/exception/`:**
+**`src/main/java/com/backend/exception/`:**
 - Purpose: Error handling
 - Contains: Custom exceptions + `GlobalExceptionHandler.java` for centralized handling
 
-**`src/main/java/com/notetakingapp/security/`:**
+**`src/main/java/com/backend/security/`:**
 - Purpose: Authentication & authorization
 - Contains: `JwtFilter.java`, `JwtUtils.java`, `UserDetailsServiceImpl.java`
 
-**`src/main/java/com/notetakingapp/config/`:**
+**`src/main/java/com/backend/config/`:**
 - Purpose: Application configuration
 - Contains: `SecurityConfig.java`, `CorsConfig.java`, `OpenApiConfig.java`
 
-**`src/main/java/com/notetakingapp/mapper/`:**
+**`src/main/java/com/backend/mapper/`:**
 - Purpose: Entity ↔ DTO transformations
 - Contains: `NoteMapper.java`, `UserMapper.java`
 
-### Frontend (notetakingapp-frontend/)
+### Frontend (frontend/)
 
 **`src/app/auth/`:**
 - Purpose: Authentication pages
@@ -138,25 +138,25 @@ notetakingapp-frontend/                  # Frontend (Angular 19+)
 
 ### Entry Points
 
-- Backend: `notetakingapp/src/main/java/com/notetakingapp/NotetakingappApplication.java` - Spring Boot main class
-- Frontend: `notetakingapp-frontend/src/main.ts` - Angular bootstrap
+- Backend: `backend/src/main/java/com/backend/NotetakingappApplication.java` - Spring Boot main class
+- Frontend: `frontend/src/main.ts` - Angular bootstrap
 
 ### Configuration
 
-- Backend: `notetakingapp/src/main/resources/` - Application properties
-- Frontend: `notetakingapp-frontend/angular.json` - Angular CLI config
-- Environment: `notetakingapp-frontend/src/environments/environment.ts`
+- Backend: `backend/src/main/resources/` - Application properties
+- Frontend: `frontend/angular.json` - Angular CLI config
+- Environment: `frontend/src/environments/environment.ts`
 
 ### Core Logic
 
-- Backend Controllers: `notetakingapp/src/main/java/com/notetakingapp/controller/`
-- Backend Services: `notetakingapp/src/main/java/com/notetakingapp/service/`
-- Frontend Services: `notetakingapp-frontend/src/app/core/services/`
+- Backend Controllers: `backend/src/main/java/com/backend/controller/`
+- Backend Services: `backend/src/main/java/com/backend/service/`
+- Frontend Services: `frontend/src/app/core/services/`
 
 ### Testing
 
-- Backend Tests: `notetakingapp/src/test/java/com/notetakingapp/controller/`
-- Frontend Tests: `notetakingapp-frontend/src/app/` (co-located with `*.spec.ts` files)
+- Backend Tests: `backend/src/test/java/com/backend/controller/`
+- Frontend Tests: `frontend/src/app/` (co-located with `*.spec.ts` files)
 
 ## Naming Conventions
 
@@ -197,13 +197,13 @@ notetakingapp-frontend/                  # Frontend (Angular 19+)
 
 ### New Backend Feature
 
-1. **Controller:** Add to `notetakingapp/src/main/java/com/notetakingapp/controller/`
+1. **Controller:** Add to `backend/src/main/java/com/backend/controller/`
 2. **Service:** Add interface to `service/` + implementation to `service/impl/`
 3. **Repository:** Add to `repository/` (if new entity)
 4. **DTOs:** Add request/response DTOs to `dto/request/` and `dto/response/`
 5. **Entity:** Add to `entity/` (if new domain object)
 6. **Mapper:** Add to `mapper/` (if new entity)
-7. **Tests:** Add to `src/test/java/com/notetakingapp/controller/`
+7. **Tests:** Add to `src/test/java/com/backend/controller/`
 
 ### New Frontend Feature
 
@@ -221,17 +221,17 @@ notetakingapp-frontend/                  # Frontend (Angular 19+)
 
 ## Special Directories
 
-**`notetakingapp-frontend/src/environments/`:**
+**`frontend/src/environments/`:**
 - Purpose: Environment configuration (API URLs, feature flags)
 - Generated: No (manually maintained)
 - Committed: Yes
 
-**`notetakingapp-frontend/public/`:**
+**`frontend/public/`:**
 - Purpose: Static assets (favicon, etc.)
 - Generated: No
 - Committed: Yes
 
-**`notetakingapp/.mvn/`:**
+**`backend/.mvn/`:**
 - Purpose: Maven wrapper JAR
 - Generated: Yes
 - Committed: Yes

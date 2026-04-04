@@ -70,7 +70,7 @@ The application is a self-contained note-taking system with no third-party API i
 - `CORS_ALLOWED_ORIGINS` - Frontend URL for CORS (default: `http://localhost:4200`)
 
 **Configuration Location:**
-- `notetakingapp/src/main/resources/application.properties` - Backend config
+- `backend/src/main/resources/application.properties` - Backend config
 - `.env.example` - Template for environment variables
 
 ## Webhooks & Callbacks

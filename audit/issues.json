@@ -1,0 +1,561 @@
+[
+  {
+    "id": "CRIT-001",
+    "type": "Logic",
+    "severity": "CRITICAL",
+    "title": "Login component does NOT call AuthService — fake login bypasses authentication",
+    "url": "/login",
+    "sourceFiles": [
+      "frontend/src/app/auth/login/login.component.ts"
+    ],
+    "description": "LoginComponent.onSubmit() uses setTimeout to navigate to /notes after 1 second WITHOUT calling AuthService.login(). No API request is made, no JWT token is stored. Users are redirected to /notes but will have no valid auth token, causing all API calls to fail with 401.",
+    "reproductionSteps": [
+      "1. Navigate to /login",
+      "2. Enter any email/password",
+      "3. Submit form",
+      "4. Observe: user navigates to /notes but no auth API call is made",
+      "5. All subsequent note API calls fail with 401"
+    ],
+    "logs": "Network: No POST to /api/v1/auth/login — localStorage has no 'note_app_token'",
+    "suggestedFix": "Inject AuthService and call this.authService.login(email, password).subscribe() in onSubmit(), storing the token on success before navigating.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "CRIT-002",
+    "type": "Logic",
+    "severity": "CRITICAL",
+    "title": "Login form sends 'email' but backend expects 'username' in LoginRequest",
+    "url": "/login",
+    "sourceFiles": [
+      "frontend/src/app/auth/login/login.component.ts",
+      "frontend/src/app/auth/login/login.component.html",
+      "backend/src/main/java/com/backend/dto/request/LoginRequest.java",
+      "backend/src/main/java/com/backend/security/UserDetailsServiceImpl.java"
+    ],
+    "description": "The login form has a field named 'email' (formControlName='email') with email validation. However, LoginRequest.java expects a 'username' field. AuthServiceImpl.login() uses LoginRequest.getUsername() to authenticate via UsernamePasswordAuthenticationToken. UserDetailsServiceImpl.loadUserByUsername() looks up by username, NOT email. Even if CRIT-001 is fixed, login will always fail because the frontend sends an email but the backend authenticates by username.",
+    "reproductionSteps": [
+      "1. Fix CRIT-001 first",
+      "2. Register a user with username='john_doe', email='john@example.com'",
+      "3. Try to login with 'john@example.com' and password",
+      "4. Backend receives email as 'username' parameter",
+      "5. UserDetailsServiceImpl cannot find user 'john@example.com' by username",
+      "6. Login fails with 401"
+    ],
+    "logs": "Spring Security: UsernameNotFoundException — 'User not found with username: john@example.com'",
+    "suggestedFix": "Either (A) change the login form to use a 'username' field and update AuthService.login() to send { username, password }, or (B) modify UserDetailsServiceImpl.loadUserByUsername() to support lookup by email OR username, and rename the backend DTO field accordingly.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "CRIT-003",
+    "type": "Logic",
+    "severity": "CRITICAL",
+    "title": "Register form sends 'fullName' as 'username' but backend rejects it (validation mismatch)",
+    "url": "/register",
+    "sourceFiles": [
+      "frontend/src/app/auth/register/register.component.ts",
+      "backend/src/main/java/com/backend/dto/request/RegisterRequest.java"
+    ],
+    "description": "RegisterComponent uses formControlName='fullName' and sends it as the 'username' parameter to AuthService.register(fullName, email, password). The backend RegisterRequest validates username with @Pattern(regexp=\"^[a-zA-Z0-9_]+$\") — spaces are NOT allowed. A 'Full Name' like 'John Doe' would be rejected by backend validation. The form label ('Full Name') misleads users into entering invalid data.",
+    "reproductionSteps": [
+      "1. Navigate to /register",
+      "2. Enter 'John Doe' in the Full Name field",
+      "3. Submit",
+      "4. Backend responds with 400: 'Username can only contain letters, numbers, and underscores'"
+    ],
+    "logs": "POST /api/v1/auth/register → 400 Bad Request: validation error on 'username' field",
+    "suggestedFix": "Rename the field from 'fullName' to 'username', update the label to 'Username', and add frontend validation matching the backend regex pattern (alphanumeric + underscores, 3-50 chars).",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "HIGH-001",
+    "type": "Backend",
+    "severity": "HIGH",
+    "title": "Hardcoded JWT secret in application.properties (security vulnerability)",
+    "url": "N/A",
+    "sourceFiles": [
+      "backend/src/main/resources/application.properties"
+    ],
+    "description": "The JWT secret 'cGWQhI6rLabkMlfHacubRsK80aBqdoxJDy+nOU0haSk=' is hardcoded as the default value in application.properties (line 23). This is committed to source control. Any attacker with access to the repository can forge JWT tokens and impersonate any user.",
+    "reproductionSteps": [
+      "1. Read the JWT secret from application.properties",
+      "2. Use it to craft a valid JWT for any user",
+      "3. Make authenticated API requests as that user"
+    ],
+    "logs": "Static analysis: app.jwt.secret has hardcoded fallback value",
+    "suggestedFix": "Remove the hardcoded default. Require JWT_SECRET to be set as an environment variable. The app should fail to start if this variable is missing.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "HIGH-002",
+    "type": "Backend",
+    "severity": "HIGH",
+    "title": "CorsConfig allows ALL origins with wildcard pattern — bypasses SecurityConfig CORS",
+    "url": "N/A",
+    "sourceFiles": [
+      "backend/src/main/java/com/backend/config/CorsConfig.java",
+      "backend/src/main/java/com/backend/config/SecurityConfig.java"
+    ],
+    "description": "CorsConfig.java (line 18) sets allowedOriginPatterns to '*', allowing requests from ANY origin with credentials. Meanwhile, SecurityConfig.java attempts to restrict origins to 'http://localhost:4200'. Since CorsFilter bean is registered separately, it conflicts with/overrides the SecurityFilterChain CORS configuration. The wildcard pattern effectively nullifies the origin restriction.",
+    "reproductionSteps": [
+      "1. Make a cross-origin request from any domain to the API",
+      "2. The request succeeds because CorsFilter allows '*'"
+    ],
+    "logs": "Static analysis: Duplicate CORS configuration with conflicting rules",
+    "suggestedFix": "Remove CorsConfig.java entirely and rely solely on SecurityConfig.corsConfigurationSource(). Or align both to the same origins.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "HIGH-003",
+    "type": "UI",
+    "severity": "HIGH",
+    "title": "Duplicate root component — app.ts vs app.component.ts (dead code, potential confusion)",
+    "url": "N/A",
+    "sourceFiles": [
+      "frontend/src/app/app.ts",
+      "frontend/src/app/app.component.ts",
+      "frontend/src/app/app.html",
+      "frontend/src/app/app.component.html",
+      "frontend/src/main.ts"
+    ],
+    "description": "main.ts bootstraps 'App' from './app/app' (app.ts), which uses templateUrl './app.component.html' but also has a competing app.html file (345 lines of Angular default placeholder content). The actual AppComponent in app.component.ts is DEAD CODE — it's never bootstrapped. The app.html contains the Angular scaffold 'Hello world' placeholder that is loaded by the active App class from app.ts, but app.component.html (router-outlet) is actually used as the templateUrl. This is confusing and the app.html/app.ts files are effectively dead code remnants.",
+    "reproductionSteps": [
+      "1. Check main.ts — bootstraps App from app.ts",
+      "2. App class references templateUrl './app.component.html' (which is <router-outlet>)",
+      "3. app.html (345 lines) is Angular CLI scaffold — never loaded",
+      "4. AppComponent in app.component.ts has proper imports but is never used"
+    ],
+    "logs": "Static analysis: Duplicate app root definitions",
+    "suggestedFix": "Delete app.ts, app.html, and app.css. Update main.ts to import AppComponent from './app/app.component' instead. Or consolidate into a single root component.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "HIGH-004",
+    "type": "Logic",
+    "severity": "HIGH",
+    "title": "Frontend bulkDelete sends wrong request body format",
+    "url": "/notes",
+    "sourceFiles": [
+      "frontend/src/app/core/services/note.service.ts",
+      "backend/src/main/java/com/backend/controller/NoteController.java"
+    ],
+    "description": "NoteService.bulkDelete() sends { body: { ids } } — wrapping IDs in an 'ids' object. But NoteController.bulkDeleteNotes() expects @RequestBody List<UUID> directly. The backend expects a JSON array of UUIDs like [\"uuid1\",\"uuid2\"], but the frontend sends {\"ids\":[\"uuid1\",\"uuid2\"]}. This will cause a 400 Bad Request.",
+    "reproductionSteps": [
+      "1. Attempt bulk delete operation from frontend",
+      "2. Frontend sends DELETE /api/v1/notes/bulk with body {ids: [...]}",
+      "3. Backend expects a direct List<UUID>, deserialization fails"
+    ],
+    "logs": "Expected: List<UUID>, Got: JSON object with 'ids' field",
+    "suggestedFix": "Change note.service.ts bulkDelete to send the array directly: this.http.delete<...>(`${this.apiUrl}/bulk`, { body: ids })",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "HIGH-005",
+    "type": "Backend",
+    "severity": "HIGH",
+    "title": "Flyway disabled with ddl-auto=update — schema management risk",
+    "url": "N/A",
+    "sourceFiles": [
+      "backend/src/main/resources/application.properties"
+    ],
+    "description": "spring.flyway.enabled=false and spring.jpa.hibernate.ddl-auto=update. This means Hibernate auto-generates/updates the schema on every startup. While okay for development, this is dangerous in production — it can silently alter table structures, drop columns, or cause data loss. Flyway migration files exist (db/migration) but are not executed.",
+    "reproductionSteps": [
+      "1. Check application.properties line 11 and 18",
+      "2. Hibernate manages schema with ddl-auto=update",
+      "3. Flyway is disabled despite having migration files"
+    ],
+    "logs": "Static analysis: Flyway disabled, ddl-auto=update",
+    "suggestedFix": "For production: enable Flyway (spring.flyway.enabled=true), set spring.jpa.hibernate.ddl-auto=validate. Keep ddl-auto=update only in development profile.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "HIGH-006",
+    "type": "Backend",
+    "severity": "HIGH",
+    "title": "Production environment.prod.ts still points to localhost",
+    "url": "N/A",
+    "sourceFiles": [
+      "frontend/src/environments/environment.prod.ts"
+    ],
+    "description": "environment.prod.ts has apiUrl: 'http://localhost:8080/api/v1'. This means a production build will still try to connect to localhost, which will fail in any deployment scenario.",
+    "reproductionSteps": [
+      "1. Run ng build --configuration production",
+      "2. Deploy to a server",
+      "3. All API calls go to http://localhost:8080 — which doesn't exist on the production server"
+    ],
+    "logs": "Static analysis: Production config points to localhost",
+    "suggestedFix": "Use a relative URL like '/api/v1' or use environment variables for the production API URL.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-001",
+    "type": "Logic",
+    "severity": "MEDIUM",
+    "title": "NoteFormComponent color map doesn't include 'orange' but NoteCardComponent does",
+    "url": "/notes",
+    "sourceFiles": [
+      "frontend/src/app/notes/note-form/note-form.component.ts",
+      "frontend/src/app/notes/note-card/note-card.component.ts"
+    ],
+    "description": "NoteCardComponent supports 'orange' in its borderClass and tagBgClass maps, but NoteFormComponent's colors array and colorMap don't include 'orange'. Notes returned from the backend with color='orange' will display correctly in cards but if edited, the form won't recognize 'orange' — the selected color will default incorrectly.",
+    "reproductionSteps": [
+      "1. Create a note and manually set color to orange in the database",
+      "2. The note card renders correctly with orange styling",
+      "3. Click edit — the form doesn't show orange as selected"
+    ],
+    "logs": "Static analysis: Color mismatch between form and card components",
+    "suggestedFix": "Add 'orange' to NoteFormComponent.colors array and colorMap, or remove 'orange' from NoteCardComponent.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-002",
+    "type": "Logic",
+    "severity": "MEDIUM",
+    "title": "NoteFormComponent stores hex color but NoteCardComponent expects color name strings",
+    "url": "/notes",
+    "sourceFiles": [
+      "frontend/src/app/notes/note-form/note-form.component.ts",
+      "frontend/src/app/notes/note-card/note-card.component.ts"
+    ],
+    "description": "NoteFormComponent.onSubmit() sends color as a hex string (e.g., '#fef9c3'), but NoteCardComponent.bgClass uses 'bg-note-${this.note.color}' which expects a color name (e.g., 'yellow'). The border/tag maps also use color names. When a note is created/edited, the saved hex color won't match any of the card's color name maps, causing all notes to use the default fallback styling.",
+    "reproductionSteps": [
+      "1. Create a new note, select 'yellow'",
+      "2. Form submits color as '#fef9c3'",
+      "3. Backend stores '#fef9c3' in the database",
+      "4. NoteCardComponent tries 'bg-note-#fef9c3' — undefined CSS class",
+      "5. Note renders with default white styling instead of yellow"
+    ],
+    "logs": "CSS class lookup fails: 'bg-note-#fef9c3' is not a valid Tailwind class",
+    "suggestedFix": "Either submit the color name ('yellow') instead of the hex value, or update NoteCardComponent to map hex values back to color names.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-003",
+    "type": "Logic",
+    "severity": "MEDIUM",
+    "title": "Frontend Note model has tags as 'string' but API docs show tags as 'string[]'",
+    "url": "N/A",
+    "sourceFiles": [
+      "frontend/src/app/core/models/note.model.ts",
+      "backend/src/main/java/com/backend/entity/Note.java",
+      "docs/API.md"
+    ],
+    "description": "API.md documents tags as [\"string\"] (an array), but the actual Note entity stores tags as a single String field (comma-separated). The frontend Note model also uses 'tags: string' (single string). The documentation is inaccurate and could confuse API consumers.",
+    "reproductionSteps": [
+      "1. Read API.md — it shows tags as an array of strings",
+      "2. Check Note entity — tags is a VARCHAR(500) string",
+      "3. Frontend correctly handles it as comma-separated string"
+    ],
+    "logs": "Static analysis: Documentation mismatch",
+    "suggestedFix": "Update API.md to show tags as a comma-separated string, matching the actual implementation.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-004",
+    "type": "UI",
+    "severity": "MEDIUM",
+    "title": "OAuth buttons (Google, GitHub) on login page are non-functional",
+    "url": "/login",
+    "sourceFiles": [
+      "frontend/src/app/auth/login/login.component.html"
+    ],
+    "description": "The login page has Google and GitHub OAuth buttons with no onClick handlers and type='button'. They render but do nothing. No OAuth integration exists in the backend. This creates a false expectation for users.",
+    "reproductionSteps": [
+      "1. Navigate to /login",
+      "2. Click 'Google' or 'GitHub' button",
+      "3. Nothing happens"
+    ],
+    "logs": "Static analysis: No OAuth event handlers or backend integration",
+    "suggestedFix": "Either implement OAuth2 integration with Spring Security OAuth2 client, or remove the OAuth buttons entirely.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-005",
+    "type": "UI",
+    "severity": "MEDIUM",
+    "title": "'Forgot password?' link on login page is non-functional (href='#')",
+    "url": "/login",
+    "sourceFiles": [
+      "frontend/src/app/auth/login/login.component.html"
+    ],
+    "description": "The 'Forgot password?' link uses href='#', which scrolls to top of page but doesn't navigate to any password reset flow. No password reset endpoint exists in the backend.",
+    "reproductionSteps": [
+      "1. Navigate to /login",
+      "2. Click 'Forgot password?'",
+      "3. Page scrolls to top, nothing else happens"
+    ],
+    "logs": "Static analysis: href='#' with no password reset flow",
+    "suggestedFix": "Implement a password reset flow, or remove the link and add a note about contacting support.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-006",
+    "type": "Logic",
+    "severity": "MEDIUM",
+    "title": "UserService.changePassword sends wrong request body format",
+    "url": "/profile",
+    "sourceFiles": [
+      "frontend/src/app/core/services/user.service.ts",
+      "backend/src/main/java/com/backend/controller/UserController.java"
+    ],
+    "description": "UserService.changePassword() sends { currentPassword, newPassword } as a typed ChangePasswordRequest. But UserController.changePassword() reads from Map<String, String> using request.get('currentPassword') and request.get('newPassword'). While this should work since the field names match, the backend endpoint uses a weakly-typed Map instead of a proper validated DTO — there's no @Valid annotation, no validation on password length, and no confirmation field.",
+    "reproductionSteps": [
+      "1. Navigate to /profile",
+      "2. Try to change password with an empty new password",
+      "3. Backend accepts it without validation"
+    ],
+    "logs": "Static analysis: No validation on password change endpoint",
+    "suggestedFix": "Create a ChangePasswordRequest DTO with @Valid annotations, replace Map<String, String> with it.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-007",
+    "type": "Performance",
+    "severity": "MEDIUM",
+    "title": "NotesListComponent subscribes inside switchMap without proper cleanup",
+    "url": "/notes",
+    "sourceFiles": [
+      "frontend/src/app/notes/notes-list/notes-list.component.ts"
+    ],
+    "description": "Line 126: this.fetchFromApi().subscribe() — a fire-and-forget subscription inside a switchMap callback creates a memory leak. Each time combineLatest emits and cache is stale, a new subscription is created that never gets unsubscribed. This could cause duplicate API calls and memory leaks as the component lifecycle progresses.",
+    "reproductionSteps": [
+      "1. Navigate to /notes",
+      "2. Trigger several search/refresh events",
+      "3. Each creates an orphan subscription to fetchFromApi()"
+    ],
+    "logs": "Static analysis: Orphan .subscribe() inside switchMap",
+    "suggestedFix": "Use take(1) or refactor to return the Observable within switchMap rather than calling .subscribe() inside it.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-008",
+    "type": "Backend",
+    "severity": "MEDIUM",
+    "title": "Database switched from PostgreSQL to H2 in-memory — data loss on restart",
+    "url": "N/A",
+    "sourceFiles": [
+      "backend/src/main/resources/application.properties",
+      "backend/docker-compose.yaml"
+    ],
+    "description": "application.properties defaults to H2 in-memory database despite the project being configured for PostgreSQL (docker-compose, pom.xml dependencies). The driver is set to org.h2.Driver and the dialect to H2Dialect. All data is lost when the server restarts. The docker-compose.yaml still references PostgreSQL 16.",
+    "reproductionSteps": [
+      "1. Start the backend with `mvn spring-boot:run`",
+      "2. Create some notes",
+      "3. Restart the server",
+      "4. All notes are gone"
+    ],
+    "logs": "Static analysis: H2 in-memory database with DB_CLOSE_DELAY=-1",
+    "suggestedFix": "For development, use H2 file-based persistence or start the PostgreSQL docker container. For production, always use PostgreSQL. Consider using Spring profiles (dev/prod) to separate database configs.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "MED-009",
+    "type": "Logic",
+    "severity": "MEDIUM",
+    "title": "ProfileComponent uses takeUntilDestroyed() outside constructor injection context",
+    "url": "/profile",
+    "sourceFiles": [
+      "frontend/src/app/user/profile/profile.component.ts"
+    ],
+    "description": "takeUntilDestroyed() (line 72) is used in ngOnInit() which runs outside the constructor injection context. Angular's takeUntilDestroyed() requires either being called in the constructor or receiving an explicit DestroyRef. This will throw a runtime error: 'takeUntilDestroyed() can only be used within an injection context'.",
+    "reproductionSteps": [
+      "1. Navigate to /profile",
+      "2. Component crashes with injection context error when subscribing to password value changes"
+    ],
+    "logs": "RuntimeError: takeUntilDestroyed() can only be used within an injection context",
+    "suggestedFix": "Either move the subscription into the constructor, or inject DestroyRef and pass it: takeUntilDestroyed(this.destroyRef).",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-001",
+    "type": "UI",
+    "severity": "LOW",
+    "title": "Terms and Privacy links on login page are non-functional (href='#')",
+    "url": "/login",
+    "sourceFiles": [
+      "frontend/src/app/auth/login/login.component.html"
+    ],
+    "description": "The 'Terms' and 'Privacy' links at the bottom of the login form use href='#', which don't navigate to actual legal pages.",
+    "reproductionSteps": [
+      "1. Navigate to /login",
+      "2. Click 'Terms' or 'Privacy'",
+      "3. Nothing happens"
+    ],
+    "logs": "Static analysis: placeholder href='#' links",
+    "suggestedFix": "Either create Terms and Privacy pages or remove the legal fine print.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-002",
+    "type": "UI",
+    "severity": "LOW",
+    "title": "Login form carousel dots are purely decorative — no content slides",
+    "url": "/login",
+    "sourceFiles": [
+      "frontend/src/app/auth/login/login.component.ts",
+      "frontend/src/app/auth/login/login.component.html"
+    ],
+    "description": "The login page has carousel dots with a setActiveDot() method, but there are no actual carousel slides/content that change. The dots just toggle an 'active' class for visual effect with no associated content.",
+    "reproductionSteps": [
+      "1. Navigate to /login",
+      "2. Click different carousel dots",
+      "3. Active dot changes but no content slides"
+    ],
+    "logs": "Static analysis: Carousel handler with no content",
+    "suggestedFix": "Either implement actual carousel content (testimonials, features), or remove the dots.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-003",
+    "type": "Performance",
+    "severity": "LOW",
+    "title": "NotesListComponent loads up to 50 notes with no virtual scrolling",
+    "url": "/notes",
+    "sourceFiles": [
+      "frontend/src/app/notes/notes-list/notes-list.component.ts"
+    ],
+    "description": "getNotes(0, 50) fetches up to 50 notes at once. Combined with the grid layout and animations (animate-slide-up on each card with staggered delays), this could cause jank on lower-end devices. No pagination or virtual scrolling is implemented on the frontend.",
+    "reproductionSteps": [
+      "1. Create 50+ notes",
+      "2. Navigate to /notes",
+      "3. All 50 note cards render simultaneously with animation delays"
+    ],
+    "logs": "Static analysis: No virtualization for large note lists",
+    "suggestedFix": "Implement infinite scrolling or pagination, or use Angular CDK virtual scroll for large lists.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-004",
+    "type": "Logic",
+    "severity": "LOW",
+    "title": "NotesListComponent uses localStorage cache with no expiration",
+    "url": "/notes",
+    "sourceFiles": [
+      "frontend/src/app/notes/notes-list/notes-list.component.ts"
+    ],
+    "description": "Notes are cached in localStorage under 'notes_cache' with no TTL or expiration. Stale data could persist indefinitely. The cache key is shared across all users on the same browser, so switching users could show another user's notes briefly.",
+    "reproductionSteps": [
+      "1. Login as user A, create notes",
+      "2. Logout",
+      "3. Login as user B",
+      "4. Briefly see user A's cached notes before API response overwrites"
+    ],
+    "logs": "Static analysis: No TTL or user-scoping on localStorage cache",
+    "suggestedFix": "Include userId in the cache key (e.g., 'notes_cache_${userId}') and add a TTL check. Clear cache on logout.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-005",
+    "type": "Backend",
+    "severity": "LOW",
+    "title": "NoteServiceImpl.findNoteAndVerifyOwnership is vulnerable to IDOR timing attack",
+    "url": "N/A",
+    "sourceFiles": [
+      "backend/src/main/java/com/backend/service/impl/NoteServiceImpl.java"
+    ],
+    "description": "findNoteAndVerifyOwnership() first checks if the note exists (throws ResourceNotFoundException), then checks if the user owns it (throws UnauthorizedException). An attacker can enumerate note IDs by observing different error responses (404 vs 403), revealing whether specific notes exist or not.",
+    "reproductionSteps": [
+      "1. Authenticate as any user",
+      "2. GET /api/v1/notes/{random-uuid}",
+      "3. 404 = note doesn't exist, 403 = note exists but belongs to another user"
+    ],
+    "logs": "Static analysis: Different error codes for existence vs ownership",
+    "suggestedFix": "Use findByIdAndUserId() instead of findById(). Return the same 404 for both 'not found' and 'not owned' cases.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-006",
+    "type": "Backend",
+    "severity": "LOW",
+    "title": "JwtFilter calls isTokenValid() and then extractUsername() — double parsing",
+    "url": "N/A",
+    "sourceFiles": [
+      "backend/src/main/java/com/backend/security/JwtFilter.java",
+      "backend/src/main/java/com/backend/security/JwtUtils.java"
+    ],
+    "description": "JwtFilter first calls jwtUtils.isTokenValid(jwt) which parses the JWT, then calls extractUsername(jwt) which parses it again, then calls validateToken(jwt, userDetails) which parses it a third time. Each parseSignedClaims() call involves cryptographic signature verification, tripling the overhead per request.",
+    "reproductionSteps": [
+      "1. Make any authenticated API request",
+      "2. The JWT is parsed and verified 3 separate times per request"
+    ],
+    "logs": "Static analysis: Triple JWT parsing in filter chain",
+    "suggestedFix": "Parse the JWT once in the filter, extract claims, and pass them through. Or simplify to a single validateToken() call that returns the UserDetails.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-007",
+    "type": "Logic",
+    "severity": "LOW",
+    "title": "Error interceptor auto-logouts on ANY 401 — including failed login attempts",
+    "url": "/login",
+    "sourceFiles": [
+      "frontend/src/app/core/interceptors/error.interceptor.ts"
+    ],
+    "description": "The error interceptor calls authService.logout() for all 401 responses (line 21). This includes a failed login attempt that returns 401, which would redirect to /login while already on /login, and clear any stored tokens. It should only auto-logout for protected endpoints, not auth endpoints.",
+    "reproductionSteps": [
+      "1. Try to login with wrong credentials",
+      "2. Backend returns 401",
+      "3. Error interceptor calls logout() and navigates to /login",
+      "4. User sees 'Session expired' toast instead of 'Invalid credentials'"
+    ],
+    "logs": "Static analysis: Interceptor doesn't differentiate auth vs non-auth 401s",
+    "suggestedFix": "Check if the request URL contains '/auth/' before calling logout(). For auth endpoints, let the component handle the error.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-008",
+    "type": "Backend",
+    "severity": "LOW",
+    "title": "Actuator health endpoint exposes internal details publicly",
+    "url": "http://localhost:8080/actuator/health",
+    "sourceFiles": [
+      "backend/src/main/resources/application.properties"
+    ],
+    "description": "management.endpoint.health.show-details=always exposes detailed database connection info, disk space, and other internals to unauthenticated users. The /actuator/health endpoint is publicly accessible per SecurityConfig.",
+    "reproductionSteps": [
+      "1. GET http://localhost:8080/actuator/health",
+      "2. Response includes database type, status, disk space details"
+    ],
+    "logs": "Static analysis: show-details=always with public access",
+    "suggestedFix": "Change to management.endpoint.health.show-details=when-authorized and restrict actuator endpoints to admin roles.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-009",
+    "type": "Logic",
+    "severity": "LOW",
+    "title": "Notes route ':filter' parameter is defined but never used in NotesListComponent",
+    "url": "/notes/pinned, /notes/archived",
+    "sourceFiles": [
+      "frontend/src/app/app.routes.ts",
+      "frontend/src/app/notes/notes-list/notes-list.component.ts"
+    ],
+    "description": "The route 'notes/:filter' is defined to handle /notes/pinned and /notes/archived, but NotesListComponent never reads the :filter route parameter. It always fetches ALL notes from the API. Navigating to /notes/pinned shows all notes, not just pinned ones.",
+    "reproductionSteps": [
+      "1. Navigate to /notes/pinned",
+      "2. All notes are shown, not just pinned",
+      "3. No ActivatedRoute usage in component"
+    ],
+    "logs": "Static analysis: Route parameter ':filter' is never consumed",
+    "suggestedFix": "Inject ActivatedRoute, read the :filter param, and call the appropriate API endpoint (getPinnedNotes, getArchivedNotes) based on the filter value.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  },
+  {
+    "id": "LOW-010",
+    "type": "Logic",
+    "severity": "LOW",
+    "title": "getPinnedNotes() and getArchivedNotes() frontend services return wrong types",
+    "url": "N/A",
+    "sourceFiles": [
+      "frontend/src/app/core/services/note.service.ts",
+      "backend/src/main/java/com/backend/controller/NoteController.java"
+    ],
+    "description": "NoteService.getPinnedNotes() returns Observable<ApiResponse<Note[]>> but the backend returns ApiResponse<Page<NoteResponse>> (a paginated response, not a plain array). The response will include { content: [...], totalPages, size, ... } instead of a direct array, causing type mismatches.",
+    "reproductionSteps": [
+      "1. Call getPinnedNotes() or getArchivedNotes()",
+      "2. Frontend expects Note[] but receives Page<NoteResponse> with content/metadata"
+    ],
+    "logs": "Static analysis: Type mismatch between frontend type and backend response",
+    "suggestedFix": "Change return types to Observable<ApiResponse<PagedResponse<Note>>> to match the backend.",
+    "timestamp": "2026-04-03T10:25:00+05:30"
+  }
+]

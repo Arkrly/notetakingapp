@@ -20,10 +20,10 @@ patterns:
 
 key-files:
 created:
-- notetakingapp/src/test/java/com/notetakingapp/service/impl/NoteServiceImplTest.java
+- backend/src/test/java/com/backend/service/impl/NoteServiceImplTest.java
 modified:
-- notetakingapp/src/main/java/com/notetakingapp/repository/NoteRepository.java
-- notetakingapp/src/main/java/com/notetakingapp/service/impl/NoteServiceImpl.java
+- backend/src/main/java/com/backend/repository/NoteRepository.java
+- backend/src/main/java/com/backend/service/impl/NoteServiceImpl.java
 
 key-decisions:
 - "Verify ownership via count query before bulk delete"
@@ -74,9 +74,9 @@ _Note: TDD tasks may have multiple commits (test → feat → refactor)_
 
 ## Files Created/Modified
 
-- `notetakingapp/src/main/java/com/notetakingapp/repository/NoteRepository.java` - Added countByIdInAndUserId method
-- `notetakingapp/src/main/java/com/notetakingapp/service/impl/NoteServiceImpl.java` - Added ownership verification to bulkDeleteNotes
-- `notetakingapp/src/test/java/com/notetakingapp/service/impl/NoteServiceImplTest.java` - Unit tests for IDOR prevention
+- `backend/src/main/java/com/backend/repository/NoteRepository.java` - Added countByIdInAndUserId method
+- `backend/src/main/java/com/backend/service/impl/NoteServiceImpl.java` - Added ownership verification to bulkDeleteNotes
+- `backend/src/test/java/com/backend/service/impl/NoteServiceImplTest.java` - Unit tests for IDOR prevention
 
 ## Decisions Made
 

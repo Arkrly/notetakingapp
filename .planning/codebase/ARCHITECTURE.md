@@ -19,80 +19,80 @@ This is a traditional multi-tier architecture with a Java/Spring Boot backend ex
 ### Backend (Java/Spring Boot)
 
 **Presentation Layer - Controllers:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/controller/`
+- Location: `backend/src/main/java/com/backend/controller/`
 - Contains: `AuthController.java`, `NoteController.java`, `UserController.java`
 - Depends on: Service layer
 - Used by: Frontend HTTP clients
 
 **Service Layer:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/service/`
+- Location: `backend/src/main/java/com/backend/service/`
 - Contains: Interfaces (`AuthService.java`, `NoteService.java`, `UserService.java`) and implementations (`impl/`)
 - Depends on: Repository layer, Security utilities
 - Used by: Controllers
 
 **Repository Layer:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/repository/`
+- Location: `backend/src/main/java/com/backend/repository/`
 - Contains: `NoteRepository.java`, `UserRepository.java`
 - Depends on: Entity layer, Spring Data JPA
 - Used by: Service layer
 
 **Entity Layer:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/entity/`
+- Location: `backend/src/main/java/com/backend/entity/`
 - Contains: `Note.java`, `User.java`
 - Used by: Repository, Mapper, Service layers
 
 **Security Layer:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/security/`
+- Location: `backend/src/main/java/com/backend/security/`
 - Contains: `JwtFilter.java`, `JwtUtils.java`, `UserDetailsServiceImpl.java`
 - Responsibilities: JWT token generation/validation, user authentication
 
 **Configuration Layer:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/config/`
+- Location: `backend/src/main/java/com/backend/config/`
 - Contains: `SecurityConfig.java`, `CorsConfig.java`, `OpenApiConfig.java`
 - Responsibilities: Security setup, CORS, API documentation
 
 **DTO/Mapping Layer:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/dto/`, `mapper/`
+- Location: `backend/src/main/java/com/backend/dto/`, `mapper/`
 - Contains: Request/Response DTOs, Mapper interfaces (`UserMapper.java`, `NoteMapper.java`)
 - Responsibilities: Data transformation between entity and API layers
 
 **Exception Handling:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/exception/`
+- Location: `backend/src/main/java/com/backend/exception/`
 - Contains: Custom exceptions (`ValidationException.java`, `ResourceNotFoundException.java`, `UnauthorizedException.java`), `GlobalExceptionHandler.java`
 - Responsibilities: Centralized error handling with consistent API responses
 
 ### Frontend (Angular 19+ Standalone)
 
 **Root Component:**
-- Location: `notetakingapp-frontend/src/app/app.ts`
+- Location: `frontend/src/app/app.ts`
 - Responsibilities: Application bootstrap, routing outlet
 
 **Routing Layer:**
-- Location: `notetakingapp-frontend/src/app/app.routes.ts`
+- Location: `frontend/src/app/app.routes.ts`
 - Contains: Route definitions with lazy-loading-ready structure
 - Guards: `AuthGuard` protects authenticated routes
 
 **Core Services:**
-- Location: `notetakingapp-frontend/src/app/core/services/`
+- Location: `frontend/src/app/core/services/`
 - Contains: `AuthService.ts`, `NoteService.ts`, `UserService.ts`
 - Responsibilities: HTTP communication, business logic, state management via RxJS observables
 - Uses: Angular `HttpClient` with interceptors
 
 **HTTP Interceptors:**
-- Location: `notetakingapp-frontend/src/app/core/interceptors/`
+- Location: `frontend/src/app/core/interceptors/`
 - Contains: `auth.interceptor.ts` (adds JWT header), `error.interceptor.ts` (global error handling)
 - Responsibilities: Request/response transformation
 
 **Feature Modules (by route):**
-- Location: `notetakingapp-frontend/src/app/auth/`, `notes/`, `user/`
+- Location: `frontend/src/app/auth/`, `notes/`, `user/`
 - Contains: Page components organized by feature
 
 **Shared Components:**
-- Location: `notetakingapp-frontend/src/app/shared/components/`
+- Location: `frontend/src/app/shared/components/`
 - Contains: Reusable UI components (`sidebar`, `confirm-dialog`)
 
 **Models:**
-- Location: `notetakingapp-frontend/src/app/core/models/`
+- Location: `frontend/src/app/core/models/`
 - Contains: TypeScript interfaces (`Note.ts`, `User.ts`, `ApiResponse.ts`)
 
 ## Data Flow
@@ -119,7 +119,7 @@ This is a traditional multi-tier architecture with a Java/Spring Boot backend ex
 **DTO Pattern (Backend):**
 - Request DTOs: `CreateNoteRequest`, `UpdateNoteRequest`, `PatchNoteRequest`, `LoginRequest`, `RegisterRequest`
 - Response DTOs: `ApiResponse<T>`, `NoteResponse`, `UserResponse`, `AuthResponse`
-- Location: `notetakingapp/src/main/java/com/notetakingapp/dto/`
+- Location: `backend/src/main/java/com/backend/dto/`
 
 **Mapper Pattern:**
 - Uses MapStruct or manual mappers (`UserMapper.java`, `NoteMapper.java`)
@@ -137,12 +137,12 @@ This is a traditional multi-tier architecture with a Java/Spring Boot backend ex
 ## Entry Points
 
 **Backend Entry Point:**
-- Location: `notetakingapp/src/main/java/com/notetakingapp/NotetakingappApplication.java`
+- Location: `backend/src/main/java/com/backend/NotetakingappApplication.java`
 - Triggers: Spring Boot main class - `SpringApplication.run(NotetakingappApplication.class, args)`
 - Responsibilities: Application bootstrap, component scanning, auto-configuration
 
 **Frontend Entry Point:**
-- Location: `notetakingapp-frontend/src/main.ts`
+- Location: `frontend/src/main.ts`
 - Triggers: Angular bootstrap - `bootstrapApplication(App, appConfig)`
 - Responsibilities: Application bootstrap, provider registration
 

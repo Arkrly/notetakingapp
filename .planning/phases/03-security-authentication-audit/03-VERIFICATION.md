@@ -11,19 +11,19 @@ must_haves:
     - "Expired JWT tokens are rejected with appropriate error"
     - "User cannot access other users' tags via ID manipulation"
   artifacts:
-    - path: "notetakingapp/src/main/java/com/notetakingapp/service/impl/NoteServiceImpl.java"
+    - path: "backend/src/main/java/com/backend/service/impl/NoteServiceImpl.java"
       provides: "Bulk delete ownership verification"
       status: verified
-    - path: "notetakingapp/src/main/java/com/notetakingapp/repository/NoteRepository.java"
+    - path: "backend/src/main/java/com/backend/repository/NoteRepository.java"
       provides: "Count query for ownership verification"
       status: verified
-    - path: "notetakingapp/src/main/java/com/notetakingapp/security/JwtUtils.java"
+    - path: "backend/src/main/java/com/backend/security/JwtUtils.java"
       provides: "JWT validation with signature verification"
       status: verified
-    - path: "notetakingapp/src/test/java/com/notetakingapp/service/impl/NoteServiceImplTest.java"
+    - path: "backend/src/test/java/com/backend/service/impl/NoteServiceImplTest.java"
       provides: "Tests for IDOR prevention"
       status: verified
-    - path: "notetakingapp/src/test/java/com/notetakingapp/security/JwtUtilsTest.java"
+    - path: "backend/src/test/java/com/backend/security/JwtUtilsTest.java"
       provides: "Tests for JWT security scenarios"
       status: verified
   key_links:

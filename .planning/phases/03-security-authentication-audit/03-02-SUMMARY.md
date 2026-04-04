@@ -20,9 +20,9 @@ tech-stack:
 
 key-files:
   created:
-    - notetakingapp/src/test/java/com/notetakingapp/security/JwtUtilsTest.java
+    - backend/src/test/java/com/backend/security/JwtUtilsTest.java
   modified:
-    - notetakingapp/src/main/java/com/notetakingapp/security/JwtUtils.java
+    - backend/src/main/java/com/backend/security/JwtUtils.java
 
 key-decisions:
   - "Documented existing JWT rejection behavior rather than adding explicit algorithm allowlist"
@@ -69,8 +69,8 @@ _Note: Tests created but not executable due to pre-existing Lombok/Java compatib
 
 ## Files Created/Modified
 
-- `notetakingapp/src/main/java/com/notetakingapp/security/JwtUtils.java` - Added JavaDoc explaining signature verification rejects unsigned tokens
-- `notetakingapp/src/test/java/com/notetakingapp/security/JwtUtilsTest.java` - Created test suite for JWT rejection scenarios
+- `backend/src/main/java/com/backend/security/JwtUtils.java` - Added JavaDoc explaining signature verification rejects unsigned tokens
+- `backend/src/test/java/com/backend/security/JwtUtilsTest.java` - Created test suite for JWT rejection scenarios
 
 ## Decisions Made
 

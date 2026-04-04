@@ -5,9 +5,9 @@ type: execute
 wave: 1
 depends_on: []
 files_modified:
-  - notetakingapp-frontend/package.json
-  - notetakingapp-frontend/angular.json
-  - notetakingapp-frontend/vitest.config.ts
+  - frontend/package.json
+  - frontend/angular.json
+  - frontend/vitest.config.ts
 autonomous: true
 requirements:
   - TEST-01
@@ -22,22 +22,22 @@ must_haves:
     - "AuthService has passing service tests"
     - "All frontend tests pass in CI/local environments"
   artifacts:
-    - path: "notetakingapp-frontend/vitest.config.ts"
+    - path: "frontend/vitest.config.ts"
       provides: "Vitest browser runner configuration"
       contains: "browser.*provider.*playwright"
-    - path: "notetakingapp-frontend/src/app/notes/notes-list/notes-list.component.spec.ts"
+    - path: "frontend/src/app/notes/notes-list/notes-list.component.spec.ts"
       provides: "NotesListComponent tests"
       contains: "describe.*NotesListComponent"
-    - path: "notetakingapp-frontend/src/app/core/services/auth.service.spec.ts"
+    - path: "frontend/src/app/core/services/auth.service.spec.ts"
       provides: "AuthService tests"
       contains: "describe.*AuthService"
   key_links:
-    - from: "notetakingapp-frontend/vitest.config.ts"
-      to: "notetakingapp-frontend/package.json"
+    - from: "frontend/vitest.config.ts"
+      to: "frontend/package.json"
       via: "npm run test:vitest"
       pattern: "vitest.*run"
-    - from: "notetakingapp-frontend/angular.json"
-      to: "notetakingapp-frontend/vitest.config.ts"
+    - from: "frontend/angular.json"
+      to: "frontend/vitest.config.ts"
       via: "ng test"
       pattern: "test.*config.*vitest"
 ---
@@ -52,7 +52,7 @@ Configure Vitest browser runner for Angular tests and create component tests for
 @.planning/REQUIREMENTS.md
 
 **Project context:**
-- Angular 21 frontend in `notetakingapp-frontend/`
+- Angular 21 frontend in `frontend/`
 - Vitest already in devDependencies (^4.0.8)
 - tsconfig.spec.json has vitest/globals configured
 - No vitest.config.ts exists yet
@@ -71,15 +71,15 @@ Configure Vitest browser runner for Angular tests and create component tests for
 <task type="auto">
   <name>task 1: Install Vitest browser runner and create configuration</name>
   <files>
-    - notetakingapp-frontend/package.json
-    - notetakingapp-frontend/vitest.config.ts
+    - frontend/package.json
+    - frontend/vitest.config.ts
   </files>
   <action>
     1. Install Vitest browser runner packages:
        - @vitest/browser
        - playwright (for browser provider)
     
-    2. Create vitest.config.ts in notetakingapp-frontend/ with:
+    2. Create vitest.config.ts in frontend/ with:
        - Browser provider: 'playwright'
        - Browser options: { headless: true, channel: 'chromium' }
        - test.globals: true
@@ -92,7 +92,7 @@ Configure Vitest browser runner for Angular tests and create component tests for
        - "test:vitest:ui": "vitest --ui" (optional)
   </action>
   <verify>
-    <automated>cd notetakingapp-frontend && npm install && npx vitest --version</automated>
+    <automated>cd frontend && npm install && npx vitest --version</automated>
   </verify>
   <done>
     Vitest browser runner installed, vitest.config.ts exists with browser provider configured
@@ -102,7 +102,7 @@ Configure Vitest browser runner for Angular tests and create component tests for
 <task type="auto">
   <name>task 2: Update Angular test configuration for Vitest</name>
   <files>
-    - notetakingapp-frontend/angular.json
+    - frontend/angular.json
   </files>
   <action>
     Update angular.json test configuration:
@@ -114,7 +114,7 @@ Configure Vitest browser runner for Angular tests and create component tests for
     3. Add test target options for different browsers if needed
   </action>
   <verify>
-    <automated>cd notetakingapp-frontend && npx ng test --run</automated>
+    <automated>cd frontend && npx ng test --run</automated>
   </verify>
   <done>
     Angular test command uses Vitest browser runner, ng test executes Vitest
@@ -124,8 +124,8 @@ Configure Vitest browser runner for Angular tests and create component tests for
 <task type="auto">
   <name>task 3: Create component tests for NotesListComponent and AuthService</name>
   <files>
-    - notetakingapp-frontend/src/app/notes/notes-list/notes-list.component.spec.ts
-    - notetakingapp-frontend/src/app/core/services/auth.service.spec.ts
+    - frontend/src/app/notes/notes-list/notes-list.component.spec.ts
+    - frontend/src/app/core/services/auth.service.spec.ts
   </files>
   <action>
     Create NotesListComponent tests (notes-list.component.spec.ts):
@@ -145,7 +145,7 @@ Configure Vitest browser runner for Angular tests and create component tests for
     Use Vitest globals (describe, it, expect, vi) as configured in tsconfig.spec.json.
   </action>
   <verify>
-    <automated>cd notetakingapp-frontend && npx vitest run src/app/notes/notes-list/notes-list.component.spec.ts src/app/core/services/auth.service.spec.ts</automated>
+    <automated>cd frontend && npx vitest run src/app/notes/notes-list/notes-list.component.spec.ts src/app/core/services/auth.service.spec.ts</automated>
   </verify>
   <done>
     NotesListComponent and AuthService tests exist and pass with Vitest
@@ -155,7 +155,7 @@ Configure Vitest browser runner for Angular tests and create component tests for
 </tasks>
 
 <verification>
-Run full test suite: `cd notetakingapp-frontend && npx vitest run`
+Run full test suite: `cd frontend && npx vitest run`
 Verify:
 - All tests pass (no failures)
 - Tests execute in browser mode (chromium)

@@ -132,7 +132,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 **Test commands:**
 ```bash
-cd notetakingapp-frontend
+cd frontend
 npm test                    # Run unit tests
 npm run build              # Production build check
 ng serve                   # Dev mode - catches CD errors

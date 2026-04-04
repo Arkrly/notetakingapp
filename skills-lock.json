@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "angular-testing": {
+      "source": "analogjs/angular-skills",
+      "sourceType": "github",
+      "computedHash": "66adf01ccb30305e179ce41ff76ded6b60dbb5909bd889cc350cdd13b6933130"
+    },
+    "frontend-testing": {
+      "source": "langgenius/dify",
+      "sourceType": "github",
+      "computedHash": "65108c13f0017191543bec88645f29a5665fa8daec4ab67ce1f1563d1ecf7f3f"
+    }
+  }
+}

@@ -23,9 +23,9 @@ tech-stack:
 key-files:
   created: []
   modified:
-    - notetakingapp/src/main/resources/application.properties
-    - notetakingapp/src/test/resources/application.properties
-    - notetakingapp/pom.xml
+    - backend/src/main/resources/application.properties
+    - backend/src/test/resources/application.properties
+    - backend/pom.xml
 
 key-decisions:
   - "Removed explicit H2Dialect — Hibernate 6.x auto-detects from jdbc:h2: URL"
@@ -76,9 +76,9 @@ Each task was committed atomically:
 
 ## Files Created/Modified
 
-- `notetakingapp/src/main/resources/application.properties` - Added `spring.jpa.open-in-view=false`, changed `show-sql` to `${SHOW_SQL:false}`
-- `notetakingapp/src/test/resources/application.properties` - Removed explicit `H2Dialect`, added auto-detection comment
-- `notetakingapp/pom.xml` - Added `jackson-datatype-hibernate6` dependency for Page serialization
+- `backend/src/main/resources/application.properties` - Added `spring.jpa.open-in-view=false`, changed `show-sql` to `${SHOW_SQL:false}`
+- `backend/src/test/resources/application.properties` - Removed explicit `H2Dialect`, added auto-detection comment
+- `backend/pom.xml` - Added `jackson-datatype-hibernate6` dependency for Page serialization
 
 ## Decisions Made
 
