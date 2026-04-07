@@ -47,22 +47,22 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | SEC-01 | Phase 3 | Complete |
-| SEC-02 | Phase 3 | Pending |
+| SEC-02 | Phase 6.4 | Pending |
 | SEC-03 | Phase 3 | Complete |
 | SEC-04 | Phase 3 | Complete |
 | SEC-05 | Phase 3 | Complete |
-| DATA-01 | Phase 4 | Pending |
-| DATA-02 | Phase 4 | Pending |
-| DATA-03 | Phase 4 | Pending |
-| DATA-04 | Phase 4 | Pending |
-| FRONT-01 | Phase 5 | Pending |
-| FRONT-02 | Phase 5 | Pending |
-| FRONT-03 | Phase 5 | Pending |
-| FRONT-04 | Phase 5 | Pending |
-| FEAT-01 | Phase 6 | Pending |
-| FEAT-02 | Phase 6 | Pending |
-| FEAT-03 | Phase 6 | Pending |
-| FEAT-04 | Phase 6 | Pending |
+| DATA-01 | Phase 6.3 | Pending |
+| DATA-02 | Phase 6.3 | Pending |
+| DATA-03 | Phase 6.3 | Pending |
+| DATA-04 | Phase 6.3 | Pending |
+| FRONT-01 | Phase 6.2 | Pending |
+| FRONT-02 | Phase 6.2 | Pending |
+| FRONT-03 | Phase 6.2 | Pending |
+| FRONT-04 | Phase 6.2 | Pending |
+| FEAT-01 | Phase 6.1 | Pending |
+| FEAT-02 | Phase 6.1 | Pending |
+| FEAT-03 | Phase 6.1 | Pending |
+| FEAT-04 | Phase 6.1 | Pending |
 
 **Coverage:**
 - v1.2 requirements: 17 total
