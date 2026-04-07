@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../core/services/auth.service';
+import { MotionService } from '../../core/services/motion.service';
 
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
@@ -35,6 +36,8 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private motion = inject(MotionService);
+  private cdr = inject(ChangeDetectorRef);
 
   registerForm: FormGroup = this.fb.group({
     username: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_]{3,50}$/)]],
@@ -61,6 +64,7 @@ export class RegisterComponent {
             this.router.navigate(['/notes']);
           } else {
             this.registerError = res.message || 'Registration failed';
+            this.cdr.markForCheck();
           }
         },
 error: (err) => {
@@ -74,11 +78,12 @@ error: (err) => {
           } else {
             this.registerError = 'An account with these details already exists.';
           }
-        } else {
-          this.registerError = 'Could not create account at this time. Please try again.';
-        }
+} else {
+            this.registerError = 'Could not create account at this time. Please try again.';
+          }
+          this.cdr.markForCheck();
       }
-      });
-    }
+});
   }
+}
 }

@@ -117,7 +117,7 @@
 .left-column {
   width: 45%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0D9488 0%, #134E4A 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   position: relative;
   display: flex;
   align-items: center;
@@ -251,7 +251,8 @@
 }
 
 .main-heading .line.accent {
-  color: #F97316;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .subtitle {
@@ -374,6 +375,7 @@
 .input-group:nth-child(1) { animation: fieldFadeIn 400ms ease-out 380ms forwards; }
 .input-group:nth-child(2) { animation: fieldFadeIn 400ms ease-out 460ms forwards; }
 .input-group:nth-child(3) { animation: fieldFadeIn 400ms ease-out 540ms forwards; }
+.input-group:nth-child(4) { animation: fieldFadeIn 400ms ease-out 620ms forwards; }
 
 .input-group label {
   font-size: 0.875rem;
@@ -425,7 +427,7 @@
 }
 
 .input-wrapper input::placeholder {
-  color: #94A3B8;
+  color: #64748b;
 }
 
 .input-wrapper input:focus {
@@ -529,6 +531,42 @@
 
 .checkbox-text {
   transition: color 0.2s;
+}
+
+/* Error message */
+.error-message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fieldFadeIn 400ms ease-out 680ms forwards;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.error-message svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.error-hint {
+  font-size: 0.85rem;
+  color: #64748B;
+  text-align: center;
+  margin: 0;
 }
 
 /* Submit button */
@@ -723,6 +761,7 @@
   .form-header,
   .input-group,
   .checkbox-row,
+  .error-message-container,
   .submit-btn,
   .divider,
   .oauth-buttons,
@@ -753,10 +792,11 @@
   .subtitle,
   .carousel-dots,
   .form-header,
-  .input-group,
-  .checkbox-row,
-  .submit-btn,
-  .divider,
+.input-group,
+.checkbox-row,
+.error-message-container,
+.submit-btn,
+.divider,
   .oauth-buttons,
   .fine-print,
   .signup-link {

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy, AfterViewInit, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Note } from '../../core/models/note.model';
+import { MotionService } from '../../core/services/motion.service';
 
 @Component({
   selector: 'app-note-card',
@@ -12,13 +13,24 @@ import { Note } from '../../core/models/note.model';
   styleUrls: ['./note-card.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NoteCardComponent {
+export class NoteCardComponent implements AfterViewInit, OnDestroy {
   @Input({ required: true }) note!: Note;
-  
+
   @Output() pinToggle = new EventEmitter<Note>();
   @Output() archiveToggle = new EventEmitter<Note>();
   @Output() edit = new EventEmitter<Note>();
   @Output() delete = new EventEmitter<Note>();
+
+  private motion = inject(MotionService);
+  private destroyed = false;
+
+  ngAfterViewInit() {
+    this.motion.scaleIn('.note-card');
+  }
+
+  ngOnDestroy() {
+    this.destroyed = true;
+  }
 
   get bgClass(): string {
     return `bg-note-${this.note.color}`;

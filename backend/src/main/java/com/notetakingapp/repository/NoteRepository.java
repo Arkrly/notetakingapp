@@ -17,6 +17,8 @@ public interface NoteRepository extends JpaRepository<Note, UUID> {
 
     Page<Note> findByUserId(UUID userId, Pageable pageable);
 
+    Page<Note> findByUserIdAndIsArchivedFalse(UUID userId, Pageable pageable);
+
     Optional<Note> findByIdAndUserId(UUID id, UUID userId);
 
     Page<Note> findByUserIdAndIsPinnedTrue(UUID userId, Pageable pageable);

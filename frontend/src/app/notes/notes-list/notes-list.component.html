@@ -1,6 +1,6 @@
 <app-sidebar></app-sidebar>
 
-<main class="main-content min-h-screen pb-24 md:pb-0 md:ml-[280px] gradient-mesh">
+<main class="main-content min-h-screen pb-24 md:pb-0 md:ml-[280px] gradient-mesh page-content">
   <!-- Top Bar -->
   <header
     class="sticky top-0 z-40 px-6 py-5 flex items-center justify-between gap-4 backdrop-blur-xl bg-white/70 border-b border-slate-200/50"
@@ -140,15 +140,15 @@
         </section>
       </ng-container>
 
-      <!-- Empty State — shown when notes stream has emitted and is empty -->
-      <div
-        *ngIf="(notes$ | async)?.length === 0"
-        class="py-24 flex flex-col items-center justify-center text-center animate-fade-in"
-      >
-        <div class="relative mb-6">
-          <div
-            class="w-24 h-24 bg-gradient-to-br from-indigo-50 to-violet-50 rounded-3xl flex items-center justify-center"
-          >
+<!-- Empty State — shown when notes stream has emitted and is empty -->
+<div
+  *ngIf="(notes$ | async)?.length === 0"
+  class="py-24 flex flex-col items-center justify-center text-center animate-fade-in"
+>
+  <div class="relative mb-6">
+    <div
+      class="empty-icon w-24 h-24 bg-gradient-to-br from-indigo-50 to-violet-50 rounded-3xl flex items-center justify-center"
+    >
             <svg
               class="w-12 h-12 text-indigo-300"
               viewBox="0 0 24 24"
@@ -188,11 +188,11 @@
               : 'Start capturing your ideas. Create your first note!'
           }}
         </p>
-        <button
-          *ngIf="!searchControl.value"
-          (click)="openNoteForm()"
-          class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/40 hover:-translate-y-0.5"
-        >
+<button
+  *ngIf="!searchControl.value"
+  (click)="openNoteForm()"
+  class="empty-cta inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/40 hover:-translate-y-0.5"
+>
           <svg
             class="w-5 h-5"
             viewBox="0 0 24 24"

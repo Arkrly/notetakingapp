@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, DestroyRef, AfterViewInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -16,6 +16,7 @@ import { SidebarComponent } from '../../shared/components/sidebar/sidebar.compon
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { User } from '../../core/models/user.model';
 import { passwordMatchValidator } from '../../auth/register/register.component';
+import { MotionService } from '../../core/services/motion.service';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +35,7 @@ import { passwordMatchValidator } from '../../auth/register/register.component';
   styleUrls: ['./profile.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
   private authService = inject(AuthService);
@@ -42,6 +43,7 @@ export class ProfileComponent implements OnInit {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private toastr = inject(ToastrService);
+  private motion = inject(MotionService);
 
   user: User | null = null;
   profileForm!: FormGroup;
@@ -57,7 +59,7 @@ export class ProfileComponent implements OnInit {
   passwordStrength = 0;
   strengthConfig = { width: '0%', color: 'bg-slate-300', label: 'Use at least 8 characters.', textColor: 'text-slate-400' };
 
-  ngOnInit() {
+ngOnInit() {
     this.initForms();
     this.userService.getProfile().subscribe(res => {
       if (res.success && res.data) {
@@ -74,6 +76,12 @@ export class ProfileComponent implements OnInit {
     ).subscribe(val => {
       this.calculateStrength(val);
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.motion.staggerSpring('.profile-section', 0.1);
+    }, 100);
   }
 
   initForms() {

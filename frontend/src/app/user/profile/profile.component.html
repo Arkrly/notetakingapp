@@ -2,9 +2,15 @@
 
 <main class="main-content min-h-screen p-6 md:p-8 pb-28 md:pb-8 text-slate-800 gradient-mesh">
   
+  <div *ngIf="!user" class="min-h-screen flex flex-col items-center justify-center">
+    <div class="relative">
+      <div class="w-12 h-12 border-4 border-indigo-100 rounded-full"></div>
+      <div class="absolute top-0 left-0 w-12 h-12 border-4 border-indigo-500 rounded-full border-t-transparent animate-spin"></div>
+    </div>
+    <p class="text-slate-500 text-sm mt-4 font-medium">Loading profile...</p>
+  </div>
+  
   <div class="max-w-[640px] mx-auto space-y-6" *ngIf="user">
-    
-    <!-- Profile Header -->
     <header class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-slate-200/30 border border-white/50 p-8 text-center relative overflow-hidden">
       <!-- Decorative gradient -->
       <div class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-br from-indigo-500/20 via-violet-500/10 to-transparent"></div>
@@ -27,8 +33,8 @@
       </div>
     </header>
 
-    <!-- Edit Profile Section -->
-    <section class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-slate-200/30 border border-white/50 overflow-hidden">
+<!-- Edit Profile Section -->
+<section class="profile-section bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-slate-200/30 border border-white/50 overflow-hidden">
       <div class="px-6 py-4 border-b border-slate-100/80 bg-gradient-to-r from-slate-50/50 to-white/50">
         <div class="flex items-center gap-3">
           <div class="p-2 rounded-lg bg-indigo-100">
@@ -69,8 +75,8 @@
       </form>
     </section>
 
-    <!-- Password Management Section -->
-    <section class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-slate-200/30 border border-white/50 overflow-hidden">
+<!-- Password Management Section -->
+<section class="profile-section bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-slate-200/30 border border-white/50 overflow-hidden">
       <div class="px-6 py-4 border-b border-slate-100/80 bg-gradient-to-r from-slate-50/50 to-white/50">
         <div class="flex items-center gap-3">
           <div class="p-2 rounded-lg bg-amber-100">
@@ -141,8 +147,8 @@
       </form>
     </section>
     
-    <!-- Danger Zone Section -->
-    <section class="bg-red-50/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-red-100/30 border border-red-200/50 overflow-hidden">
+<!-- Danger Zone Section -->
+<section class="profile-section bg-red-50/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-red-100/30 border border-red-200/50 overflow-hidden">
       <div class="px-6 py-4 border-b border-red-100/80 bg-gradient-to-r from-red-50/50 to-red-25/50">
         <div class="flex items-center gap-3">
           <div class="p-2 rounded-lg bg-red-100">

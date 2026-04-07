@@ -108,6 +108,29 @@
   background: var(--text-tertiary);
 }
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default focus outline, add custom */
+*:focus-visible {
+  outline: 2px solid theme('colors.brand.primary');
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Consistent transitions on interactive elements */
+button, a, input, [role="button"] {
+  transition: all 150ms ease;
+}
+
 .note-form-dialog-container .mat-mdc-dialog-surface {
   border-radius: 24px !important;
 }
@@ -118,4 +141,44 @@ button.mat-mdc-unelevated-button {
 
 .mat-mdc-progress-spinner circle {
   stroke: #6366f1;
+}
+
+/* Motion easing tokens */
+:root {
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+}
+
+/* Reduced motion — respect user preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Page transition base */
+.page-content {
+  will-change: opacity, transform;
+}
+
+/* Toast animations */
+.toast-container .ngx-toastr {
+  animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInToast {
+  from {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

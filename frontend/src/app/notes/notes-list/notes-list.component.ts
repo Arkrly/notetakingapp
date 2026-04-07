@@ -1,11 +1,13 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, DestroyRef, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, startWith, switchMap, catchError, tap, distinctUntilChanged } from 'rxjs/operators';
+import { animate, stagger } from 'framer-motion';
 
 import { NoteService, PagedResponse } from '../../core/services/note.service';
 import { Note } from '../../core/models/note.model';
@@ -14,6 +16,7 @@ import { SidebarComponent } from '../../shared/components/sidebar/sidebar.compon
 import { NoteCardComponent } from '../note-card/note-card.component';
 import { NoteFormComponent } from '../note-form/note-form.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { MotionService } from '../../core/services/motion.service';
 
 const NOTES_CACHE_KEY = 'notes_cache';
 
@@ -33,9 +36,13 @@ const NOTES_CACHE_KEY = 'notes_cache';
   styleUrls: ['./notes-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotesListComponent implements OnInit {
+export class NotesListComponent implements OnInit, AfterViewInit, OnDestroy {
   private noteService = inject(NoteService);
   private dialog = inject(MatDialog);
+  private route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
+  private motion = inject(MotionService);
+  private destroyed = false;
 
   searchControl = new FormControl('');
 
@@ -97,8 +104,42 @@ export class NotesListComponent implements OnInit {
   }
 
   private hasFetched = false;
+  currentFilter: string | null = null;
+
+  ngAfterViewInit() {
+    if (!this.destroyed) {
+      setTimeout(() => {
+        if (!this.destroyed) {
+          this.motion.staggerSpring('.page-content > *', 0.05);
+          this.motion.staggerSpring('.note-card', 0.1);
+          this.animateEmptyState();
+        }
+      }, 100);
+    }
+  }
+
+  private animateEmptyState() {
+    const emptyIcon = document.querySelector('.empty-icon');
+    if (emptyIcon) {
+      animate(emptyIcon as any, { y: [0, -8, 0] } as any, { duration: 2, repeat: Infinity, ease: 'ease-in-out' as any });
+    }
+    const emptyCta = document.querySelector('.empty-cta');
+    if (emptyCta) {
+      this.motion.pulseAttention('.empty-cta');
+    }
+  }
 
   ngOnInit() {
+    const filter$ = this.route.paramMap.pipe(
+      map(params => params.get('filter')),
+      tap(filter => {
+        this.currentFilter = filter;
+        this.hasFetched = false;
+        this.cache$.next([]);
+      }),
+      startWith(null as string | null)
+    );
+
     const searchTerm$ = this.searchControl.valueChanges.pipe(
       startWith(''),
       map(term => (term || '').toLowerCase()),
@@ -108,16 +149,38 @@ export class NotesListComponent implements OnInit {
     this.notes$ = combineLatest([
       this.cache$,
       this.refresh$.pipe(startWith(undefined as void)),
-      searchTerm$
+      searchTerm$,
+      filter$
     ]).pipe(
-      switchMap(([cached, _, term]: [Note[], void, string]) => {
+      switchMap(([cached, _, term, filter]: [Note[], void, string, string | null]) => {
+        if (filter === 'pinned') {
+          return this.noteService.getPinnedNotes().pipe(
+            map(response => (response.success && response.data?.content) || []),
+            tap(notes => {
+              this.saveToCache(notes);
+              this.hasFetched = true;
+              this.isLoading$.next(false);
+            }),
+            map(notes => this.filterNotes(notes, term))
+          );
+        }
+        if (filter === 'archived') {
+          return this.noteService.getArchivedNotes().pipe(
+            map(response => (response.success && response.data?.content) || []),
+            tap(notes => {
+              this.saveToCache(notes);
+              this.hasFetched = true;
+              this.isLoading$.next(false);
+            }),
+            map(notes => this.filterNotes(notes, term))
+          );
+        }
         if (cached.length === 0 && !this.hasFetched) {
           return this.fetchFromApi().pipe(
             map(notes => this.filterNotes(notes, term))
           );
         }
         if (cached.length === 0 && this.hasFetched) {
-          // Already fetched, no notes exist — stop loading
           this.isLoading$.next(false);
           return of([] as Note[]);
         }
@@ -215,5 +278,9 @@ export class NotesListComponent implements OnInit {
         this.noteService.deleteNote(note.id).subscribe(() => this.refresh());
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroyed = true;
   }
 }

@@ -108,7 +108,7 @@
 .left-column {
   width: 45%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0D9488 0%, #134E4A 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   position: relative;
   display: flex;
   align-items: center;
@@ -242,7 +242,8 @@
 }
 
 .main-heading .line.accent {
-  color: #F97316;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .subtitle {
@@ -397,7 +398,7 @@
 }
 
 .input-wrapper input::placeholder {
-  color: #94A3B8;
+  color: #64748b;
 }
 
 .input-wrapper input:focus {

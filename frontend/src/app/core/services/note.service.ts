@@ -90,15 +90,15 @@ export class NoteService {
     return this.http.get<ApiResponse<PagedResponse<Note>>>(`${this.apiUrl}/search`, { params: searchParams });
   }
 
-  getPinnedNotes(): Observable<ApiResponse<Note[]>> {
+  getPinnedNotes(): Observable<ApiResponse<PagedResponse<Note>>> {
     const params = this.buildPaginationParams(0, 10);
     
-    return this.http.get<ApiResponse<Note[]>>(`${this.apiUrl}/pinned`, { params });
+    return this.http.get<ApiResponse<PagedResponse<Note>>>(`${this.apiUrl}/pinned`, { params });
   }
 
-  getArchivedNotes(): Observable<ApiResponse<Note[]>> {
+  getArchivedNotes(): Observable<ApiResponse<PagedResponse<Note>>> {
     const params = this.buildPaginationParams(0, 20);
     
-    return this.http.get<ApiResponse<Note[]>>(`${this.apiUrl}/archived`, { params });
+    return this.http.get<ApiResponse<PagedResponse<Note>>>(`${this.apiUrl}/archived`, { params });
   }
 }

@@ -92,11 +92,26 @@
           </label>
         </div>
 
-        <!-- Submit button -->
-        <button type="submit" class="submit-btn btn-hover-lift shimmer-btn cursor-pointer" [disabled]="loginForm.invalid || isLoading">
-          <span *ngIf="!isLoading">Sign In</span>
-          <span *ngIf="isLoading" class="loading-spinner"></span>
-        </button>
+<!-- Error message -->
+  <div *ngIf="loginError" class="error-message-container">
+    <div class="error-message">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span>{{ loginError }}</span>
+    </div>
+    <p class="error-hint">
+      Please check your username and password and try again.
+    </p>
+  </div>
+
+<!-- Submit button -->
+  <button type="submit" class="submit-btn btn-hover-lift shimmer-btn cursor-pointer" [disabled]="loginForm.invalid || isLoading">
+    <span *ngIf="!isLoading">Sign In</span>
+    <span *ngIf="isLoading" class="loading-spinner"></span>
+  </button>
 
         <!-- Sign up link -->
         <p class="signup-link">

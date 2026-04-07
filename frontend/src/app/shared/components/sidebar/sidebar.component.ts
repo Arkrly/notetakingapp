@@ -1,8 +1,9 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../core/services/auth.service';
+import { MotionService } from '../../../core/services/motion.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +13,12 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./sidebar.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SidebarComponent {
+export class SidebarComponent implements AfterViewInit {
   authService = inject(AuthService);
   currentUser$ = this.authService.currentUser$;
+  private motion = inject(MotionService);
+
+  ngAfterViewInit() {
+    this.motion.slideInLeft('.nav-item');
+  }
 }

@@ -40,7 +40,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public Page<NoteResponse> getAllNotes(UUID userId, Pageable pageable) {
         log.debug("Fetching all notes for user: {}", userId);
-        return noteRepository.findByUserId(userId, pageable)
+        return noteRepository.findByUserIdAndIsArchivedFalse(userId, pageable)
                 .map(noteMapper::toResponse);
     }
 
