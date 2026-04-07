@@ -15,10 +15,10 @@
 
 ### Data Layer
 
-- [ ] **DATA-01**: All REST endpoints return DTOs, not JPA entities
-- [ ] **DATA-02**: Note→Tags relationship uses fetch join to prevent N+1 queries
-- [ ] **DATA-03**: Global exception handler returns consistent error format
-- [ ] **DATA-04**: No LazyInitializationException errors in production logs
+- [x] **DATA-01**: All REST endpoints return DTOs, not JPA entities
+- [x] **DATA-02**: Note→Tags relationship uses fetch join to prevent N+1 queries
+- [x] **DATA-03**: Global exception handler returns consistent error format
+- [x] **DATA-04**: No LazyInitializationException errors in production logs
 
 ### Frontend Stability
 
@@ -51,10 +51,10 @@
 | SEC-03 | Phase 3 | Complete |
 | SEC-04 | Phase 3 | Complete |
 | SEC-05 | Phase 3 | Complete |
-| DATA-01 | Phase 6.3 | Pending |
-| DATA-02 | Phase 6.3 | Pending |
-| DATA-03 | Phase 6.3 | Pending |
-| DATA-04 | Phase 6.3 | Pending |
+| DATA-01 | Phase 6.3 | Complete |
+| DATA-02 | Phase 6.3 | Complete |
+| DATA-03 | Phase 6.3 | Complete |
+| DATA-04 | Phase 6.3 | Complete |
 | FRONT-01 | Phase 6.2 | Pending |
 | FRONT-02 | Phase 6.2 | Pending |
 | FRONT-03 | Phase 6.2 | Pending |
