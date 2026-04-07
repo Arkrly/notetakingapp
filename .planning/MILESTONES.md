@@ -1,5 +1,20 @@
 # Milestones
 
+## v1.2 Bug Fixes (Shipped: 2026-04-07)
+
+**Phases completed:** 8 phases, 10 plans, 0 tasks
+
+**Key accomplishments:**
+- Tag normalization implemented (frontend + backend)
+- Pin/archive status preserved on note updates
+- Backend archive filtering added
+- RxJS memory leak fixes (takeUntilDestroyed)
+- OnPush change detection for all components
+- SEC-02 tag IDOR vulnerability verified as already fixed by architecture
+- DATA-01 through DATA-04 verified satisfied
+
+---
+
 ## v1.1 Build & Test Fixes (Shipped: 2026-04-02)
 
 **Phases completed:** 2 phases, 1 plans, 0 tasks
