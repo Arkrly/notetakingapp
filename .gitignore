@@ -67,5 +67,17 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+# Logs
+*.log
+logs/
 notetakingapp/backend.log
 notetakingapp-frontend/frontend.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Frontend
+frontend/start.log
+.vitest-attachments/
