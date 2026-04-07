@@ -12,7 +12,7 @@
 - [ ] **Phase 4: Backend Data Layer Fixes** - DTOs, fetch joins, exception handling
 - [ ] **Phase 5: Frontend Core Stability** - RxJS cleanup, OnPush, 401 handling
 - [ ] **Phase 6: Feature-Specific Bug Fixes** - Tag normalization, pin/archive preservation
-- [ ] **Phase 6.1: Complete Feature Bug Fixes (INSERTED)** - Fix pin/archive preservation, tag normalization, archive filtering
+- [x] **Phase 6.1: Complete Feature Bug Fixes (INSERTED)** - Fix pin/archive preservation, tag normalization, archive filtering (completed 2026-04-07)
 - [ ] **Phase 6.2: Frontend Stability Verification** - Verify RxJS cleanup, OnPush, 401 handling, CD errors
 - [ ] **Phase 6.3: Data Layer Refinement** - DTOs, fetch joins, exception handler, lazy init fixes
 - [ ] **Phase 6.4: Security Enhancement** - Tag IDOR vulnerability fix

@@ -17,15 +17,17 @@ export interface PagedResponse<T> {
 }
 
 export interface CreateNoteRequest {
-  title: string;
+  title?: string;
   content?: string;
   color?: string;
   tags?: string;
+  isPinned?: boolean;
+  isArchived?: boolean;
 }
 
 export interface UpdateNoteRequest {
-  title: string;
-  content: string;
+  title?: string;
+  content?: string;
   color?: string;
   isPinned?: boolean;
   isArchived?: boolean;

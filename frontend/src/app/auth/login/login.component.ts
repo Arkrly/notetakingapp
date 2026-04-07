@@ -1,7 +1,8 @@
-import { Component, inject, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, AfterViewInit, ChangeDetectorRef, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../core/services/auth.service';
 import { MotionService } from '../../core/services/motion.service';
 
@@ -23,6 +24,7 @@ export class LoginComponent implements AfterViewInit {
   private authService = inject(AuthService);
   private motion = inject(MotionService);
   private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
 
   loginForm: FormGroup = this.fb.group({
     username: ['', [Validators.required]],
@@ -43,7 +45,9 @@ export class LoginComponent implements AfterViewInit {
       this.loginError = '';
       
       const credentials = this.loginForm.value;
-      this.authService.login(credentials.username, credentials.password).subscribe({
+      this.authService.login(credentials.username, credentials.password).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
         next: () => {
           this.isLoading = false;
           this.router.navigate(['/notes']);

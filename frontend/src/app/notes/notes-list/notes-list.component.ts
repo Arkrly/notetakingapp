@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, startWith, switchMap, catchError, tap, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { animate, stagger } from 'framer-motion';
 
 import { NoteService, PagedResponse } from '../../core/services/note.service';
@@ -221,8 +222,10 @@ export class NotesListComponent implements OnInit, AfterViewInit, OnDestroy {
   refresh() {
     this.hasFetched = false;
     this.isLoading$.next(true);
-    this.noteService.getNotes(0, 50).subscribe({
-      next: (response) => {
+    this.noteService.getNotes(0, 50).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response: ApiResponse<PagedResponse<Note>>) => {
         if (response.success && response.data?.content) {
           this.saveToCache(response.data.content);
           this.cache$.next(response.data.content);
@@ -243,23 +246,33 @@ export class NotesListComponent implements OnInit, AfterViewInit, OnDestroy {
       maxWidth: '640px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(result => {
       if (result) {
         if (note) {
-          this.noteService.updateNote(note.id, result).subscribe(() => this.refresh());
+          this.noteService.updateNote(note.id, result).pipe(
+            takeUntilDestroyed(this.destroyRef)
+          ).subscribe(() => this.refresh());
         } else {
-          this.noteService.createNote(result).subscribe(() => this.refresh());
+          this.noteService.createNote(result).pipe(
+            takeUntilDestroyed(this.destroyRef)
+          ).subscribe(() => this.refresh());
         }
       }
     });
   }
 
   togglePin(note: Note) {
-    this.noteService.patchNote(note.id, { isPinned: !note.isPinned }).subscribe(() => this.refresh());
+    this.noteService.patchNote(note.id, { isPinned: !note.isPinned }).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(() => this.refresh());
   }
 
   toggleArchive(note: Note) {
-    this.noteService.patchNote(note.id, { isArchived: !note.isArchived }).subscribe(() => this.refresh());
+    this.noteService.patchNote(note.id, { isArchived: !note.isArchived }).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(() => this.refresh());
   }
 
   deleteNote(note: Note) {
@@ -273,9 +286,13 @@ export class NotesListComponent implements OnInit, AfterViewInit, OnDestroy {
       width: '400px'
     });
 
-    dialogRef.afterClosed().subscribe(confirmed => {
+    dialogRef.afterClosed().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(confirmed => {
       if (confirmed) {
-        this.noteService.deleteNote(note.id).subscribe(() => this.refresh());
+        this.noteService.deleteNote(note.id).pipe(
+          takeUntilDestroyed(this.destroyRef)
+        ).subscribe(() => this.refresh());
       }
     });
   }
