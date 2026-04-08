@@ -1,0 +1,83 @@
+CHAPTER 3
+SYSTEM DESIGN & METHODOLOGY
+
+3.1 System Architecture
+NoteStack follows a modern three-tier architecture consisting of presentation layer (Angular frontend), application layer (Spring Boot backend), and data layer (PostgreSQL database). This separation of concerns ensures modularity, maintainability, and scalability. The frontend communicates with the backend through RESTful APIs secured with JWT authentication. The backend implements a layered architecture with distinct controller, service, repository, and entity layers, promoting loose coupling and high cohesion.
+
+3.2 Technology Stack Rationale
+The technology stack was selected based on industry standards, maturity, and suitability for the project requirements:
+- Backend: Spring Boot 3 with Java 21 provides robust enterprise features, dependency injection, and seamless integration with Spring Data JPA and Spring Security.
+- Frontend: Angular 21 offers a comprehensive framework with TypeScript support, component-based architecture, and Angular Material for consistent UI/UX.
+- Database: PostgreSQL provides ACID compliance, JSON support for flexible data modeling, and excellent performance for relational data.
+- Authentication: JWT enables stateless, secure authentication suitable for distributed systems.
+- Build Tools: Maven for backend dependency management and Angular CLI for frontend tooling.
+
+3.3 Database Design
+The database schema consists of two primary tables: users and notes, designed to support the core functionality of the application.
+
+3.3.1 Users Table
+Stores user account information including encrypted passwords, email addresses, and account status. Passwords are hashed using BCrypt with a salt round of 12 for security. The table includes timestamps for account creation and updates.
+
+3.3.2 Notes Table
+Represents individual notes with fields for title, content, color coding, pinning status, archiving status, and tags. Each note is associated with a user through a foreign key relationship. The table includes versioning for optimistic locking and timestamps for tracking modifications.
+
+3.4 API Design
+NoteStack implements a RESTful API following standard conventions for resource naming and HTTP methods. The API is versioned (/api/v1/) and organized by resource entities (auth, users, notes). Comprehensive API documentation is provided through OpenAPI/Swagger specifications.
+
+3.4.1 Authentication Endpoints
+Handles user registration, login, and token refresh operations. Passwords are validated and hashed before storage. JWT tokens are issued upon successful authentication and include user identity and role information.
+
+3.4.2 User Management Endpoints
+Provides capabilities for profile retrieval, update, and deletion. Includes password change functionality with proper validation.
+
+3.4.3 Note Management Endpoints
+Supports full CRUD operations for notes with additional features for filtering, sorting, and pagination. Includes specialized endpoints for pinning, archiving, and searching notes.
+
+3.5 Security Considerations
+Security is implemented at multiple layers:
+- Transport Layer: HTTPS enforcement (in production) and CORS configuration
+- Application Layer: Input validation, authentication, authorization, and session management
+- Data Layer: Parameterized queries to prevent SQL injection, BCrypt password hashing
+- API Layer: Rate limiting considerations, secure headers, and JWT token expiration
+
+3.6 Development Methodology
+The project follows an iterative development approach with continuous integration principles:
+- Backend development followed TDD principles where applicable
+- Frontend development utilized Angular CLI for consistent code generation
+- Regular code reviews and adherence to coding standards
+- Version control using Git with feature branching strategy
+- Automated testing for critical components
+
+3.7 System Flow
+3.7.1 User Authentication Flow
+1. User submits login credentials via frontend
+2. Frontend sends credentials to /api/v1/auth/login endpoint
+3. Backend validates credentials and generates JWT token
+4. Token is returned to frontend and stored securely
+5. Subsequent requests include token in Authorization header
+6. Backend validates token and processes request
+
+3.7.2 Note Creation Flow
+1. User fills note form in frontend
+2. Frontend sends note data to /api/v1/notes endpoint with JWT
+3. Backend validates input, associates note with user from token
+4. Note is persisted to database and confirmation returned
+5. Frontend updates UI with new note
+
+3.8 Testing Strategy
+Testing is implemented at multiple levels:
+- Unit testing for service and controller layers
+- Integration testing for API endpoints
+- End-to-end testing for critical user journeys
+- Manual testing for UI/UX validation
+
+3.9 Deployment Considerations
+The application is designed for deployment in containerized environments:
+- Backend packaged as executable JAR
+- Frontend built for production with Angular CLI
+- Environment-specific configuration through application.properties
+- Database initialization scripts for schema setup
+- Health check endpoints for monitoring
+
+3.10 Summary
+This chapter detailed the system design and methodology employed in developing NoteStack. The three-tier architecture, technology selections, database design, API specifications, security measures, and development practices collectively form a robust foundation for the application. The design decisions prioritize security, scalability, maintainability, and user experience while adhering to software engineering best practices.

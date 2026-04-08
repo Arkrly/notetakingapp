@@ -81,3 +81,30 @@ notetakingapp-frontend/frontend.log
 # Frontend
 frontend/start.log
 .vitest-attachments/
+
+# Python Virtual Environment for Report Generation
+.venv-report/
+__pycache__/
+
+# Agent and IDE directories
+.agents/
+.opencode/
+.planning/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Report Generation Artifacts (session only)
+.project_report.docx
+~$*.docx
+*.docx.lock
+generate_report.py
+append_chapters.py
+append_remaining_chapters.py
