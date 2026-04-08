@@ -1,15 +1,98 @@
-# Compiled output
+# ============================================================
+# COMPILED & BUILD OUTPUT
+# ============================================================
 dist/
 tmp/
 out-tsc/
 bazel-out/
+target/
+build/
 
-# Node
+# ============================================================
+# NODE / NPM
+# ============================================================
 node_modules/
 npm-debug.log
 yarn-error.log
+*.log
+logs/
 
-# IDEs and editors
+# ============================================================
+# ANGULAR
+# ============================================================
+.angular/
+.sass-cache/
+frontend/start.log
+frontend/dist/
+frontend/audit/screenshots/
+
+# ============================================================
+# PYTHON — ALL PYTHON FILES & ARTIFACTS
+# ============================================================
+*.py
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+*.whl
+__pycache__/
+.Python
+.venv/
+.venv-report/
+venv/
+
+# ============================================================
+# REPORTS & GENERATED DOCUMENTS
+# ============================================================
+*.docx
+*.docx.lock
+~$*.docx
+.project_report.docx
+project_report.docx
+project_report_final_backup.docx
+*.txt
+chapter*.txt
+
+# ============================================================
+# AUDIT & GENERATED CONTENT
+# ============================================================
+audit/
+frontend/audit/ANIMATION_PLAN.md
+frontend/audit/FIX_PLAN.md
+frontend/audit/FIX_SUMMARY.md
+frontend/audit/VISUAL_AUDIT.md
+frontend/audit/screenshots/
+session.md
+skills-lock.json
+frontend/skills-lock.json
+start.log
+
+# ============================================================
+# JAVA / MAVEN (BACKEND)
+# ============================================================
+HELP.md
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.iws
+*.iml
+*.ipr
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ============================================================
+# IDEs & EDITORS
+# ============================================================
 .idea/
 .project
 .classpath
@@ -17,8 +100,6 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-
-# Visual Studio Code
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -27,84 +108,34 @@ yarn-error.log
 !.vscode/mcp.json
 .history/*
 
-# Miscellaneous
-.angular/
-.sass-cache/
-connect.lock
-coverage/
-libpeerconnection.log
-testem.log
-typings
-__screenshots__/
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Maven
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-# Spring Tool Suite
-.apt_generated
-.factorypath
-.springBeans
-.sts4-cache
-
-# IntelliJ IDEA
-*.iws
-*.iml
-*.ipr
-
-# NetBeans
-/nbproject/private/
-/nbbuild/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-# Logs
-*.log
-logs/
-notetakingapp/backend.log
-notetakingapp-frontend/frontend.log
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Frontend
-frontend/start.log
-.vitest-attachments/
-
-# Python Virtual Environment for Report Generation
-.venv-report/
-__pycache__/
-
-# Agent and IDE directories
+# ============================================================
+# AGENT & AI TOOLING
+# ============================================================
 .agents/
 .opencode/
 .planning/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
-*.whl
 
-# Report Generation Artifacts (session only)
-.project_report.docx
-~$*.docx
-*.docx.lock
-generate_report.py
-append_chapters.py
-append_remaining_chapters.py
+# ============================================================
+# TEST ARTIFACTS
+# ============================================================
+coverage/
+.vitest-attachments/
+__screenshots__/
+frontend/src/app/__screenshots__/
+
+# ============================================================
+# SYSTEM
+# ============================================================
+.DS_Store
+Thumbs.db
+connect.lock
+libpeerconnection.log
+testem.log
+typings
+
+# ============================================================
+# ENVIRONMENT
+# ============================================================
+.env
+.env.local
+.env.*.local
